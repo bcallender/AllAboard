@@ -1,4 +1,6 @@
 ﻿using AllAboard.System.Patched;
+using AllAboard.System.Utility;
+using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
 using Game;
 using Game.Modding;
@@ -8,9 +10,9 @@ using Unity.Entities;
 
 namespace AllAboard
 {
-    public class Mod : IMod
+    public class AllAboard : IMod
     {
-        public static ILog log = LogManager.GetLogger($"{nameof(AllAboard)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
+        public static ILog log = LogManager.GetLogger($"{nameof(AllAboard)}.{nameof(AllAboard)}").SetShowsErrorsInUI(false);
 
         public static Setting m_Setting;
 
@@ -21,14 +23,14 @@ namespace AllAboard
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
                 log.Info($"Current mod asset at {asset.path}");
 
-            // m_Setting = new Setting(this);
-            // m_Setting.RegisterInOptionsUI();
-            // GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
-            //
-            //
-            // AssetDatabase.global.LoadSettings(nameof(AllAboard), m_Setting, new Setting(this));
+            m_Setting = new Setting(this);
+            m_Setting.RegisterInOptionsUI();
+            GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
 
 
+            AssetDatabase.global.LoadSettings(nameof(AllAboard), m_Setting, new Setting(this));
+
+            PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data = (uint) m_Setting.MaxDwellDelaySlider;
             var oldTrainSystem =
                 World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>();
             oldTrainSystem.Enabled = false;
@@ -39,6 +41,8 @@ namespace AllAboard
             updateSystem.UpdateAt<PatchedTransportCarAISystem>(SystemUpdatePhase.GameSimulation);
             updateSystem.UpdateAt<PatchedTransportTrainAISystem>(SystemUpdatePhase.GameSimulation);
             log.Info("Completed Replacement of Base Train/CarAI Systems.");
+            log.InfoFormat("Current max allowed seconds late = {0}",
+                PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data);
             //updateSystem.UpdateBefore<InstantBoardingSystem>(SystemUpdatePhase.GameSimulation);
         }
 
