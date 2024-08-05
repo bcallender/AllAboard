@@ -28,7 +28,7 @@ namespace AllAboard.System.Utility
                 jobIndex);
         }
 
-        public static bool ArePassengersReady(DynamicBuffer<Passenger> passengers,
+        private static bool ArePassengersReady(DynamicBuffer<Passenger> passengers,
             ComponentLookup<CurrentVehicle> currentVehicleData,
             EntityCommandBuffer.ParallelWriter commandBuffer,
             NativeQuadTree<Entity, QuadTreeBoundsXZ> searchTree,
@@ -47,24 +47,18 @@ namespace AllAboard.System.Utility
             for (var i = 0; i < passengers.Length; i++)
             {
                 var passenger = passengers[i].m_Passenger;
-                if (currentVehicleDataLookup.HasComponent(passenger)) continue;
+                //passenger is on train, or passenger is entering the train.
+                if (currentVehicleDataLookup.HasComponent(passenger) ||
+                    (currentVehicleDataLookup[passenger].m_Flags & CreatureVehicleFlags.Entering) == 0) continue;
 
-
-                if ((currentVehicleDataLookup[passenger].m_Flags & CreatureVehicleFlags.Entering) != 0)
+                //credit for this logic goes to @WayzWare
+                if (currentVehicleDataLookup.TryGetComponent(passenger, out var passengerVehicleData))
                 {
-                    //credit for this logic goes to @WayzWare
-                    if (currentVehicleDataLookup.TryGetComponent(passenger, out var currentVehicleData))
-                    {
-                        currentVehicleData.m_Flags |= CreatureVehicleFlags.Ready;
-                        currentVehicleData.m_Flags &= ~CreatureVehicleFlags.Entering;
-                        commandBuffer.SetComponent(jobIndex, passenger, currentVehicleData);
-                        commandBuffer.AddComponent(jobIndex, passenger, default(BatchesUpdated));
-                        searchTree.TryRemove(passenger);
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    passengerVehicleData.m_Flags |= CreatureVehicleFlags.Ready;
+                    passengerVehicleData.m_Flags &= ~CreatureVehicleFlags.Entering;
+                    commandBuffer.SetComponent(jobIndex, passenger, passengerVehicleData);
+                    commandBuffer.AddComponent(jobIndex, passenger, default(BatchesUpdated));
+                    searchTree.TryRemove(passenger);
                 }
             }
 
@@ -78,8 +72,7 @@ namespace AllAboard.System.Utility
             {
                 var passenger2 = passengers[index].m_Passenger;
                 if (currentVehicleData.HasComponent(passenger2) &&
-                    (currentVehicleData[passenger2].m_Flags & CreatureVehicleFlags.Ready) ==
-                    0)
+                    (currentVehicleData[passenger2].m_Flags & CreatureVehicleFlags.Ready) == 0)
                     return false;
             }
 
