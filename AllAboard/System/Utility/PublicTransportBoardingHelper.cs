@@ -7,13 +7,13 @@ using Unity.Entities;
 
 namespace AllAboard.System.Utility
 {
-    public class PassengerBoardingChecks
+    public class PublicTransportBoardingHelper
     {
         //https://cs2.paradoxwikis.com/Commonly_units_in_the_game
         private static readonly double SimulationFramesPerMinute = 16384U / 90.0;
 
         public static readonly SharedStatic<uint> MaxAllowedMinutesLate =
-            SharedStatic<uint>.GetOrCreate<PassengerBoardingChecks>();
+            SharedStatic<uint>.GetOrCreate<PublicTransportBoardingHelper>();
 
         public static bool ArePassengersReady(DynamicBuffer<Passenger> passengers,
             ComponentLookup<CurrentVehicle> currentVehicleData,

@@ -1733,7 +1733,7 @@ namespace AllAboard.System.Patched
                          m_SimulationFrameIndex < publicTransport.m_DepartureFrame))
                         return false;
                     if (passengers.IsCreated)
-                        return PassengerBoardingChecks.ArePassengersReady(passengers, m_CurrentVehicleData,
+                        return PublicTransportBoardingHelper.ArePassengersReady(passengers, m_CurrentVehicleData,
                             m_CommandBuffer, m_SearchTree, publicTransport, jobIndex, m_SimulationFrameIndex);
                 }
 

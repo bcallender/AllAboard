@@ -30,7 +30,7 @@ namespace AllAboard
 
             AssetDatabase.global.LoadSettings(nameof(AllAboard), m_Setting, new Setting(this));
 
-            PassengerBoardingChecks.MaxAllowedMinutesLate.Data = m_Setting.MaxDwellDelaySlider;
+            PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data = m_Setting.MaxDwellDelaySlider;
             var oldTrainSystem =
                 World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>();
             oldTrainSystem.Enabled = false;
@@ -42,7 +42,7 @@ namespace AllAboard
             updateSystem.UpdateAt<PatchedTransportTrainAISystem>(SystemUpdatePhase.GameSimulation);
             log.Info("Completed Replacement of Base Train/CarAI Systems.");
             log.InfoFormat("Current max allowed seconds late = {0}",
-                PassengerBoardingChecks.MaxAllowedMinutesLate.Data);
+                PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data);
             //updateSystem.UpdateBefore<InstantBoardingSystem>(SystemUpdatePhase.GameSimulation);
         }
 

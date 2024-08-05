@@ -32,8 +32,8 @@ namespace AllAboard
         {
             set
             {
-                PassengerBoardingChecks.MaxAllowedMinutesLate.Data = MaxDwellDelaySlider;
-                Mod.log.InfoFormat("Now max boarding time: {0}", PassengerBoardingChecks.MaxAllowedMinutesLate.Data);
+                PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data = MaxDwellDelaySlider;
+                Mod.log.InfoFormat("Now max boarding time: {0}", PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data);
             }
         }
 

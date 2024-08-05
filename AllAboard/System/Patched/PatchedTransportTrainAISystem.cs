@@ -1428,14 +1428,14 @@ namespace AllAboard.System.Patched
                                 var layoutIndexVehicle = layout[i].m_Vehicle;
                                 if (!m_Passengers.HasBuffer(layoutIndexVehicle)) continue;
                                 var layoutIndexVehiclePassengers = m_Passengers[layoutIndexVehicle];
-                                if (!PassengerBoardingChecks.ArePassengersReady(layoutIndexVehiclePassengers,
+                                if (!PublicTransportBoardingHelper.ArePassengersReady(layoutIndexVehiclePassengers,
                                         m_CurrentVehicleData, m_CommandBuffer, m_SearchTree, publicTransport,
                                         jobIndex, m_SimulationFrameIndex))
                                     return false;
                             }
                         else if (!m_Passengers.HasBuffer(vehicleEntity))
                             return true;
-                        else if (!PassengerBoardingChecks.ArePassengersReady(m_Passengers[vehicleEntity],
+                        else if (!PublicTransportBoardingHelper.ArePassengersReady(m_Passengers[vehicleEntity],
                                      m_CurrentVehicleData, m_CommandBuffer, m_SearchTree, publicTransport, jobIndex,
                                      m_SimulationFrameIndex))
                             return false;
