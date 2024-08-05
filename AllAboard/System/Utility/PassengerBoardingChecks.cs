@@ -2,38 +2,44 @@
 using Game.Common;
 using Game.Creatures;
 using Game.Vehicles;
+using Unity.Burst;
 using Unity.Entities;
 
 namespace AllAboard.System.Utility
 {
-    public static class PassengerBoardingChecks
+    public class PassengerBoardingChecks
     {
-        private static readonly uint MaxAllowedSecondsLate = 30U;
-        private static readonly uint SimulationFramesPerSecond = 30U;
+        //https://cs2.paradoxwikis.com/Commonly_units_in_the_game
+        private static readonly double SimulationFramesPerMinute = 16384U / 90.0;
 
-        public static uint CalculateDwellDelay(uint simulationFrameIndex, CargoTransport cargoTransport,
-            PublicTransport publicTransport)
+        public static readonly SharedStatic<uint> MaxAllowedMinutesLate =
+            SharedStatic<uint>.GetOrCreate<PassengerBoardingChecks>();
+
+        public static bool ArePassengersReady(DynamicBuffer<Passenger> passengers,
+            ComponentLookup<CurrentVehicle> currentVehicleData,
+            EntityCommandBuffer.ParallelWriter commandBuffer,
+            NativeQuadTree<Entity, QuadTreeBoundsXZ> searchTree,
+            PublicTransport publicTransport,
+            int jobIndex, uint simulationFrameIndex)
         {
-            var intendedDepartureFrame = simulationFrameIndex > publicTransport.m_DepartureFrame
-                ? publicTransport.m_DepartureFrame
-                : cargoTransport.m_DepartureFrame;
-            var numberOfFramesLate = simulationFrameIndex - intendedDepartureFrame;
-            var approxSecondsLate = numberOfFramesLate / SimulationFramesPerSecond;
-            return approxSecondsLate;
+            var numberOfFramesLate = simulationFrameIndex - publicTransport.m_DepartureFrame;
+            var approxMinutesLate = numberOfFramesLate / SimulationFramesPerMinute;
+            return ArePassengersReady(passengers, currentVehicleData, commandBuffer, searchTree, approxMinutesLate,
+                jobIndex);
         }
 
         public static bool ArePassengersReady(DynamicBuffer<Passenger> passengers,
             ComponentLookup<CurrentVehicle> currentVehicleData,
             EntityCommandBuffer.ParallelWriter commandBuffer,
             NativeQuadTree<Entity, QuadTreeBoundsXZ> searchTree,
-            uint approxSecondsLate, int jobIndex)
+            double approxSecondsLate, int jobIndex)
         {
-            return approxSecondsLate > MaxAllowedSecondsLate
-                ? BruteForceBoarding(passengers, currentVehicleData, commandBuffer, searchTree, jobIndex)
+            return approxSecondsLate > MaxAllowedMinutesLate.Data
+                ? EndBoarding(passengers, currentVehicleData, commandBuffer, searchTree, jobIndex)
                 : AreAllPassengersBoarded(passengers, currentVehicleData);
         }
 
-        private static bool BruteForceBoarding(DynamicBuffer<Passenger> passengers,
+        private static bool EndBoarding(DynamicBuffer<Passenger> passengers,
             ComponentLookup<CurrentVehicle> currentVehicleDataLookup,
             EntityCommandBuffer.ParallelWriter commandBuffer, NativeQuadTree<Entity, QuadTreeBoundsXZ> searchTree,
             int jobIndex)

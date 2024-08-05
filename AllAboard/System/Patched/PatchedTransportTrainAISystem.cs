@@ -1419,28 +1419,27 @@ namespace AllAboard.System.Patched
                     if (flag2 && (m_SimulationFrameIndex < cargoTransport.m_DepartureFrame ||
                                   m_SimulationFrameIndex < publicTransport.m_DepartureFrame))
                         return false;
-                    var approxSecondsLate =
-                        PassengerBoardingChecks.CalculateDwellDelay(m_SimulationFrameIndex, cargoTransport,
-                            publicTransport);
 
-                    if (layout.Length != 0)
-                        for (var i = 0; i < layout.Length; i++)
-                        {
-                            var layoutIndexVehicle = layout[i].m_Vehicle;
-                            if (m_Passengers.HasBuffer(layoutIndexVehicle))
+                    if (!isCargoVehicle)
+                    {
+                        if (layout.Length != 0)
+                            for (var i = 0; i < layout.Length; i++)
                             {
+                                var layoutIndexVehicle = layout[i].m_Vehicle;
+                                if (!m_Passengers.HasBuffer(layoutIndexVehicle)) continue;
                                 var layoutIndexVehiclePassengers = m_Passengers[layoutIndexVehicle];
                                 if (!PassengerBoardingChecks.ArePassengersReady(layoutIndexVehiclePassengers,
-                                        m_CurrentVehicleData, m_CommandBuffer, m_SearchTree, approxSecondsLate,
-                                        jobIndex))
+                                        m_CurrentVehicleData, m_CommandBuffer, m_SearchTree, publicTransport,
+                                        jobIndex, m_SimulationFrameIndex))
                                     return false;
                             }
-                        }
-                    else if (!m_Passengers.HasBuffer(vehicleEntity))
-                        return true;
-                    else if (!PassengerBoardingChecks.ArePassengersReady(m_Passengers[vehicleEntity],
-                                 m_CurrentVehicleData, m_CommandBuffer, m_SearchTree, approxSecondsLate, jobIndex))
-                        return false;
+                        else if (!m_Passengers.HasBuffer(vehicleEntity))
+                            return true;
+                        else if (!PassengerBoardingChecks.ArePassengersReady(m_Passengers[vehicleEntity],
+                                     m_CurrentVehicleData, m_CommandBuffer, m_SearchTree, publicTransport, jobIndex,
+                                     m_SimulationFrameIndex))
+                            return false;
+                    }
                 }
 
                 if ((cargoTransport.m_State & CargoTransportFlags.Refueling) != 0 ||
