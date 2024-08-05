@@ -10,9 +10,9 @@ using Unity.Entities;
 
 namespace AllAboard
 {
-    public class Mod : IMod
+    public class AllAboard : IMod
     {
-        public static ILog log = LogManager.GetLogger($"{nameof(AllAboard)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
+        public static ILog log = LogManager.GetLogger($"{nameof(AllAboard)}.{nameof(AllAboard)}").SetShowsErrorsInUI(false);
 
         public static Setting m_Setting;
 
@@ -30,7 +30,7 @@ namespace AllAboard
 
             AssetDatabase.global.LoadSettings(nameof(AllAboard), m_Setting, new Setting(this));
 
-            PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data = m_Setting.MaxDwellDelaySlider;
+            PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data = (uint) m_Setting.MaxDwellDelaySlider;
             var oldTrainSystem =
                 World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>();
             oldTrainSystem.Enabled = false;

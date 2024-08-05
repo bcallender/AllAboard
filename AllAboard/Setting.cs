@@ -10,31 +10,22 @@ namespace AllAboard
     [FileLocation(nameof(AllAboard))]
     public class Setting : ModSetting
     {
-        public enum SomeEnum
-        {
-            Value1,
-            Value2,
-            Value3
-        }
-
-
-        public Setting(IMod mod) : base(mod)
-        {
-            SetDefaults();
-        }
-
-
-        [SettingsUISlider(min = 0, max = 30, step = 1, scalarMultiplier = 1, unit = "Minutes")]
-        public uint MaxDwellDelaySlider { get; set; }
+        [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes")] 
+        public int MaxDwellDelaySlider { get; set; }
 
         [SettingsUIButton]
         public bool ApplyButton
         {
             set
             {
-                PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data = MaxDwellDelaySlider;
-                Mod.log.InfoFormat("Now max boarding time: {0}", PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data);
+                PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data = (uint) MaxDwellDelaySlider;
+                AllAboard.log.InfoFormat("Now max dwell delay: {0} minutes",
+                    PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data);
             }
+        }
+        public Setting(IMod mod) : base(mod)
+        {
+            SetDefaults();
         }
 
         public override void SetDefaults()
@@ -59,11 +50,16 @@ namespace AllAboard
             {
                 { _setting.GetSettingsLocaleID(), "All Aboard!" },
                 {
-                    _setting.GetOptionTabLocaleID(nameof(Setting.MaxDwellDelaySlider)),
+                    _setting.GetOptionLabelLocaleID(nameof(Setting.MaxDwellDelaySlider)),
                     "Maximum Dwell Delay (in-game minutes)"
                 },
+                {
+                    _setting.GetOptionDescLocaleID(nameof(Setting.MaxDwellDelaySlider)),
+                    "Maximum amount of (in-game) time to allow a transport vehicle to 'dwell' beyond their scheduled departure frame. "
+                },
 
-                { _setting.GetOptionGroupLocaleID(nameof(Setting.ApplyButton)), "Apply" }
+                { _setting.GetOptionLabelLocaleID(nameof(Setting.ApplyButton)), "Apply" },
+                { _setting.GetOptionDescLocaleID(nameof(Setting.ApplyButton)), "Apply Settings" }
             };
         }
 
