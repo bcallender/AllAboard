@@ -32,9 +32,9 @@ namespace AllAboard.System.Utility
             ComponentLookup<CurrentVehicle> currentVehicleData,
             EntityCommandBuffer.ParallelWriter commandBuffer,
             NativeQuadTree<Entity, QuadTreeBoundsXZ> searchTree,
-            double approxSecondsLate, int jobIndex)
+            double approxMinutesLate, int jobIndex)
         {
-            return approxSecondsLate > MaxAllowedMinutesLate.Data
+            return approxMinutesLate > MaxAllowedMinutesLate.Data
                 ? EndBoarding(passengers, currentVehicleData, commandBuffer, searchTree, jobIndex)
                 : AreAllPassengersBoarded(passengers, currentVehicleData);
         }
