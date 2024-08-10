@@ -16,7 +16,7 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 - Use SharedStatic to make the maximum dwell delay configurable in settings (thanks @Nullpinter!). Now users can set a
   fixed maximum dwell delay (in in-game minutes) for each transit family (bus, train), after which boarding will be
   forced to end. By default, this is set to **5** in-game minutes for buses/trains, but each is configurable separately.
-  You might want to tune the value higher if you see cims being left behind too often.
+  You might want to tune the value higher if you see cims being left behind too often, or have a huge city.
 
 ### Technical Details
 
