@@ -1,4 +1,6 @@
 ﻿using AllAboard.System.Patched;
+using AllAboard.System.Utility;
+using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
 using Game;
 using Game.Modding;
@@ -11,7 +13,6 @@ namespace AllAboard
     public class Mod : IMod
     {
         public static ILog log = LogManager.GetLogger($"{nameof(AllAboard)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
-
         public static Setting m_Setting;
 
         public void OnLoad(UpdateSystem updateSystem)
@@ -21,24 +22,26 @@ namespace AllAboard
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
                 log.Info($"Current mod asset at {asset.path}");
 
-            // m_Setting = new Setting(this);
-            // m_Setting.RegisterInOptionsUI();
-            // GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
-            //
-            //
-            // AssetDatabase.global.LoadSettings(nameof(AllAboard), m_Setting, new Setting(this));
+            m_Setting = new Setting(this);
+            m_Setting.RegisterInOptionsUI();
+            GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
 
 
-            var oldTrainSystem =
-                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>();
-            oldTrainSystem.Enabled = false;
+            AssetDatabase.global.LoadSettings(nameof(AllAboard), m_Setting, new Setting(this));
 
-            var oldCarSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportCarAISystem>();
-            oldCarSystem.Enabled = false;
+            PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data = (uint) m_Setting.TrainMaxDwellDelaySlider;
+            PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data = (uint) m_Setting.BusMaxDwellDelaySlider;
+            PublicTransportBoardingHelper.CleanUpPathfindingQueue.Data = m_Setting.TestPathfindingCleanup;
+            
+                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>().Enabled = false;
 
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportCarAISystem>().Enabled = false;
             updateSystem.UpdateAt<PatchedTransportCarAISystem>(SystemUpdatePhase.GameSimulation);
             updateSystem.UpdateAt<PatchedTransportTrainAISystem>(SystemUpdatePhase.GameSimulation);
             log.Info("Completed Replacement of Base Train/CarAI Systems.");
+            log.InfoFormat("Pathfinding Cleanup Enabled?: {0}", PublicTransportBoardingHelper.CleanUpPathfindingQueue.Data);
+            log.InfoFormat("Bus Max Dwell Time: {0}", PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data);
+            log.InfoFormat("Train Max Dwell Time: {0}", PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data);
             //updateSystem.UpdateBefore<InstantBoardingSystem>(SystemUpdatePhase.GameSimulation);
         }
 

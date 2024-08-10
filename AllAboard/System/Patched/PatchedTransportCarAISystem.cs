@@ -522,16 +522,16 @@ namespace AllAboard.System.Patched
             {
                 PublicTransportVehicleData componentData1;
 
-                var component1 =
+                var isPublicTransport =
                     m_PublicTransportVehicleData.TryGetComponent(prefabRef.m_Prefab, out componentData1);
                 CargoTransportVehicleData componentData2;
 
-                var component2 =
+                var isCargoVehicle =
                     m_CargoTransportVehicleData.TryGetComponent(prefabRef.m_Prefab, out componentData2);
                 if (VehicleUtils.ResetUpdatedPath(ref pathOwner))
                 {
                     ResetPath(jobIndex, vehicleEntity, pathInformation, serviceDispatches, ref cargoTransport,
-                        ref publicTransport, ref car, ref currentLane, ref pathOwner, component1);
+                        ref publicTransport, ref car, ref currentLane, ref pathOwner, isPublicTransport);
                     DynamicBuffer<LoadingResources> bufferData;
 
                     if (((publicTransport.m_State & PublicTransportFlags.DummyTraffic) != 0 ||
@@ -543,7 +543,7 @@ namespace AllAboard.System.Patched
                 var flag1 = (cargoTransport.m_State & CargoTransportFlags.EnRoute) == 0 &&
                             (publicTransport.m_State & PublicTransportFlags.EnRoute) == 0;
                 var flag2 = false;
-                if (component1)
+                if (isPublicTransport)
                 {
                     if ((publicTransport.m_State &
                          (PublicTransportFlags.Evacuating | PublicTransportFlags.PrisonerTransport)) !=
@@ -568,7 +568,7 @@ namespace AllAboard.System.Patched
                         publicTransport.m_State |= PublicTransportFlags.RequiresMaintenance;
                 }
 
-                if (component2 && odometer.m_Distance >= (double)componentData2.m_MaintenanceRange &&
+                if (isCargoVehicle && odometer.m_Distance >= (double)componentData2.m_MaintenanceRange &&
                     componentData2.m_MaintenanceRange > 0.10000000149011612 &&
                     (cargoTransport.m_State & CargoTransportFlags.Refueling) == 0)
                     cargoTransport.m_State |= CargoTransportFlags.RequiresMaintenance;
@@ -602,7 +602,7 @@ namespace AllAboard.System.Patched
                         flag3 = true;
 
                         StopBoarding(vehicleEntity, currentRoute, passengers, ref cargoTransport,
-                            ref publicTransport, ref target, ref odometer, true, jobIndex);
+                            ref publicTransport, ref target, ref odometer, true, isCargoVehicle, jobIndex);
                     }
 
                     if (VehicleUtils.IsStuck(pathOwner) ||
@@ -632,13 +632,13 @@ namespace AllAboard.System.Patched
                             (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                         {
                             if (StopBoarding(vehicleEntity, currentRoute, passengers, ref cargoTransport,
-                                    ref publicTransport, ref target, ref odometer, false, jobIndex))
+                                    ref publicTransport, ref target, ref odometer, false, isCargoVehicle, jobIndex))
                             {
                                 flag3 = true;
 
                                 if (!SelectNextDispatch(jobIndex, vehicleEntity, currentRoute, navigationLanes,
                                         serviceDispatches, ref cargoTransport, ref publicTransport, ref car,
-                                        ref currentLane, ref pathOwner, ref target, component1))
+                                        ref currentLane, ref pathOwner, ref target, isPublicTransport))
                                 {
                                     m_CommandBuffer.AddComponent(jobIndex, vehicleEntity, new Deleted());
                                     return;
@@ -649,10 +649,10 @@ namespace AllAboard.System.Patched
                         {
                             if ((!passengers.IsCreated || passengers.Length <= 0 || !StartBoarding(jobIndex,
                                     vehicleEntity, currentRoute, prefabRef, ref cargoTransport, ref publicTransport,
-                                    ref target, component2)) && !SelectNextDispatch(jobIndex, vehicleEntity,
+                                    ref target, isCargoVehicle)) && !SelectNextDispatch(jobIndex, vehicleEntity,
                                     currentRoute, navigationLanes, serviceDispatches, ref cargoTransport,
                                     ref publicTransport, ref car, ref currentLane, ref pathOwner, ref target,
-                                    component1))
+                                    isPublicTransport))
                             {
                                 m_CommandBuffer.AddComponent(jobIndex, vehicleEntity, new Deleted());
                                 return;
@@ -663,7 +663,7 @@ namespace AllAboard.System.Patched
                              (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                     {
                         if (StopBoarding(vehicleEntity, currentRoute, passengers, ref cargoTransport,
-                                ref publicTransport, ref target, ref odometer, false, jobIndex))
+                                ref publicTransport, ref target, ref odometer, false, isCargoVehicle, jobIndex))
                         {
                             flag3 = true;
                             if ((publicTransport.m_State &
@@ -672,7 +672,7 @@ namespace AllAboard.System.Patched
                             {
                                 if (!SelectNextDispatch(jobIndex, vehicleEntity, currentRoute, navigationLanes,
                                         serviceDispatches, ref cargoTransport, ref publicTransport, ref car,
-                                        ref currentLane, ref pathOwner, ref target, component1))
+                                        ref currentLane, ref pathOwner, ref target, isPublicTransport))
                                     ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches,
                                         ref cargoTransport, ref publicTransport, ref car, ref pathOwner, ref target);
                             }
@@ -702,7 +702,7 @@ namespace AllAboard.System.Patched
                         else
                         {
                             if (!StartBoarding(jobIndex, vehicleEntity, currentRoute, prefabRef,
-                                    ref cargoTransport, ref publicTransport, ref target, component2))
+                                    ref cargoTransport, ref publicTransport, ref target, isCargoVehicle))
                             {
                                 if ((publicTransport.m_State & (PublicTransportFlags.Evacuating |
                                                                 PublicTransportFlags.PrisonerTransport)) !=
@@ -710,7 +710,7 @@ namespace AllAboard.System.Patched
                                 {
                                     if (!SelectNextDispatch(jobIndex, vehicleEntity, currentRoute, navigationLanes,
                                             serviceDispatches, ref cargoTransport, ref publicTransport, ref car,
-                                            ref currentLane, ref pathOwner, ref target, component1))
+                                            ref currentLane, ref pathOwner, ref target, isPublicTransport))
                                         ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner,
                                             serviceDispatches, ref cargoTransport, ref publicTransport, ref car,
                                             ref pathOwner, ref target);
@@ -737,7 +737,7 @@ namespace AllAboard.System.Patched
                     flag3 = true;
 
                     StopBoarding(vehicleEntity, currentRoute, passengers, ref cargoTransport, ref publicTransport,
-                        ref target, ref odometer, true, jobIndex);
+                        ref target, ref odometer, true, isCargoVehicle, jobIndex);
                 }
 
                 publicTransport.m_State &= ~(PublicTransportFlags.StopLeft | PublicTransportFlags.StopRight);
@@ -753,7 +753,7 @@ namespace AllAboard.System.Patched
                     if (!passengers.IsCreated || passengers.Length == 0)
                         SelectNextDispatch(jobIndex, vehicleEntity, currentRoute, navigationLanes,
                             serviceDispatches, ref cargoTransport, ref publicTransport, ref car, ref currentLane,
-                            ref pathOwner, ref target, component1);
+                            ref pathOwner, ref target, isPublicTransport);
                 }
                 else if ((cargoTransport.m_State & CargoTransportFlags.Arriving) != 0 ||
                          (publicTransport.m_State & PublicTransportFlags.Arriving) != 0)
@@ -1713,6 +1713,7 @@ namespace AllAboard.System.Patched
                 ref Target target,
                 ref Odometer odometer,
                 bool forcedStop,
+                bool isCargoVehicle,
                 int jobIndex)
             {
                 var flag = false;
@@ -1732,13 +1733,9 @@ namespace AllAboard.System.Patched
                          m_SimulationFrameIndex < publicTransport.m_DepartureFrame))
                         return false;
                     if (passengers.IsCreated)
-                    {
-                        var approximateDwellDelay =
-                            PassengerBoardingChecks.CalculateDwellDelay(m_SimulationFrameIndex, cargoTransport,
-                                publicTransport);
-                        return PassengerBoardingChecks.ArePassengersReady(passengers, m_CurrentVehicleData,
-                            m_CommandBuffer, m_SearchTree, approximateDwellDelay, jobIndex);
-                    }
+                        return PublicTransportBoardingHelper.ArePassengersReady(passengers, m_CurrentVehicleData,
+                            m_CommandBuffer, m_SearchTree, publicTransport,
+                            PublicTransportBoardingHelper.TransportFamily.Bus, jobIndex, m_SimulationFrameIndex);
                 }
 
                 if ((cargoTransport.m_State & CargoTransportFlags.Refueling) != 0 ||

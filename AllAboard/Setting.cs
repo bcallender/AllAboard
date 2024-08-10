@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AllAboard.System.Utility;
 using Colossal;
 using Colossal.IO.AssetDatabase;
 using Game.Modding;
@@ -6,68 +7,54 @@ using Game.Settings;
 
 namespace AllAboard
 {
-    [FileLocation(nameof(AllAboard))]
-    [SettingsUIGroupOrder(groupName, advancedGroupName)]
-    [SettingsUIShowGroupName(groupName, advancedGroupName)]
+    [FileLocation(nameof(Mod))]
     public class Setting : ModSetting
     {
-        public enum SomeEnum
+        [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes")]
+        public int TrainMaxDwellDelaySlider { get; set; }
+
+        [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes")]
+        public int BusMaxDwellDelaySlider { get; set; }
+
+        public bool TestPathfindingCleanup { get; set; }
+
+
+        [SettingsUIButton]
+        public bool ApplyButton
         {
-            Value1,
-            Value2,
-            Value3
+            set
+            {
+                PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data = (uint)TrainMaxDwellDelaySlider;
+                PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data = (uint)BusMaxDwellDelaySlider;
+                PublicTransportBoardingHelper.CleanUpPathfindingQueue.Data = TestPathfindingCleanup;
+                Mod.log.InfoFormat(
+                    "Now max dwell delay: Bus: {0} minutes, Train : {1} minutes. Pathfinding cleanup? {2}",
+                    PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data,
+                    PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data,
+                    PublicTransportBoardingHelper.CleanUpPathfindingQueue.Data);
+            }
         }
-
-        public const string sectionName = "dewllDelayConfiguration";
-        public const string sectionDisplayName = "Dwell Delay Configuration (Applies on Game Restart)";
-
-        public const string groupDisplayName = "Maximum Dwell Delay (s) [Beyond Scheduled Departure Time]";
-        public const string groupName = "dwellDelayGroup";
-
-        public const string advancedGroupName = "advanced";
-        public const string advancedGroupDisplayName = "Advanced Settings";
-
-
-        public const string carMaxDwellDelay = "carmax";
-        public const string trainMaxDwellDelay = "trainmax";
-
-        public const string carMaxDwellDelayDisplayName = "Car Transport Types (Bus)";
-        public const string trainMaxDwellDelayDisplayName = "Train Transport Types (Train, Subway, Tram)";
 
         public Setting(IMod mod) : base(mod)
         {
             SetDefaults();
         }
 
-
-        [SettingsUISlider(min = 0, max = 300, step = 5, scalarMultiplier = 1, unit = "Seconds")]
-        [SettingsUISection(sectionName, groupName)]
-        public uint CarMaxDwellDelaySlider { get; set; }
-
-        [SettingsUISlider(min = 0, max = 300, step = 5, scalarMultiplier = 1, unit = "Seconds")]
-        [SettingsUISection(sectionName, groupName)]
-        public uint TrainMaxDwellDelaySlider { get; set; }
-
-        [SettingsUISlider(min = 10, max = 90, step = 1, scalarMultiplier = 1, unit = "Frames per Second")]
-        [SettingsUISection(sectionName, advancedGroupName)]
-        public uint SimulationFramesPerSecond { get; set; }
-
-
         public override void SetDefaults()
         {
-            SimulationFramesPerSecond = 30;
-            CarMaxDwellDelaySlider = 30;
-            TrainMaxDwellDelaySlider = 30;
+            TrainMaxDwellDelaySlider = 8;
+            BusMaxDwellDelaySlider = 8;
+            TestPathfindingCleanup = false;
         }
     }
 
     public class LocaleEN : IDictionarySource
     {
-        private readonly Setting m_Setting;
+        private readonly Setting _setting;
 
         public LocaleEN(Setting setting)
         {
-            m_Setting = setting;
+            _setting = setting;
         }
 
         public IEnumerable<KeyValuePair<string, string>> ReadEntries(IList<IDictionaryEntryError> errors,
@@ -75,13 +62,34 @@ namespace AllAboard
         {
             return new Dictionary<string, string>
             {
-                { m_Setting.GetSettingsLocaleID(), "All Aboard! (0.0.2 ALPHA)" },
-                { m_Setting.GetOptionTabLocaleID(Setting.sectionName), Setting.sectionDisplayName },
+                { _setting.GetSettingsLocaleID(), "All Aboard!" },
+                {
+                    _setting.GetOptionLabelLocaleID(nameof(Setting.TrainMaxDwellDelaySlider)),
+                    "Train Maximum Dwell Delay (in-game minutes)"
+                },
+                {
+                    _setting.GetOptionDescLocaleID(nameof(Setting.TrainMaxDwellDelaySlider)),
+                    "Maximum amount of (in-game) time to allow a Train (Subway, Tram) to 'dwell' beyond its scheduled departure frame. "
+                },
 
-                { m_Setting.GetOptionGroupLocaleID(Setting.groupName), Setting.groupDisplayName },
-                { m_Setting.GetOptionGroupLocaleID(Setting.advancedGroupName), Setting.advancedGroupDisplayName },
-                { m_Setting.GetOptionGroupLocaleID(Setting.carMaxDwellDelay), Setting.carMaxDwellDelayDisplayName },
-                { m_Setting.GetOptionGroupLocaleID(Setting.trainMaxDwellDelay), Setting.trainMaxDwellDelayDisplayName }
+                {
+                    _setting.GetOptionLabelLocaleID(nameof(Setting.BusMaxDwellDelaySlider)),
+                    "Bus Maximum Dwell Delay (in-game minutes)"
+                },
+                {
+                    _setting.GetOptionDescLocaleID(nameof(Setting.BusMaxDwellDelaySlider)),
+                    "Maximum amount of (in-game) time to allow a Bus to 'dwell' beyond its scheduled departure frame. "
+                },
+                {
+                    _setting.GetOptionLabelLocaleID(nameof(Setting.TestPathfindingCleanup)),
+                    "Experimental Pathfinding Cleanup"
+                },
+                {
+                    _setting.GetOptionDescLocaleID(nameof(Setting.TestPathfindingCleanup)),
+                    "Attempt to clean up passengers after forcing train to depart."
+                },
+                { _setting.GetOptionLabelLocaleID(nameof(Setting.ApplyButton)), "Apply" },
+                { _setting.GetOptionDescLocaleID(nameof(Setting.ApplyButton)), "Apply Settings" }
             };
         }
 
