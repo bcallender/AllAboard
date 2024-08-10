@@ -42,7 +42,7 @@ namespace AllAboard
 
         public override void SetDefaults()
         {
-            TrainMaxDwellDelaySlider = 4;
+            TrainMaxDwellDelaySlider = 5;
             BusMaxDwellDelaySlider = 5;
             TestPathfindingCleanup = false;
         }
