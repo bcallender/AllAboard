@@ -86,7 +86,7 @@ namespace AllAboard
                 },
                 {
                     _setting.GetOptionDescLocaleID(nameof(Setting.TestPathfindingCleanup)),
-                    "Attempt to clean up passengers after forcing train to depart."
+                    "Attempt to clean up passengers after forcing train to depart. Do not enable this unless you are testing the functionality."
                 },
                 { _setting.GetOptionLabelLocaleID(nameof(Setting.ApplyButton)), "Apply" },
                 { _setting.GetOptionDescLocaleID(nameof(Setting.ApplyButton)), "Apply Settings" }
