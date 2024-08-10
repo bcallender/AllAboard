@@ -9,22 +9,47 @@ namespace AllAboard.System.Utility
 {
     public class PublicTransportBoardingHelper
     {
-        //https://cs2.paradoxwikis.com/Commonly_units_in_the_game
-        private static readonly double SimulationFramesPerMinute = 16384U / 90.0;
+        public enum TransportFamily
+        {
+            Train,
+            Bus
+        }
 
-        public static readonly SharedStatic<uint> MaxAllowedMinutesLate =
-            SharedStatic<uint>.GetOrCreate<PublicTransportBoardingHelper>();
+        //https://cs2.paradoxwikis.com/Commonly_units_in_the_game
+        private const double SimulationFramesPerMinute = 16384U / 90.0;
+
+        public static readonly SharedStatic<uint> TrainMaxAllowedMinutesLate =
+            SharedStatic<uint>.GetOrCreate<PublicTransportBoardingHelper, TrainMaxAllowedMinutesLateKey>();
+
+        public static readonly SharedStatic<uint> BusMaxAllowedMinutesLate =
+            SharedStatic<uint>.GetOrCreate<PublicTransportBoardingHelper, BusMaxAllowedMinutesLateKey>();
+
+        public static readonly SharedStatic<bool> CleanUpPathfindingQueue =
+            SharedStatic<bool>.GetOrCreate<PublicTransportBoardingHelper, CleanUpPathfindingQueueKey>();
+
+        /*
+         * https://docs.unity3d.com/Packages/com.unity.burst@1.7/manual/docs/AdvancedUsages.html#shared-static
+         * don't forget your static initializers kids, or SharedStatic<bool> will just have undefined behavior
+         */
+        static PublicTransportBoardingHelper()
+        {
+            TrainMaxAllowedMinutesLate.Data = 0;
+            BusMaxAllowedMinutesLate.Data = 0;
+            CleanUpPathfindingQueue.Data = false;
+        }
 
         public static bool ArePassengersReady(DynamicBuffer<Passenger> passengers,
             ComponentLookup<CurrentVehicle> currentVehicleData,
             EntityCommandBuffer.ParallelWriter commandBuffer,
             NativeQuadTree<Entity, QuadTreeBoundsXZ> searchTree,
             PublicTransport publicTransport,
+            TransportFamily transportFamily,
             int jobIndex, uint simulationFrameIndex)
         {
             var numberOfFramesLate = simulationFrameIndex - publicTransport.m_DepartureFrame;
             var approxMinutesLate = numberOfFramesLate / SimulationFramesPerMinute;
-            return ArePassengersReady(passengers, currentVehicleData, commandBuffer, searchTree, approxMinutesLate,
+            return ArePassengersReady(passengers, currentVehicleData, commandBuffer, searchTree, transportFamily,
+                approxMinutesLate,
                 jobIndex);
         }
 
@@ -32,9 +57,22 @@ namespace AllAboard.System.Utility
             ComponentLookup<CurrentVehicle> currentVehicleData,
             EntityCommandBuffer.ParallelWriter commandBuffer,
             NativeQuadTree<Entity, QuadTreeBoundsXZ> searchTree,
+            TransportFamily transportFamily,
             double approxMinutesLate, int jobIndex)
         {
-            return approxMinutesLate > MaxAllowedMinutesLate.Data
+            uint maxAllowedSecondsLate;
+            switch (transportFamily)
+            {
+                case TransportFamily.Bus:
+                    maxAllowedSecondsLate = BusMaxAllowedMinutesLate.Data;
+                    break;
+                case TransportFamily.Train:
+                default:
+                    maxAllowedSecondsLate = TrainMaxAllowedMinutesLate.Data;
+                    break;
+            }
+
+            return approxMinutesLate > maxAllowedSecondsLate
                 ? EndBoarding(passengers, currentVehicleData, commandBuffer, searchTree, jobIndex)
                 : AreAllPassengersBoarded(passengers, currentVehicleData);
         }
@@ -44,23 +82,22 @@ namespace AllAboard.System.Utility
             EntityCommandBuffer.ParallelWriter commandBuffer, NativeQuadTree<Entity, QuadTreeBoundsXZ> searchTree,
             int jobIndex)
         {
-            for (var i = 0; i < passengers.Length; i++)
-            {
-                var passenger = passengers[i].m_Passenger;
-                //passenger is on train, or passenger is entering the train.
-                if (currentVehicleDataLookup.HasComponent(passenger) ||
-                    (currentVehicleDataLookup[passenger].m_Flags & CreatureVehicleFlags.Entering) == 0) continue;
-
-                //credit for this logic goes to @WayzWare
-                if (currentVehicleDataLookup.TryGetComponent(passenger, out var passengerVehicleData))
+            if (CleanUpPathfindingQueue.Data)
+                for (var i = 0; i < passengers.Length; i++)
                 {
+                    var passenger = passengers[i].m_Passenger;
+                    //credit for this logic goes to @WayzWare.
+                    // If we find the passenger in the vehicle data, and the passenger is not Ready, we can clean the passenger up.
+                    if (!currentVehicleDataLookup.TryGetComponent(passenger,
+                            out var passengerVehicleData)
+                        || (passengerVehicleData.m_Flags & CreatureVehicleFlags.Ready) == 0)
+                        continue;
                     passengerVehicleData.m_Flags |= CreatureVehicleFlags.Ready;
                     passengerVehicleData.m_Flags &= ~CreatureVehicleFlags.Entering;
                     commandBuffer.SetComponent(jobIndex, passenger, passengerVehicleData);
                     commandBuffer.AddComponent(jobIndex, passenger, default(BatchesUpdated));
                     searchTree.TryRemove(passenger);
                 }
-            }
 
             return true;
         }
@@ -77,6 +114,18 @@ namespace AllAboard.System.Utility
             }
 
             return true;
+        }
+
+        private class TrainMaxAllowedMinutesLateKey
+        {
+        }
+
+        private class BusMaxAllowedMinutesLateKey
+        {
+        }
+
+        private class CleanUpPathfindingQueueKey
+        {
         }
     }
 }

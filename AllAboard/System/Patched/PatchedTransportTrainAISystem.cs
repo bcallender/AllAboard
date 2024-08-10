@@ -1429,14 +1429,19 @@ namespace AllAboard.System.Patched
                                 if (!m_Passengers.HasBuffer(layoutIndexVehicle)) continue;
                                 var layoutIndexVehiclePassengers = m_Passengers[layoutIndexVehicle];
                                 if (!PublicTransportBoardingHelper.ArePassengersReady(layoutIndexVehiclePassengers,
-                                        m_CurrentVehicleData, m_CommandBuffer, m_SearchTree, publicTransport,
+                                        m_CurrentVehicleData,
+                                        m_CommandBuffer,
+                                        m_SearchTree,
+                                        publicTransport,
+                                        PublicTransportBoardingHelper.TransportFamily.Train,
                                         jobIndex, m_SimulationFrameIndex))
                                     return false;
                             }
                         else if (!m_Passengers.HasBuffer(vehicleEntity))
                             return true;
                         else if (!PublicTransportBoardingHelper.ArePassengersReady(m_Passengers[vehicleEntity],
-                                     m_CurrentVehicleData, m_CommandBuffer, m_SearchTree, publicTransport, jobIndex,
+                                     m_CurrentVehicleData, m_CommandBuffer, m_SearchTree, publicTransport,
+                                     PublicTransportBoardingHelper.TransportFamily.Train, jobIndex,
                                      m_SimulationFrameIndex))
                             return false;
                     }

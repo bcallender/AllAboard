@@ -1734,7 +1734,8 @@ namespace AllAboard.System.Patched
                         return false;
                     if (passengers.IsCreated)
                         return PublicTransportBoardingHelper.ArePassengersReady(passengers, m_CurrentVehicleData,
-                            m_CommandBuffer, m_SearchTree, publicTransport, jobIndex, m_SimulationFrameIndex);
+                            m_CommandBuffer, m_SearchTree, publicTransport,
+                            PublicTransportBoardingHelper.TransportFamily.Bus, jobIndex, m_SimulationFrameIndex);
                 }
 
                 if ((cargoTransport.m_State & CargoTransportFlags.Refueling) != 0 ||

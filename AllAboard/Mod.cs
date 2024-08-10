@@ -10,10 +10,9 @@ using Unity.Entities;
 
 namespace AllAboard
 {
-    public class AllAboard : IMod
+    public class Mod : IMod
     {
-        public static ILog log = LogManager.GetLogger($"{nameof(AllAboard)}.{nameof(AllAboard)}").SetShowsErrorsInUI(false);
-
+        public static ILog log = LogManager.GetLogger($"{nameof(AllAboard)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
         public static Setting m_Setting;
 
         public void OnLoad(UpdateSystem updateSystem)
@@ -30,19 +29,19 @@ namespace AllAboard
 
             AssetDatabase.global.LoadSettings(nameof(AllAboard), m_Setting, new Setting(this));
 
-            PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data = (uint) m_Setting.MaxDwellDelaySlider;
-            var oldTrainSystem =
-                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>();
-            oldTrainSystem.Enabled = false;
+            PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data = (uint) m_Setting.TrainMaxDwellDelaySlider;
+            PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data = (uint) m_Setting.BusMaxDwellDelaySlider;
+            PublicTransportBoardingHelper.CleanUpPathfindingQueue.Data = m_Setting.TestPathfindingCleanup;
+            
+                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>().Enabled = false;
 
-            var oldCarSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportCarAISystem>();
-            oldCarSystem.Enabled = false;
-
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportCarAISystem>().Enabled = false;
             updateSystem.UpdateAt<PatchedTransportCarAISystem>(SystemUpdatePhase.GameSimulation);
             updateSystem.UpdateAt<PatchedTransportTrainAISystem>(SystemUpdatePhase.GameSimulation);
             log.Info("Completed Replacement of Base Train/CarAI Systems.");
-            log.InfoFormat("Current max allowed seconds late = {0}",
-                PublicTransportBoardingHelper.MaxAllowedMinutesLate.Data);
+            log.InfoFormat("Pathfinding Cleanup Enabled?: {0}", PublicTransportBoardingHelper.CleanUpPathfindingQueue.Data);
+            log.InfoFormat("Bus Max Dwell Time: {0}", PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data);
+            log.InfoFormat("Train Max Dwell Time: {0}", PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data);
             //updateSystem.UpdateBefore<InstantBoardingSystem>(SystemUpdatePhase.GameSimulation);
         }
 
