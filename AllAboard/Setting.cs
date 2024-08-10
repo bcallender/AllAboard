@@ -31,7 +31,7 @@ namespace AllAboard
                     "Now max dwell delay: Bus: {0} minutes, Train : {1} minutes. Pathfinding cleanup? {2}",
                     PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data,
                     PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data,
-                    PublicTransportBoardingHelper.CleanUpPathfindingQueue);
+                    PublicTransportBoardingHelper.CleanUpPathfindingQueue.Data);
             }
         }
 
@@ -86,7 +86,7 @@ namespace AllAboard
                 },
                 {
                     _setting.GetOptionDescLocaleID(nameof(Setting.TestPathfindingCleanup)),
-                    "Testing only"
+                    "Attempt to clean up passengers after forcing train to depart."
                 },
                 { _setting.GetOptionLabelLocaleID(nameof(Setting.ApplyButton)), "Apply" },
                 { _setting.GetOptionDescLocaleID(nameof(Setting.ApplyButton)), "Apply Settings" }

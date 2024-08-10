@@ -57,7 +57,7 @@ A transit vehicle's **Dwell Time** is the amount of time it spends embarking/dis
 stop. This mod sets an upper limit (**Maximum Dwell Delay**) on the amount of time beyond a transit vehicle's
 scheduled `departureFrame` and when it will actually leave a station, measured in in-game minutes. Right now, this is
 set
-to 5 minutes for both trains and buses by default, but this is customizable. If the vehicle is still "stuck"
+to 8 minutes for both trains and buses by default, but this is customizable. If the vehicle is still "stuck"
 boarding, even after the maximum dwell delay, the vehicle will simply close its doors and depart.
 
 - If a group leader has boarded, and other group members have not, they will be 'teleported' to the vehicle (a No
@@ -128,9 +128,18 @@ vehicle to reject the boarding cims!
     <!--Dependency for the mod, can be set multiple times-->
     <Dependency Id=""/>
     <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-    <ChangeLog Value="Make maximum dwell time configurable, comport with in-game minutes. Thank you @Nullpinter!"/>
-    <!--ChangeLog>
-    </ChangeLog-->
+    <ChangeLog>
+#### 0.1.0
+
+- Instead of trying to correlate simulationFrameIndex to real-world seconds, relate them to in-game minutes, which is
+more consistent.
+- Use SharedStatic to make the maximum dwell delay configurable in settings (thanks @Nullpinter!). Now users can set a
+fixed maximum dwell delay (in in-game minutes) for each transit family (bus, train), after which boarding will be
+forced to end. By default, this is set to a conservative **8** in-game minutes for buses/trains, but each is
+configurable separately.
+You might want to tune the value higher if you see cims being left behind too often, or lower, if you have a high
+number of vehicles on a line.
+    </ChangeLog>
     <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon, buymeacoffee, kofi, crowdin, gitlab-->
     <ExternalLink Type="github" Url="https://github.com/bcallender/AllAboard"/>
     <ExternalLink Type="discord" Url="https://discord.com/channels/1024242828114673724/1269079721157857353"/>
