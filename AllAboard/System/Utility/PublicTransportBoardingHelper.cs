@@ -116,6 +116,7 @@ namespace AllAboard.System.Utility
             return true;
         }
 
+        //these private classes are absolute unity wizardry for having multiple SharedStatic in one class.
         private class TrainMaxAllowedMinutesLateKey
         {
         }
