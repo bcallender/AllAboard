@@ -16,9 +16,6 @@ namespace AllAboard
         [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes")]
         public int BusMaxDwellDelaySlider { get; set; }
 
-        public bool TestPathfindingCleanup { get; set; }
-
-
         [SettingsUIButton]
         public bool ApplyButton
         {
@@ -26,12 +23,10 @@ namespace AllAboard
             {
                 PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data = (uint)TrainMaxDwellDelaySlider;
                 PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data = (uint)BusMaxDwellDelaySlider;
-                PublicTransportBoardingHelper.CleanUpPathfindingQueue.Data = TestPathfindingCleanup;
                 Mod.log.InfoFormat(
-                    "Now max dwell delay: Bus: {0} minutes, Train : {1} minutes. Pathfinding cleanup? {2}",
+                    "Now max dwell delay: Bus: {0} minutes, Train : {1} minutes.",
                     PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data,
-                    PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data,
-                    PublicTransportBoardingHelper.CleanUpPathfindingQueue.Data);
+                    PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data);
             }
         }
 
@@ -44,7 +39,6 @@ namespace AllAboard
         {
             TrainMaxDwellDelaySlider = 8;
             BusMaxDwellDelaySlider = 8;
-            TestPathfindingCleanup = false;
         }
     }
 
@@ -79,14 +73,6 @@ namespace AllAboard
                 {
                     _setting.GetOptionDescLocaleID(nameof(Setting.BusMaxDwellDelaySlider)),
                     "Maximum amount of (in-game) time to allow a Bus to 'dwell' beyond its scheduled departure frame. "
-                },
-                {
-                    _setting.GetOptionLabelLocaleID(nameof(Setting.TestPathfindingCleanup)),
-                    "Experimental Pathfinding Cleanup"
-                },
-                {
-                    _setting.GetOptionDescLocaleID(nameof(Setting.TestPathfindingCleanup)),
-                    "Attempt to clean up passengers after forcing train to depart. Do not enable this unless you are testing the functionality."
                 },
                 { _setting.GetOptionLabelLocaleID(nameof(Setting.ApplyButton)), "Apply" },
                 { _setting.GetOptionDescLocaleID(nameof(Setting.ApplyButton)), "Apply Settings" }
