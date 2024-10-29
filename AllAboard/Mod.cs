@@ -31,10 +31,8 @@ namespace AllAboard
 
             PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data = (uint) m_Setting.TrainMaxDwellDelaySlider;
             PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data = (uint) m_Setting.BusMaxDwellDelaySlider;
-            
-                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PatchedTransportTrainAISystem>().Enabled = false;
-
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PatchedTransportCarAISystem>().Enabled = false;
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>().Enabled = false;
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportCarAISystem>().Enabled = false;
             updateSystem.UpdateAt<PatchedTransportCarAISystem>(SystemUpdatePhase.GameSimulation);
             updateSystem.UpdateAt<PatchedTransportTrainAISystem>(SystemUpdatePhase.GameSimulation);
             log.Info("Completed Replacement of Base Train/CarAI Systems.");
