@@ -17,8 +17,12 @@ to fix it with a Mod instead!
 tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, simulating a conductor calling
 "All Aboard!" when the train is scheduled to leave and closing the doors. This is an ALPHA version of this mod.
 
-### Changelog
+### Changelog 
+        
+#### 0.1.1
 
+- Updated for 1.1.11f. Removed pathfinding cleanup functionality, at least until I have more time to experiment. 
+        
 #### 0.1.0
 
 - Instead of trying to correlate simulationFrameIndex to real-world seconds, relate them to in-game minutes, which is
@@ -122,23 +126,14 @@ vehicle to reject the boarding cims!
     <!--Link to the forum post where the mod can be discussed-->
     <ForumLink Value=""/>
     <!--Version of the mod-->
-    <ModVersion Value="0.1.0"/>
+    <ModVersion Value="0.1.1"/>
     <!--Recommended version of the base game to use the mod-->
     <GameVersion Value="1.1.*"/>
     <!--Dependency for the mod, can be set multiple times-->
     <Dependency Id=""/>
     <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
     <ChangeLog>
-#### 0.1.0
-
-- Instead of trying to correlate simulationFrameIndex to real-world seconds, relate them to in-game minutes, which is
-more consistent.
-- Use SharedStatic to make the maximum dwell delay configurable in settings (thanks @Nullpinter!). Now users can set a
-fixed maximum dwell delay (in in-game minutes) for each transit family (bus, train), after which boarding will be
-forced to end. By default, this is set to a conservative **8** in-game minutes for buses/trains, but each is
-configurable separately.
-You might want to tune the value higher if you see cims being left behind too often, or lower, if you have a high
-number of vehicles on a line.
+- Updated for 1.1.11f. Removed pathfinding cleanup functionality, at least until I have more time to experiment.
     </ChangeLog>
     <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon, buymeacoffee, kofi, crowdin, gitlab-->
     <ExternalLink Type="github" Url="https://github.com/bcallender/AllAboard"/>
