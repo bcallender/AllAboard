@@ -9,6 +9,10 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 
 ### Changelog
 
+#### 0.1.2
+
+- Remove some local DLLs from being explicitly included
+
 #### 0.1.1
 
 - Updated for 1.1.11f. Removed pathfinding cleanup functionality, at least until I have more time to experiment.
