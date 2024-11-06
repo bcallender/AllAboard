@@ -15,13 +15,13 @@
 
     <ItemGroup>
         <Reference Include="Colossal.Collections">
-            <HintPath>F:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Colossal.Collections.dll</HintPath>
+            <Private>false</Private>
         </Reference>
         <Reference Include="Colossal.Localization">
-            <HintPath>F:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Colossal.Localization.dll</HintPath>
+            <Private>false</Private>
         </Reference>
         <Reference Include="Colossal.Mathematics">
-            <HintPath>F:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Colossal.Mathematics.dll</HintPath>
+            <Private>false</Private>
         </Reference>
         <Reference Include="Game">
             <Private>false</Private>

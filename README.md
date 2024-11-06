@@ -5,9 +5,13 @@ Cims, this was a huge issue for me. After trying to fix it in-game so many diffe
 to fix it with a Mod instead!
 
 tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, simulating a conductor calling
-"All Aboard!" when the train is scheduled to leave and closing the doors. This is an ALPHA version of this mod.
+"All Aboard!" when the train is scheduled to leave and closing the doors.
 
 ### Changelog
+
+#### 0.1.2
+
+- Remove some local DLLs from being explicitly included (thanks Quoshik!)
 
 #### 0.1.1
 

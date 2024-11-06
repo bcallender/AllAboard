@@ -15,16 +15,17 @@ Cims, this was a huge issue for me. After trying to fix it in-game so many diffe
 to fix it with a Mod instead!
 
 tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, simulating a conductor calling
-"All Aboard!" when the train is scheduled to leave and closing the doors. This is an ALPHA version of this mod.
+"All Aboard!" when the train is scheduled to leave and closing the doors.
 
-### Changelog 
-        
+### Changelog
+
+#### 0.1.2
+- Remove some local DLLs from being explicitly included (thanks Quoshik!)
+
 #### 0.1.1
+- Updated for 1.1.11f. Removed pathfinding cleanup functionality, at least until I have more time to experiment.
 
-- Updated for 1.1.11f. Removed pathfinding cleanup functionality, at least until I have more time to experiment. 
-        
 #### 0.1.0
-
 - Instead of trying to correlate simulationFrameIndex to real-world seconds, relate them to in-game minutes, which is
 more consistent.
 - Use SharedStatic to make the maximum dwell delay configurable in settings (thanks @Nullpinter!). Now users can set a
@@ -126,7 +127,7 @@ vehicle to reject the boarding cims!
     <!--Link to the forum post where the mod can be discussed-->
     <ForumLink Value=""/>
     <!--Version of the mod-->
-    <ModVersion Value="0.1.1"/>
+    <ModVersion Value="0.1.2"/>
     <!--Recommended version of the base game to use the mod-->
     <GameVersion Value="1.1.*"/>
     <!--Dependency for the mod, can be set multiple times-->

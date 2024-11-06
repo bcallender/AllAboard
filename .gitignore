@@ -4,3 +4,18 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea/
+
+*.suo
+*.user
+.vs/
+[Bb]in/
+[Oo]bj/
+_UpgradeReport_Files/
+[Pp]ackages/
+
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+##Manually added
+AllAboard.sln.DotSettings.user
