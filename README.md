@@ -9,6 +9,10 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 
 ### Changelog
 
+#### 0.1.4
+
+- Fixes a minor namespacing issue. 
+
 #### 0.1.3
 
 - Updated for 1.2.0f. Keeps in all of the new CO code that fixes some ResidentAI behavior while keeping a hard cap on

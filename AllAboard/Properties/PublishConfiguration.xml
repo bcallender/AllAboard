@@ -19,6 +19,10 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 
 ### Changelog
 
+#### 0.1.4
+
+- Fixes a minor namespacing issue.
+        
 #### 0.1.3
 
 - Updated for 1.2.0f. Keeps in all of the new CO code that fixes some ResidentAI behavior while keeping a hard cap on
@@ -139,8 +143,9 @@ vehicle to reject the boarding cims!
     <Dependency Id=""/>
     <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
     <ChangeLog>
-        Updated for 1.2.0f. Keeps in all of the new CO code that fixes some ResidentAI behavior while keeping a hard cap on
-        dwell time.
+- Fixes a minor namespacing issue. 
+- Updated for 1.2.0f. Keeps in all of the new CO code that fixes some ResidentAI behavior while keeping a hard cap on
+dwell time.
     </ChangeLog>
     <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon, buymeacoffee, kofi, crowdin, gitlab-->
     <ExternalLink Type="github" Url="https://github.com/bcallender/AllAboard"/>

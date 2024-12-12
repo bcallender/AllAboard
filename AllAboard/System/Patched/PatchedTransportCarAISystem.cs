@@ -6,6 +6,7 @@
 using System.Runtime.CompilerServices;
 using AllAboard.System.Utility;
 using Colossal.Mathematics;
+using Game;
 using Game.Buildings;
 using Game.Common;
 using Game.Creatures;
@@ -16,6 +17,7 @@ using Game.Pathfind;
 using Game.Prefabs;
 using Game.Rendering;
 using Game.Routes;
+using Game.Simulation;
 using Game.Tools;
 using Game.Vehicles;
 using Unity.Burst;
@@ -39,7 +41,7 @@ using SubLane = Game.Net.SubLane;
 using TransportDepot = Game.Buildings.TransportDepot;
 using TransportStation = Game.Buildings.TransportStation;
 
-namespace Game.Simulation
+namespace AllAboard.System.Patched
 {
     [CompilerGenerated]
     public partial class PatchedTransportCarAISystem : GameSystemBase
