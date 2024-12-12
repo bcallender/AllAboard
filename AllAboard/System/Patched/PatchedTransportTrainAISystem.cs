@@ -2,7 +2,6 @@
 // Type: Game.Simulation.TransportTrainAISystem
 // Assembly: Game, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 // MVID: 407A0A0B-0B48-4732-BD57-8ACD1ADF3D7C
-// Assembly location: C:\Program Files (x86)\Steam\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Game.dll
 
 using System.Runtime.CompilerServices;
 using AllAboard.System.Utility;
