@@ -7,9 +7,14 @@ using Game.Settings;
 
 namespace AllAboard
 {
-    [FileLocation(nameof(Mod))]
-    public class Setting : ModSetting
+    [FileLocation(nameof(AllAboard))]
+    public class AllAboardSettings : ModSetting
     {
+        public AllAboardSettings(IMod mod) : base(mod)
+        {
+            SetDefaults();
+        }
+
         [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes")]
         public int TrainMaxDwellDelaySlider { get; set; }
 
@@ -23,16 +28,11 @@ namespace AllAboard
             {
                 PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data = (uint)TrainMaxDwellDelaySlider;
                 PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data = (uint)BusMaxDwellDelaySlider;
-                Mod.log.InfoFormat(
+                AllAboard.log.InfoFormat(
                     "Now max dwell delay: Bus: {0} minutes, Train : {1} minutes.",
                     PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data,
                     PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data);
             }
-        }
-
-        public Setting(IMod mod) : base(mod)
-        {
-            SetDefaults();
         }
 
         public override void SetDefaults()
@@ -44,11 +44,11 @@ namespace AllAboard
 
     public class LocaleEN : IDictionarySource
     {
-        private readonly Setting _setting;
+        private readonly AllAboardSettings m_AllAboardSettings;
 
-        public LocaleEN(Setting setting)
+        public LocaleEN(AllAboardSettings allAboardSettings)
         {
-            _setting = setting;
+            m_AllAboardSettings = allAboardSettings;
         }
 
         public IEnumerable<KeyValuePair<string, string>> ReadEntries(IList<IDictionaryEntryError> errors,
@@ -56,26 +56,26 @@ namespace AllAboard
         {
             return new Dictionary<string, string>
             {
-                { _setting.GetSettingsLocaleID(), "All Aboard!" },
+                { m_AllAboardSettings.GetSettingsLocaleID(), "All Aboard!" },
                 {
-                    _setting.GetOptionLabelLocaleID(nameof(Setting.TrainMaxDwellDelaySlider)),
+                    m_AllAboardSettings.GetOptionLabelLocaleID(nameof(AllAboardSettings.TrainMaxDwellDelaySlider)),
                     "Train Maximum Dwell Delay (in-game minutes)"
                 },
                 {
-                    _setting.GetOptionDescLocaleID(nameof(Setting.TrainMaxDwellDelaySlider)),
+                    m_AllAboardSettings.GetOptionDescLocaleID(nameof(AllAboardSettings.TrainMaxDwellDelaySlider)),
                     "Maximum amount of (in-game) time to allow a Train (Subway, Tram) to 'dwell' beyond its scheduled departure frame. "
                 },
 
                 {
-                    _setting.GetOptionLabelLocaleID(nameof(Setting.BusMaxDwellDelaySlider)),
+                    m_AllAboardSettings.GetOptionLabelLocaleID(nameof(AllAboardSettings.BusMaxDwellDelaySlider)),
                     "Bus Maximum Dwell Delay (in-game minutes)"
                 },
                 {
-                    _setting.GetOptionDescLocaleID(nameof(Setting.BusMaxDwellDelaySlider)),
+                    m_AllAboardSettings.GetOptionDescLocaleID(nameof(AllAboardSettings.BusMaxDwellDelaySlider)),
                     "Maximum amount of (in-game) time to allow a Bus to 'dwell' beyond its scheduled departure frame. "
                 },
-                { _setting.GetOptionLabelLocaleID(nameof(Setting.ApplyButton)), "Apply" },
-                { _setting.GetOptionDescLocaleID(nameof(Setting.ApplyButton)), "Apply Settings" }
+                { m_AllAboardSettings.GetOptionLabelLocaleID(nameof(AllAboardSettings.ApplyButton)), "Apply" },
+                { m_AllAboardSettings.GetOptionDescLocaleID(nameof(AllAboardSettings.ApplyButton)), "Apply Settings" }
             };
         }
 
