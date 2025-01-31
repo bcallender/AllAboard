@@ -12,6 +12,7 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 #### 0.1.5
 
 - Rename the root mod files from the generic defaults. Should also make settings actually persist between saves! (Thanks Quoshik!)
+- Updated the decompiled versions of the Car/Train AI Systems to 1.2.3f1.
 
 #### 0.1.4
 
