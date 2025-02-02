@@ -10,10 +10,12 @@ using Unity.Entities;
 
 namespace AllAboard
 {
-    public class Mod : IMod
+    public class AllAboard : IMod
     {
-        public static ILog log = LogManager.GetLogger($"{nameof(AllAboard)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
-        public static Setting m_Setting;
+        public static ILog log = LogManager.GetLogger($"{nameof(AllAboard)}.Mod")
+            .SetShowsErrorsInUI(false);
+
+        public static AllAboardSettings m_AllAboardSettings;
 
         public void OnLoad(UpdateSystem updateSystem)
         {
@@ -22,15 +24,18 @@ namespace AllAboard
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
                 log.Info($"Current mod asset at {asset.path}");
 
-            m_Setting = new Setting(this);
-            m_Setting.RegisterInOptionsUI();
-            GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
+            m_AllAboardSettings = new AllAboardSettings(this);
+            m_AllAboardSettings.RegisterInOptionsUI();
+            GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_AllAboardSettings));
 
 
-            AssetDatabase.global.LoadSettings(nameof(AllAboard), m_Setting, new Setting(this));
+            AssetDatabase.global.LoadSettings("AllAboard", m_AllAboardSettings,
+                new AllAboardSettings(this));
 
-            PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data = (uint) m_Setting.TrainMaxDwellDelaySlider;
-            PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data = (uint) m_Setting.BusMaxDwellDelaySlider;
+            PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data =
+                (uint)m_AllAboardSettings.TrainMaxDwellDelaySlider;
+            PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data =
+                (uint)m_AllAboardSettings.BusMaxDwellDelaySlider;
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>().Enabled = false;
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportCarAISystem>().Enabled = false;
             updateSystem.UpdateAt<PatchedTransportCarAISystem>(SystemUpdatePhase.GameSimulation);
@@ -44,10 +49,10 @@ namespace AllAboard
         public void OnDispose()
         {
             log.Info(nameof(OnDispose));
-            if (m_Setting != null)
+            if (m_AllAboardSettings != null)
             {
-                m_Setting.UnregisterInOptionsUI();
-                m_Setting = null;
+                m_AllAboardSettings.UnregisterInOptionsUI();
+                m_AllAboardSettings = null;
             }
         }
     }
