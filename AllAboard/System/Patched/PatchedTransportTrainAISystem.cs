@@ -1685,110 +1685,62 @@ namespace AllAboard.System.Patched
             public void __AssignHandles(ref SystemState state)
             {
                 __Unity_Entities_Entity_TypeHandle = state.GetEntityTypeHandle();
-
                 __Game_Common_Owner_RO_ComponentTypeHandle = state.GetComponentTypeHandle<Owner>(true);
-
                 __Game_Objects_Unspawned_RO_ComponentTypeHandle = state.GetComponentTypeHandle<Unspawned>(true);
-
                 __Game_Prefabs_PrefabRef_RO_ComponentTypeHandle = state.GetComponentTypeHandle<Prefabs.PrefabRef>(true);
-
                 __Game_Routes_CurrentRoute_RO_ComponentTypeHandle = state.GetComponentTypeHandle<CurrentRoute>(true);
-
                 __Game_Vehicles_CargoTransport_RW_ComponentTypeHandle =
                     state.GetComponentTypeHandle<CargoTransport>();
-
                 __Game_Vehicles_PublicTransport_RW_ComponentTypeHandle =
                     state.GetComponentTypeHandle<PublicTransport>();
-
                 __Game_Common_Target_RW_ComponentTypeHandle = state.GetComponentTypeHandle<Target>();
-
                 __Game_Pathfind_PathOwner_RW_ComponentTypeHandle = state.GetComponentTypeHandle<PathOwner>();
-
                 __Game_Vehicles_Odometer_RW_ComponentTypeHandle = state.GetComponentTypeHandle<Odometer>();
-
                 __Game_Vehicles_LayoutElement_RW_BufferTypeHandle = state.GetBufferTypeHandle<LayoutElement>();
-
                 __Game_Vehicles_TrainNavigationLane_RW_BufferTypeHandle =
                     state.GetBufferTypeHandle<TrainNavigationLane>();
-
                 __Game_Simulation_ServiceDispatch_RW_BufferTypeHandle = state.GetBufferTypeHandle<ServiceDispatch>();
-
                 __EntityStorageInfoLookup = state.GetEntityStorageInfoLookup();
-
                 __Game_Objects_Transform_RO_ComponentLookup = state.GetComponentLookup<Transform>(true);
-
                 __Game_Objects_SpawnLocation_RO_ComponentLookup = state.GetComponentLookup<SpawnLocation>(true);
-
                 __Game_Common_Owner_RO_ComponentLookup = state.GetComponentLookup<Owner>(true);
-
                 __Game_Pathfind_PathInformation_RO_ComponentLookup = state.GetComponentLookup<PathInformation>(true);
-
                 __Game_Simulation_TransportVehicleRequest_RO_ComponentLookup =
                     state.GetComponentLookup<TransportVehicleRequest>(true);
-
                 __Game_Vehicles_ParkedTrain_RO_ComponentLookup = state.GetComponentLookup<ParkedTrain>(true);
-
                 __Game_Vehicles_Controller_RO_ComponentLookup = state.GetComponentLookup<Controller>(true);
-
                 __Game_Net_Curve_RO_ComponentLookup = state.GetComponentLookup<Net.Curve>(true);
-
                 __Game_Net_Lane_RO_ComponentLookup = state.GetComponentLookup<Net.Lane>(true);
-
                 __Game_Net_EdgeLane_RO_ComponentLookup = state.GetComponentLookup<Net.EdgeLane>(true);
-
                 __Game_Net_Edge_RO_ComponentLookup = state.GetComponentLookup<Net.Edge>(true);
-
                 __Game_Prefabs_TrainData_RO_ComponentLookup = state.GetComponentLookup<Prefabs.TrainData>(true);
-
                 __Game_Prefabs_PrefabRef_RO_ComponentLookup = state.GetComponentLookup<Prefabs.PrefabRef>(true);
-
                 __Game_Prefabs_PublicTransportVehicleData_RO_ComponentLookup =
                     state.GetComponentLookup<Prefabs.PublicTransportVehicleData>(true);
-
                 __Game_Prefabs_CargoTransportVehicleData_RO_ComponentLookup =
                     state.GetComponentLookup<Prefabs.CargoTransportVehicleData>(true);
-
                 __Game_Routes_Waypoint_RO_ComponentLookup = state.GetComponentLookup<Waypoint>(true);
-
                 __Game_Routes_Connected_RO_ComponentLookup = state.GetComponentLookup<Connected>(true);
-
                 __Game_Routes_BoardingVehicle_RO_ComponentLookup = state.GetComponentLookup<BoardingVehicle>(true);
-
                 __Game_Routes_Color_RO_ComponentLookup = state.GetComponentLookup<Color>(true);
-
                 __Game_Companies_StorageCompany_RO_ComponentLookup =
                     state.GetComponentLookup<StorageCompany>(true);
-
                 __Game_Buildings_TransportStation_RO_ComponentLookup =
                     state.GetComponentLookup<TransportStation>(true);
-
                 __Game_Buildings_TransportDepot_RO_ComponentLookup =
                     state.GetComponentLookup<TransportDepot>(true);
-
                 __Game_Creatures_CurrentVehicle_RO_ComponentLookup = state.GetComponentLookup<CurrentVehicle>(true);
-
                 __Game_Vehicles_Passenger_RO_BufferLookup = state.GetBufferLookup<Passenger>(true);
-
                 __Game_Economy_Resources_RO_BufferLookup = state.GetBufferLookup<Resources>(true);
-
                 __Game_Routes_RouteWaypoint_RO_BufferLookup = state.GetBufferLookup<RouteWaypoint>(true);
-
                 __Game_Net_ConnectedEdge_RO_BufferLookup = state.GetBufferLookup<Net.ConnectedEdge>(true);
-
                 __Game_Net_SubLane_RO_BufferLookup = state.GetBufferLookup<SubLane>(true);
-
                 __Game_Vehicles_Train_RW_ComponentLookup = state.GetComponentLookup<Train>();
-
                 __Game_Vehicles_TrainCurrentLane_RW_ComponentLookup = state.GetComponentLookup<TrainCurrentLane>();
-
                 __Game_Vehicles_TrainNavigation_RW_ComponentLookup = state.GetComponentLookup<TrainNavigation>();
-
                 __Game_Vehicles_Blocker_RW_ComponentLookup = state.GetComponentLookup<Blocker>();
-
                 __Game_Pathfind_PathElement_RW_BufferLookup = state.GetBufferLookup<PathElement>();
-
                 __Game_Vehicles_LoadingResources_RW_BufferLookup = state.GetBufferLookup<LoadingResources>();
-
                 __Game_Vehicles_LayoutElement_RW_BufferLookup = state.GetBufferLookup<LayoutElement>();
             }
         }
