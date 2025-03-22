@@ -1,10 +1,4 @@
-﻿// Decompiled with JetBrains decompiler
-// Type: Game.Simulation.TransportCarAISystem
-// Assembly: Game, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 326788FC-E38E-46F4-81FC-ABB77F237B21
-
-using AllAboard.System.Patched;
-using AllAboard.System.Utility;
+﻿using AllAboard.System.Utility;
 using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
 using Game;
