@@ -9,30 +9,28 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 
 ### Changelog
 
-#### 0.1.5
+#### 0.1.6
+- Update systems for 1.2.5f1 to pull in CO's fixes while still applying the boarding time fix. 
+- Refactored the way I add the fix in to make it easier to update in the future. 
 
+#### 0.1.5
 - Rename the root mod files from the generic defaults. Should also make settings actually persist between saves! (Thanks Quoshik!)
 - Updated the decompiled versions of the Car/Train AI Systems to 1.2.3f1.
 
 #### 0.1.4
-
 - Fixes a minor namespacing issue. 
 
 #### 0.1.3
-
 - Updated for 1.2.0f. Keeps in all of the new CO code that fixes some ResidentAI behavior while keeping a hard cap on
   dwell time.
 
 #### 0.1.2
-
 - Remove some local DLLs from being explicitly included (thanks Quoshik!)
 
 #### 0.1.1
-
 - Updated for 1.1.11f. Removed pathfinding cleanup functionality, at least until I have more time to experiment.
 
 #### 0.1.0
-
 - Instead of trying to correlate simulationFrameIndex to real-world seconds, relate them to in-game minutes, which is
   more consistent.
 - Use SharedStatic to make the maximum dwell delay configurable in settings (thanks @Nullpinter!). Now users can set a

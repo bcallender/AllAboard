@@ -19,6 +19,10 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 
 ### Changelog
 
+#### 0.1.6
+- Update systems for 1.2.5f1 to pull in CO's fixes while still applying the boarding time fix.
+- Refactored the way I add the fix in to make it easier to update in the future.
+
 #### 0.1.5
 - Rename the root mod files from the generic defaults. Should also make settings actually persist between saves! (Thanks Quoshik!)
 - Updated the decompiled versions of the Car/Train AI Systems to 1.2.3f1.
@@ -138,15 +142,15 @@ vehicle to reject the boarding cims!
     <!--Link to the forum post where the mod can be discussed-->
     <ForumLink Value=""/>
     <!--Version of the mod-->
-    <ModVersion Value="0.1.5"/>
+    <ModVersion Value="0.1.6"/>
     <!--Recommended version of the base game to use the mod-->
     <GameVersion Value="1.2.*"/>
     <!--Dependency for the mod, can be set multiple times-->
     <Dependency Id=""/>
     <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
     <ChangeLog>
-- Rename the root mod files from the generic defaults. Should also make settings actually persist between saves! (Thanks Quoshik!)
-- Updated the decompiled versions of the Car/Train AI Systems to 1.2.3f1.
+- Update systems for 1.2.5f1 to pull in CO's fixes while still applying the boarding time fix.
+- Refactored the way I add the fix in to make it easier to update in the future.
     </ChangeLog>
     <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon, buymeacoffee, kofi, crowdin, gitlab-->
     <ExternalLink Type="github" Url="https://github.com/bcallender/AllAboard"/>
