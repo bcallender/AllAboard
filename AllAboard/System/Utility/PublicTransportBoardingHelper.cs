@@ -1,6 +1,4 @@
-﻿using Colossal.Collections;
-using Game.Common;
-using Game.Creatures;
+﻿using Game.Creatures;
 using Game.Vehicles;
 using Unity.Burst;
 using Unity.Entities;
@@ -65,31 +63,6 @@ namespace AllAboard.System.Utility
             }
 
             return approxMinutesLate > maxAllowedSecondsLate || AreAllPassengersBoarded(passengers, currentVehicleData);
-        }
-
-
-        private static bool EndBoardingWithCleanup(DynamicBuffer<Passenger> passengers,
-            ComponentLookup<CurrentVehicle> currentVehicleDataLookup,
-            EntityCommandBuffer.ParallelWriter commandBuffer, NativeQuadTree<Entity, QuadTreeBoundsXZ> searchTree,
-            int jobIndex)
-        {
-            for (var i = 0; i < passengers.Length; i++)
-            {
-                var passenger = passengers[i].m_Passenger;
-                //credit for this logic goes to @WayzWare.
-                // If we find the passenger in the vehicle data, and the passenger is not Ready, we can clean the passenger up.
-                if (!currentVehicleDataLookup.TryGetComponent(passenger,
-                        out var passengerVehicleData)
-                    || (passengerVehicleData.m_Flags & CreatureVehicleFlags.Ready) == 0)
-                    continue;
-                passengerVehicleData.m_Flags |= CreatureVehicleFlags.Ready;
-                passengerVehicleData.m_Flags &= ~CreatureVehicleFlags.Entering;
-                commandBuffer.SetComponent(jobIndex, passenger, passengerVehicleData);
-                commandBuffer.AddComponent(jobIndex, passenger, default(BatchesUpdated));
-                searchTree.TryRemove(passenger);
-            }
-
-            return true;
         }
 
         private static bool AreAllPassengersBoarded(DynamicBuffer<Passenger> passengers,
