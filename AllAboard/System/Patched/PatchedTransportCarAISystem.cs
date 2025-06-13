@@ -1,12 +1,13 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Game.Simulation.TransportCarAISystem
 // Assembly: Game, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 326788FC-E38E-46F4-81FC-ABB77F237B21
+// MVID: CC2DA331-4A40-4C70-A203-F382286B5D52
 
 using System.Runtime.CompilerServices;
 using AllAboard.System.Utility;
 using Colossal.Mathematics;
 using Game;
+using Game.Achievements;
 using Game.Buildings;
 using Game.Common;
 using Game.Creatures;
@@ -24,6 +25,7 @@ using Unity.Burst;
 using Unity.Burst.Intrinsics;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Entities.Internal;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 using CargoTransport = Game.Vehicles.CargoTransport;
@@ -43,10 +45,10 @@ using TransportStation = Game.Buildings.TransportStation;
 
 namespace AllAboard.System.Patched
 {
-    [CompilerGenerated]
     public partial class PatchedTransportCarAISystem : GameSystemBase
     {
         private TypeHandle __TypeHandle;
+        private AchievementTriggerSystem m_AchievementTriggerSystem;
         private TransportBoardingHelpers.BoardingLookupData m_BoardingLookupData;
         private CityStatisticsSystem m_CityStatisticsSystem;
         private EndFrameBarrier m_EndFrameBarrier;
@@ -83,6 +85,7 @@ namespace AllAboard.System.Patched
             m_SimulationSystem = World.GetOrCreateSystemManaged<SimulationSystem>();
             m_PathfindSetupSystem = World.GetOrCreateSystemManaged<PathfindSetupSystem>();
             m_CityStatisticsSystem = World.GetOrCreateSystemManaged<CityStatisticsSystem>();
+            m_AchievementTriggerSystem = World.GetOrCreateSystemManaged<AchievementTriggerSystem>();
             m_BoardingLookupData = new TransportBoardingHelpers.BoardingLookupData(this);
             m_VehicleQuery = GetEntityQuery(new EntityQueryDesc
             {
@@ -145,132 +148,142 @@ namespace AllAboard.System.Patched
             var boardingData =
                 new TransportBoardingHelpers.BoardingData(Allocator.TempJob);
             m_BoardingLookupData.Update(this);
-            __TypeHandle.__Game_Vehicles_LoadingResources_RW_BufferLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Pathfind_PathElement_RW_BufferLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_LaneOverlap_RO_BufferLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_LaneObject_RO_BufferLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_SubLane_RO_BufferLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Routes_RouteWaypoint_RO_BufferLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Creatures_CurrentVehicle_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_Curve_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_ConnectionLane_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_GarageLane_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_ParkingLane_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_SlaveLane_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_CarLane_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Net_Lane_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Buildings_EmergencyShelter_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Buildings_Prison_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Buildings_TransportDepot_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Buildings_TransportStation_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Companies_StorageCompany_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Routes_Color_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Routes_RouteLane_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Routes_BoardingVehicle_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Routes_Connected_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Routes_Waypoint_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Simulation_PrisonerTransportRequest_RO_ComponentLookup.Update(
-                ref CheckedStateRef);
-            __TypeHandle.__Game_Simulation_EvacuationRequest_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Simulation_TransportVehicleRequest_RO_ComponentLookup.Update(
-                ref CheckedStateRef);
-            __TypeHandle.__Game_Simulation_ServiceRequest_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Prefabs_SpawnLocationData_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Prefabs_ObjectGeometryData_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Prefabs_ParkingLaneData_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Prefabs_CargoTransportVehicleData_RO_ComponentLookup.Update(
-                ref CheckedStateRef);
-            __TypeHandle.__Game_Prefabs_PublicTransportVehicleData_RO_ComponentLookup.Update(
-                ref CheckedStateRef);
-            __TypeHandle.__Game_Prefabs_PrefabRef_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Prefabs_CarData_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Pathfind_PathInformation_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Common_Owner_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Objects_Unspawned_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Objects_SpawnLocation_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Objects_Transform_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Vehicles_ParkedCar_RO_ComponentLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__EntityStorageInfoLookup.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Simulation_ServiceDispatch_RW_BufferTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Vehicles_CarNavigationLane_RW_BufferTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Vehicles_Odometer_RW_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Pathfind_PathOwner_RW_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Common_Target_RW_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Vehicles_CarCurrentLane_RW_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Vehicles_Car_RW_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Vehicles_PublicTransport_RW_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Vehicles_CargoTransport_RW_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Vehicles_Passenger_RO_BufferTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Routes_CurrentRoute_RO_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Prefabs_PrefabRef_RO_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Pathfind_PathInformation_RO_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Objects_Unspawned_RO_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Game_Common_Owner_RO_ComponentTypeHandle.Update(ref CheckedStateRef);
-            __TypeHandle.__Unity_Entities_Entity_TypeHandle.Update(ref CheckedStateRef);
             var jobHandle = new TransportCarTickJob
             {
-                m_EntityType = __TypeHandle.__Unity_Entities_Entity_TypeHandle,
-                m_OwnerType = __TypeHandle.__Game_Common_Owner_RO_ComponentTypeHandle,
-                m_UnspawnedType = __TypeHandle.__Game_Objects_Unspawned_RO_ComponentTypeHandle,
-                m_PathInformationType = __TypeHandle.__Game_Pathfind_PathInformation_RO_ComponentTypeHandle,
-                m_PrefabRefType = __TypeHandle.__Game_Prefabs_PrefabRef_RO_ComponentTypeHandle,
-                m_CurrentRouteType = __TypeHandle.__Game_Routes_CurrentRoute_RO_ComponentTypeHandle,
-                m_PassengerType = __TypeHandle.__Game_Vehicles_Passenger_RO_BufferTypeHandle,
-                m_CargoTransportType = __TypeHandle.__Game_Vehicles_CargoTransport_RW_ComponentTypeHandle,
-                m_PublicTransportType = __TypeHandle.__Game_Vehicles_PublicTransport_RW_ComponentTypeHandle,
-                m_CarType = __TypeHandle.__Game_Vehicles_Car_RW_ComponentTypeHandle,
-                m_CurrentLaneType = __TypeHandle.__Game_Vehicles_CarCurrentLane_RW_ComponentTypeHandle,
-                m_TargetType = __TypeHandle.__Game_Common_Target_RW_ComponentTypeHandle,
-                m_PathOwnerType = __TypeHandle.__Game_Pathfind_PathOwner_RW_ComponentTypeHandle,
-                m_OdometerType = __TypeHandle.__Game_Vehicles_Odometer_RW_ComponentTypeHandle,
-                m_CarNavigationLaneType = __TypeHandle.__Game_Vehicles_CarNavigationLane_RW_BufferTypeHandle,
-                m_ServiceDispatchType = __TypeHandle.__Game_Simulation_ServiceDispatch_RW_BufferTypeHandle,
-                m_EntityLookup = __TypeHandle.__EntityStorageInfoLookup,
-                m_ParkedCarData = __TypeHandle.__Game_Vehicles_ParkedCar_RO_ComponentLookup,
-                m_TransformData = __TypeHandle.__Game_Objects_Transform_RO_ComponentLookup,
-                m_SpawnLocationData = __TypeHandle.__Game_Objects_SpawnLocation_RO_ComponentLookup,
-                m_UnspawnedData = __TypeHandle.__Game_Objects_Unspawned_RO_ComponentLookup,
-                m_OwnerData = __TypeHandle.__Game_Common_Owner_RO_ComponentLookup,
-                m_PathInformationData = __TypeHandle.__Game_Pathfind_PathInformation_RO_ComponentLookup,
-                m_PrefabCarData = __TypeHandle.__Game_Prefabs_CarData_RO_ComponentLookup,
-                m_PrefabRefData = __TypeHandle.__Game_Prefabs_PrefabRef_RO_ComponentLookup,
-                m_PublicTransportVehicleData =
-                    __TypeHandle.__Game_Prefabs_PublicTransportVehicleData_RO_ComponentLookup,
-                m_CargoTransportVehicleData =
-                    __TypeHandle.__Game_Prefabs_CargoTransportVehicleData_RO_ComponentLookup,
-                m_PrefabParkingLaneData = __TypeHandle.__Game_Prefabs_ParkingLaneData_RO_ComponentLookup,
-                m_PrefabObjectGeometryData = __TypeHandle.__Game_Prefabs_ObjectGeometryData_RO_ComponentLookup,
-                m_PrefabSpawnLocationData = __TypeHandle.__Game_Prefabs_SpawnLocationData_RO_ComponentLookup,
-                m_ServiceRequestData = __TypeHandle.__Game_Simulation_ServiceRequest_RO_ComponentLookup,
-                m_TransportVehicleRequestData =
-                    __TypeHandle.__Game_Simulation_TransportVehicleRequest_RO_ComponentLookup,
-                m_EvacuationRequestData = __TypeHandle.__Game_Simulation_EvacuationRequest_RO_ComponentLookup,
-                m_PrisonerTransportRequestData =
-                    __TypeHandle.__Game_Simulation_PrisonerTransportRequest_RO_ComponentLookup,
-                m_WaypointData = __TypeHandle.__Game_Routes_Waypoint_RO_ComponentLookup,
-                m_ConnectedData = __TypeHandle.__Game_Routes_Connected_RO_ComponentLookup,
-                m_BoardingVehicleData = __TypeHandle.__Game_Routes_BoardingVehicle_RO_ComponentLookup,
-                m_RouteLaneData = __TypeHandle.__Game_Routes_RouteLane_RO_ComponentLookup,
-                m_RouteColorData = __TypeHandle.__Game_Routes_Color_RO_ComponentLookup,
-                m_StorageCompanyData = __TypeHandle.__Game_Companies_StorageCompany_RO_ComponentLookup,
-                m_TransportStationData = __TypeHandle.__Game_Buildings_TransportStation_RO_ComponentLookup,
-                m_TransportDepotData = __TypeHandle.__Game_Buildings_TransportDepot_RO_ComponentLookup,
-                m_PrisonData = __TypeHandle.__Game_Buildings_Prison_RO_ComponentLookup,
-                m_EmergencyShelterData = __TypeHandle.__Game_Buildings_EmergencyShelter_RO_ComponentLookup,
-                m_LaneData = __TypeHandle.__Game_Net_Lane_RO_ComponentLookup,
-                m_CarLaneData = __TypeHandle.__Game_Net_CarLane_RO_ComponentLookup,
-                m_SlaveLaneData = __TypeHandle.__Game_Net_SlaveLane_RO_ComponentLookup,
-                m_ParkingLaneData = __TypeHandle.__Game_Net_ParkingLane_RO_ComponentLookup,
-                m_GarageLaneData = __TypeHandle.__Game_Net_GarageLane_RO_ComponentLookup,
-                m_ConnectionLaneData = __TypeHandle.__Game_Net_ConnectionLane_RO_ComponentLookup,
-                m_CurveData = __TypeHandle.__Game_Net_Curve_RO_ComponentLookup,
-                m_CurrentVehicleData = __TypeHandle.__Game_Creatures_CurrentVehicle_RO_ComponentLookup,
-                m_RouteWaypoints = __TypeHandle.__Game_Routes_RouteWaypoint_RO_BufferLookup,
-                m_SubLanes = __TypeHandle.__Game_Net_SubLane_RO_BufferLookup,
-                m_LaneObjects = __TypeHandle.__Game_Net_LaneObject_RO_BufferLookup,
-                m_LaneOverlaps = __TypeHandle.__Game_Net_LaneOverlap_RO_BufferLookup,
-                m_PathElements = __TypeHandle.__Game_Pathfind_PathElement_RW_BufferLookup,
-                m_LoadingResources = __TypeHandle.__Game_Vehicles_LoadingResources_RW_BufferLookup,
+                m_EntityType = InternalCompilerInterface.GetEntityTypeHandle(
+                    ref __TypeHandle.__Unity_Entities_Entity_TypeHandle, ref CheckedStateRef),
+                m_OwnerType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Common_Owner_RO_ComponentTypeHandle, ref CheckedStateRef),
+                m_UnspawnedType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Objects_Unspawned_RO_ComponentTypeHandle, ref CheckedStateRef),
+                m_PathInformationType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Pathfind_PathInformation_RO_ComponentTypeHandle,
+                    ref CheckedStateRef),
+                m_PrefabRefType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Prefabs_PrefabRef_RO_ComponentTypeHandle, ref CheckedStateRef),
+                m_CurrentRouteType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Routes_CurrentRoute_RO_ComponentTypeHandle, ref CheckedStateRef),
+                m_PassengerType = InternalCompilerInterface.GetBufferTypeHandle(
+                    ref __TypeHandle.__Game_Vehicles_Passenger_RO_BufferTypeHandle, ref CheckedStateRef),
+                m_CargoTransportType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Vehicles_CargoTransport_RW_ComponentTypeHandle,
+                    ref CheckedStateRef),
+                m_PublicTransportType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Vehicles_PublicTransport_RW_ComponentTypeHandle,
+                    ref CheckedStateRef),
+                m_CarType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Vehicles_Car_RW_ComponentTypeHandle, ref CheckedStateRef),
+                m_CurrentLaneType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Vehicles_CarCurrentLane_RW_ComponentTypeHandle,
+                    ref CheckedStateRef),
+                m_TargetType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Common_Target_RW_ComponentTypeHandle, ref CheckedStateRef),
+                m_PathOwnerType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Pathfind_PathOwner_RW_ComponentTypeHandle, ref CheckedStateRef),
+                m_OdometerType = InternalCompilerInterface.GetComponentTypeHandle(
+                    ref __TypeHandle.__Game_Vehicles_Odometer_RW_ComponentTypeHandle, ref CheckedStateRef),
+                m_CarNavigationLaneType = InternalCompilerInterface.GetBufferTypeHandle(
+                    ref __TypeHandle.__Game_Vehicles_CarNavigationLane_RW_BufferTypeHandle,
+                    ref CheckedStateRef),
+                m_ServiceDispatchType = InternalCompilerInterface.GetBufferTypeHandle(
+                    ref __TypeHandle.__Game_Simulation_ServiceDispatch_RW_BufferTypeHandle,
+                    ref CheckedStateRef),
+                m_EntityLookup =
+                    InternalCompilerInterface.GetEntityStorageInfoLookup(
+                        ref __TypeHandle.__EntityStorageInfoLookup, ref CheckedStateRef),
+                m_ParkedCarData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Vehicles_ParkedCar_RO_ComponentLookup, ref CheckedStateRef),
+                m_TransformData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Objects_Transform_RO_ComponentLookup, ref CheckedStateRef),
+                m_SpawnLocationData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Objects_SpawnLocation_RO_ComponentLookup, ref CheckedStateRef),
+                m_UnspawnedData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Objects_Unspawned_RO_ComponentLookup, ref CheckedStateRef),
+                m_OwnerData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Common_Owner_RO_ComponentLookup, ref CheckedStateRef),
+                m_PathInformationData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Pathfind_PathInformation_RO_ComponentLookup, ref CheckedStateRef),
+                m_PrefabCarData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Prefabs_CarData_RO_ComponentLookup, ref CheckedStateRef),
+                m_PrefabRefData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Prefabs_PrefabRef_RO_ComponentLookup, ref CheckedStateRef),
+                m_PublicTransportVehicleData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Prefabs_PublicTransportVehicleData_RO_ComponentLookup,
+                    ref CheckedStateRef),
+                m_CargoTransportVehicleData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Prefabs_CargoTransportVehicleData_RO_ComponentLookup,
+                    ref CheckedStateRef),
+                m_PrefabParkingLaneData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Prefabs_ParkingLaneData_RO_ComponentLookup, ref CheckedStateRef),
+                m_PrefabObjectGeometryData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Prefabs_ObjectGeometryData_RO_ComponentLookup,
+                    ref CheckedStateRef),
+                m_PrefabSpawnLocationData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Prefabs_SpawnLocationData_RO_ComponentLookup,
+                        ref CheckedStateRef),
+                m_ServiceRequestData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Simulation_ServiceRequest_RO_ComponentLookup,
+                    ref CheckedStateRef),
+                m_TransportVehicleRequestData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Simulation_TransportVehicleRequest_RO_ComponentLookup,
+                    ref CheckedStateRef),
+                m_EvacuationRequestData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Simulation_EvacuationRequest_RO_ComponentLookup,
+                    ref CheckedStateRef),
+                m_PrisonerTransportRequestData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Simulation_PrisonerTransportRequest_RO_ComponentLookup,
+                    ref CheckedStateRef),
+                m_WaypointData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Routes_Waypoint_RO_ComponentLookup, ref CheckedStateRef),
+                m_ConnectedData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Routes_Connected_RO_ComponentLookup, ref CheckedStateRef),
+                m_BoardingVehicleData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Routes_BoardingVehicle_RO_ComponentLookup, ref CheckedStateRef),
+                m_RouteLaneData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Routes_RouteLane_RO_ComponentLookup, ref CheckedStateRef),
+                m_RouteColorData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Routes_Color_RO_ComponentLookup, ref CheckedStateRef),
+                m_StorageCompanyData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Companies_StorageCompany_RO_ComponentLookup, ref CheckedStateRef),
+                m_TransportStationData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Buildings_TransportStation_RO_ComponentLookup,
+                    ref CheckedStateRef),
+                m_TransportDepotData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Buildings_TransportDepot_RO_ComponentLookup, ref CheckedStateRef),
+                m_PrisonData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Buildings_Prison_RO_ComponentLookup, ref CheckedStateRef),
+                m_EmergencyShelterData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Buildings_EmergencyShelter_RO_ComponentLookup,
+                    ref CheckedStateRef),
+                m_LaneData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Net_Lane_RO_ComponentLookup, ref CheckedStateRef),
+                m_CarLaneData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Net_CarLane_RO_ComponentLookup, ref CheckedStateRef),
+                m_SlaveLaneData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Net_SlaveLane_RO_ComponentLookup, ref CheckedStateRef),
+                m_ParkingLaneData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Net_ParkingLane_RO_ComponentLookup, ref CheckedStateRef),
+                m_GarageLaneData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Net_GarageLane_RO_ComponentLookup, ref CheckedStateRef),
+                m_ConnectionLaneData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Net_ConnectionLane_RO_ComponentLookup, ref CheckedStateRef),
+                m_CurveData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Net_Curve_RO_ComponentLookup, ref CheckedStateRef),
+                m_CurrentVehicleData = InternalCompilerInterface.GetComponentLookup(
+                    ref __TypeHandle.__Game_Creatures_CurrentVehicle_RO_ComponentLookup, ref CheckedStateRef),
+                m_RouteWaypoints = InternalCompilerInterface.GetBufferLookup(
+                    ref __TypeHandle.__Game_Routes_RouteWaypoint_RO_BufferLookup, ref CheckedStateRef),
+                m_SubLanes = InternalCompilerInterface.GetBufferLookup(
+                    ref __TypeHandle.__Game_Net_SubLane_RO_BufferLookup, ref CheckedStateRef),
+                m_LaneObjects = InternalCompilerInterface.GetBufferLookup(
+                    ref __TypeHandle.__Game_Net_LaneObject_RO_BufferLookup, ref CheckedStateRef),
+                m_LaneOverlaps = InternalCompilerInterface.GetBufferLookup(
+                    ref __TypeHandle.__Game_Net_LaneOverlap_RO_BufferLookup, ref CheckedStateRef),
+                m_PathElements = InternalCompilerInterface.GetBufferLookup(
+                    ref __TypeHandle.__Game_Pathfind_PathElement_RW_BufferLookup, ref CheckedStateRef),
+                m_LoadingResources = InternalCompilerInterface.GetBufferLookup(
+                    ref __TypeHandle.__Game_Vehicles_LoadingResources_RW_BufferLookup, ref CheckedStateRef),
                 m_SimulationFrameIndex = m_SimulationSystem.frameIndex,
                 m_RandomSeed = RandomSeed.Next(),
                 m_TransportVehicleRequestArchetype = m_TransportVehicleRequestArchetype,
@@ -284,7 +297,8 @@ namespace AllAboard.System.Patched
                 m_BoardingData = boardingData.ToConcurrent()
             }.ScheduleParallel(m_VehicleQuery, Dependency);
             var inputDeps = boardingData.ScheduleBoarding(this, m_CityStatisticsSystem,
-                m_BoardingLookupData, m_SimulationSystem.frameIndex, jobHandle);
+                m_AchievementTriggerSystem, m_BoardingLookupData, m_SimulationSystem.frameIndex,
+                jobHandle);
             boardingData.Dispose(inputDeps);
             m_PathfindSetupSystem.AddQueueWriter(jobHandle);
             m_EndFrameBarrier.AddJobHandleForProducer(jobHandle);
@@ -294,6 +308,7 @@ namespace AllAboard.System.Patched
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void __AssignQueries(ref SystemState state)
         {
+            new EntityQueryBuilder(Allocator.Temp).Dispose();
         }
 
         protected override void OnCreateForCompiler()
@@ -900,7 +915,7 @@ namespace AllAboard.System.Patched
                 {
                     m_MaxSpeed = carData.m_MaxSpeed,
                     m_WalkSpeed = 5.555556f,
-                    m_Methods = PathMethod.Road | PathMethod.SpecialParking,
+                    m_Methods = VehicleUtils.GetPathMethods(carData) | PathMethod.SpecialParking,
                     m_ParkingTarget = VehicleUtils.GetParkingSource(vehicleEntity, currentLane,
                         ref m_ParkingLaneData, ref m_ConnectionLaneData),
                     m_ParkingDelta = currentLane.m_CurvePosition.z,
@@ -911,13 +926,13 @@ namespace AllAboard.System.Patched
                 var origin = new SetupQueueTarget
                 {
                     m_Type = SetupTargetType.CurrentLocation,
-                    m_Methods = PathMethod.Road | PathMethod.SpecialParking,
+                    m_Methods = VehicleUtils.GetPathMethods(carData) | PathMethod.SpecialParking,
                     m_RoadTypes = RoadTypes.Car
                 };
                 var destination = new SetupQueueTarget
                 {
                     m_Type = SetupTargetType.CurrentLocation,
-                    m_Methods = PathMethod.Road,
+                    m_Methods = VehicleUtils.GetPathMethods(carData),
                     m_RoadTypes = RoadTypes.Car,
                     m_Entity = target.m_Target
                 };
@@ -1288,8 +1303,8 @@ namespace AllAboard.System.Patched
                 ref Target targetData)
             {
                 var routeWaypoint = m_RouteWaypoints[currentRoute.m_Route];
-                var a = m_WaypointData[targetData.m_Target].m_Index + 1;
-                var index = math.select(a, 0, a >= routeWaypoint.Length);
+                var falseValue = m_WaypointData[targetData.m_Target].m_Index + 1;
+                var index = math.select(falseValue, 0, falseValue >= routeWaypoint.Length);
                 VehicleUtils.SetTarget(ref pathOwnerData, ref targetData, routeWaypoint[index].m_Waypoint);
             }
 
@@ -1838,10 +1853,10 @@ namespace AllAboard.System.Patched
             private Entity GetNextStorageCompany(Entity route, Entity currentWaypoint)
             {
                 var routeWaypoint = m_RouteWaypoints[route];
-                var a = m_WaypointData[currentWaypoint].m_Index + 1;
+                var falseValue = m_WaypointData[currentWaypoint].m_Index + 1;
                 for (var index1 = 0; index1 < routeWaypoint.Length; ++index1)
                 {
-                    var index2 = math.select(a, 0, a >= routeWaypoint.Length);
+                    var index2 = math.select(falseValue, 0, falseValue >= routeWaypoint.Length);
                     var waypoint = routeWaypoint[index2].m_Waypoint;
                     if (m_ConnectedData.HasComponent(waypoint))
                     {
@@ -1851,7 +1866,7 @@ namespace AllAboard.System.Patched
                             return storageCompanyFromStop;
                     }
 
-                    a = index2 + 1;
+                    falseValue = index2 + 1;
                 }
 
                 return Entity.Null;
