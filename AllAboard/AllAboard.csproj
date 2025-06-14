@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net472</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
         <Configurations>Debug;Release</Configurations>
 
         <!--The file where mod information which is required for publishing mod on PDX mods are stored-->
