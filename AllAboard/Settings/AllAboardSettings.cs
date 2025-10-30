@@ -16,10 +16,10 @@ namespace AllAboard
         }
         public string ModVersion => "0.1.8";
 
-        [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes (In Game)")]
+        [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes")]
         public int TrainMaxDwellDelaySlider { get; set; }
 
-        [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes (In Game)")]
+        [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes")]
         public int BusMaxDwellDelaySlider { get; set; }
 
         [SettingsUIButton]
@@ -61,6 +61,10 @@ namespace AllAboard
                 {
                     m_AllAboardSettings.GetOptionLabelLocaleID(nameof(AllAboardSettings.ModVersion)),
                     "Mod Version"
+                },
+                {
+                    m_AllAboardSettings.GetOptionDescLocaleID(nameof(AllAboardSettings.ModVersion)),
+                    "This is the version of the mod. "
                 },
                 {
                     m_AllAboardSettings.GetOptionLabelLocaleID(nameof(AllAboardSettings.TrainMaxDwellDelaySlider)),
