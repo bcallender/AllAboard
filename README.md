@@ -9,8 +9,8 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 
 ### Release Changelog
 
-#### 0.1.8
-- Update systems for 1.3.6f1, new `LoadSettings` implementation.
+#### 0.1.9
+- Update systems for 1.4.2f1
 
 ### Technical Details
 
@@ -93,6 +93,10 @@ stay unbunched!
   vehicle to reject the boarding cims!
 
 ### Previous Releases
+
+#### 0.1.8
+- Update systems for 1.3.6f1, new `LoadSettings` implementation.
+
 #### 0.1.7
 - Update systems for 1.3.3f1 to fix missing parameter to ScheduleBoarding
 
