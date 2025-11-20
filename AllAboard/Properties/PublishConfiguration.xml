@@ -19,8 +19,8 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 
 ### Release Changelog 
  
-#### 0.1.9
-- Update systems for 1.4.2f1
+#### 0.1.9 
+- Update systems for 1.4.2f1, which ensures trains don't hit bikes, apparently.
 
 ### Technical Details
 
@@ -77,7 +77,7 @@ It is unlikely other mods will do so, since these classes are burst compiled.
 
 ### Notes:
 
-- This mod has been tested on cities up to ~~2.1M~~ 4.5M(!) Cims, with 2M transport trips per month (thanks @ObservantOtter!),
+- This mod has been tested on cities up to 4.5M(!) Cims, with 2M transport trips per month (thanks @ObservantOtter!),
 so I am now _very_ confident that it scales!
 - It has very good synergy with **Transit Capacity Multiplier** mod, and mods that add more vehicles to trams, as the
 larger vehicles will no longer have a higher chance of getting stuck boarding a rogue pet or child.
