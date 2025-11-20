@@ -10,7 +10,7 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 ### Release Changelog
 
 #### 0.1.9
-- Update systems for 1.4.2f1, which ensures trains don't hit bikes, apparently.
+- Update systems for 1.4.2f1, ensuring compatibility with bikes!
 
 ### Technical Details
 
