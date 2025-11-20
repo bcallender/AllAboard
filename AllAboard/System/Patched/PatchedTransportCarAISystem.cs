@@ -1765,6 +1765,7 @@ namespace AllAboard.System.Patched
                                    publicTransport.m_MaxBoardingDistance !=
                                    3.4028234663852886E+38))
                         return false;
+                    
                     if (passengers.IsCreated)
                     {
                         var boardingComplete = PublicTransportBoardingHelper.ArePassengersReady(passengers,
