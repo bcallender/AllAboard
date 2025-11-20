@@ -1,8 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Game.Simulation.TransportTrainAISystem
 // Assembly: Game, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 64859962-350D-494E-A4FD-F6E25CB4004E
-// Assembly location: C:\Program Files (x86)\Steam\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Game.dll
+// MVID: 56B6C274-2D52-4DAC-BD5B-A4AB43BF9875
 
 using System.Runtime.CompilerServices;
 using AllAboard.System.Utility;
@@ -916,7 +915,8 @@ namespace AllAboard.System.Patched
                     m_Weights = new PathfindWeights(1f, 1f, 1f, 1f),
                     m_Methods = PathMethod.Track,
                     m_IgnoredRules = RuleFlags.ForbidCombustionEngines | RuleFlags.ForbidHeavyTraffic |
-                                     RuleFlags.ForbidPrivateTraffic | RuleFlags.ForbidSlowTraffic
+                                     RuleFlags.ForbidPrivateTraffic | RuleFlags.ForbidSlowTraffic |
+                                     RuleFlags.AvoidBicycles
                 };
                 var origin = new SetupQueueTarget
                 {
