@@ -37,7 +37,7 @@ namespace AllAboard
                 (uint)m_AllAboardSettings.BusMaxDwellDelaySlider;
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>().Enabled = false;
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportCarAISystem>().Enabled = false;
-            updateSystem.UpdateAt<System.Patched.PatchedTransportCarAISystem>(SystemUpdatePhase.GameSimulation);
+            updateSystem.UpdateAt<System.Patched.PatchedTransportTrainAISystem>(SystemUpdatePhase.GameSimulation);
             updateSystem.UpdateAt<System.Patched.PatchedTransportCarAISystem>(SystemUpdatePhase.GameSimulation);
             log.Info("Completed Replacement of Base Train/CarAI Systems.");
             log.InfoFormat("Bus Max Dwell Time: {0}", PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data);
