@@ -149,8 +149,6 @@ namespace AllAboard.System.Patched
             m_TransportTrainCarriageSelectData.PreUpdate(this, m_CityConfigurationSystem, m_CarriagePrefabQuery,
                 Allocator.TempJob, out jobHandle1);
             m_BoardingLookupData.Update(this);
-            // ISSUE: reference to a compiler-generated method
-            // ISSUE: object of a compiler-generated type is created
             var jobHandle2 = new TransportTrainTickJob
             {
                 m_EntityType =
@@ -289,7 +287,6 @@ namespace AllAboard.System.Patched
                 m_AchievementTriggerSystem, m_BoardingLookupData, m_SimulationSystem.frameIndex, jobHandle2);
             m_TransportTrainCarriageSelectData.PostUpdate(jobHandle2);
             boardingData.Dispose(inputDeps);
-            // ISSUE: reference to a compiler-generated method
             m_PathfindSetupSystem.AddQueueWriter(jobHandle2);
             m_EndFrameBarrier.AddJobHandleForProducer(jobHandle2);
             Dependency = inputDeps;
@@ -304,9 +301,7 @@ namespace AllAboard.System.Patched
         protected override void OnCreateForCompiler()
         {
             base.OnCreateForCompiler();
-            // ISSUE: reference to a compiler-generated method
             __AssignQueries(ref CheckedStateRef);
-            // ISSUE: reference to a compiler-generated method
             __TypeHandle.__AssignHandles(ref CheckedStateRef);
         }
 
@@ -416,7 +411,6 @@ namespace AllAboard.System.Patched
                     var publicTransport = new PublicTransport();
                     if (nativeArray6.Length != 0)
                         publicTransport = nativeArray6[index];
-                    // ISSUE: reference to a compiler-generated method
                     Tick(unfilteredChunkIndex, ref random, vehicleEntity, owner, prefabRef, currentRoute, layout,
                         navigationLanes, serviceDispatches, isUnspawned, ref cargoTransport, ref publicTransport,
                         ref pathOwner, ref target, ref odometer);
@@ -455,9 +449,7 @@ namespace AllAboard.System.Patched
                         m_LoadingResources.TryGetBuffer(vehicleEntity, out bufferData))
                     {
                         if (bufferData.Length != 0)
-                            // ISSUE: reference to a compiler-generated method
                             QuantityUpdated(jobIndex, vehicleEntity, layout);
-                        // ISSUE: reference to a compiler-generated method
                         if (CheckLoadingResources(jobIndex, ref random, vehicleEntity, true, layout, bufferData))
                         {
                             pathOwner.m_State |= PathFlags.Updated;
@@ -498,7 +490,6 @@ namespace AllAboard.System.Patched
                             ref m_EdgeLaneData, ref m_OwnerData, ref m_EdgeData, ref m_ConnectedEdges, ref m_SubLanes);
                     }
 
-                    // ISSUE: reference to a compiler-generated method
                     UpdatePantograph(layout);
                 }
 
@@ -532,7 +523,6 @@ namespace AllAboard.System.Patched
 
                 if (num1 != 0)
                 {
-                    // ISSUE: reference to a compiler-generated method
                     CheckServiceDispatches(vehicleEntity, serviceDispatches, ref cargoTransport, ref publicTransport);
                     if (serviceDispatches.Length == 0 &&
                         (cargoTransport.m_State & (CargoTransportFlags.RequiresMaintenance |
@@ -540,7 +530,6 @@ namespace AllAboard.System.Patched
                         0 && (publicTransport.m_State & (PublicTransportFlags.RequiresMaintenance |
                                                          PublicTransportFlags.DummyTraffic |
                                                          PublicTransportFlags.Disabled)) == 0)
-                        // ISSUE: reference to a compiler-generated method
                         RequestTargetIfNeeded(jobIndex, vehicleEntity, ref publicTransport, ref cargoTransport);
                 }
                 else
@@ -579,7 +568,6 @@ namespace AllAboard.System.Patched
                         (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                     {
                         flag = true;
-                        // ISSUE: reference to a compiler-generated method
                         StopBoarding(jobIndex, ref random, vehicleEntity, currentRoute, layout, ref cargoTransport,
                             ref publicTransport, ref target, ref odometer, isCargoVehicle, true);
                     }
@@ -595,7 +583,6 @@ namespace AllAboard.System.Patched
                         return;
                     }
 
-                    // ISSUE: reference to a compiler-generated method
                     ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches, ref cargoTransport,
                         ref publicTransport, ref train, ref pathOwner, ref target);
                 }
@@ -608,18 +595,15 @@ namespace AllAboard.System.Patched
                         if ((cargoTransport.m_State & CargoTransportFlags.Boarding) != 0 ||
                             (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                         {
-                            // ISSUE: reference to a compiler-generated method
                             if (StopBoarding(jobIndex, ref random, vehicleEntity, currentRoute, layout,
                                     ref cargoTransport, ref publicTransport, ref target, ref odometer, isCargoVehicle,
                                     false))
                             {
                                 flag = true;
-                                // ISSUE: reference to a compiler-generated method
                                 if (!SelectNextDispatch(jobIndex, vehicleEntity, currentRoute, layout, navigationLanes,
                                         serviceDispatches, ref cargoTransport, ref publicTransport, ref train,
                                         ref currentLane, ref pathOwner, ref target))
                                 {
-                                    // ISSUE: reference to a compiler-generated method
                                     if (!TryParkTrain(jobIndex, vehicleEntity, owner, layout, navigationLanes,
                                             ref train, ref cargoTransport, ref publicTransport, ref currentLane))
                                         VehicleUtils.DeleteVehicle(m_CommandBuffer, jobIndex, vehicleEntity, layout);
@@ -631,16 +615,12 @@ namespace AllAboard.System.Patched
                         }
                         else
                         {
-                            // ISSUE: reference to a compiler-generated method
-                            // ISSUE: reference to a compiler-generated method
-                            // ISSUE: reference to a compiler-generated method
                             if ((CountPassengers(vehicleEntity, layout) <= 0 || !StartBoarding(jobIndex, vehicleEntity,
                                     currentRoute, prefabRef, ref cargoTransport, ref publicTransport, ref target,
                                     isCargoVehicle)) && !SelectNextDispatch(jobIndex, vehicleEntity, currentRoute,
                                     layout, navigationLanes, serviceDispatches, ref cargoTransport, ref publicTransport,
                                     ref train, ref currentLane, ref pathOwner, ref target))
                             {
-                                // ISSUE: reference to a compiler-generated method
                                 if (!TryParkTrain(jobIndex, vehicleEntity, owner, layout, navigationLanes, ref train,
                                         ref cargoTransport, ref publicTransport, ref currentLane))
                                     VehicleUtils.DeleteVehicle(m_CommandBuffer, jobIndex, vehicleEntity, layout);
@@ -653,18 +633,15 @@ namespace AllAboard.System.Patched
                     else if ((cargoTransport.m_State & CargoTransportFlags.Boarding) != 0 ||
                              (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                     {
-                        // ISSUE: reference to a compiler-generated method
                         if (StopBoarding(jobIndex, ref random, vehicleEntity, currentRoute, layout, ref cargoTransport,
                                 ref publicTransport, ref target, ref odometer, isCargoVehicle, false))
                         {
                             flag = true;
                             if ((cargoTransport.m_State & CargoTransportFlags.EnRoute) == 0 &&
                                 (publicTransport.m_State & PublicTransportFlags.EnRoute) == 0)
-                                // ISSUE: reference to a compiler-generated method
                                 ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches,
                                     ref cargoTransport, ref publicTransport, ref train, ref pathOwner, ref target);
                             else
-                                // ISSUE: reference to a compiler-generated method
                                 SetNextWaypointTarget(currentRoute, ref pathOwner, ref target);
                         }
                     }
@@ -673,23 +650,19 @@ namespace AllAboard.System.Patched
                         if (!m_RouteWaypoints.HasBuffer(currentRoute.m_Route) ||
                             !m_WaypointData.HasComponent(target.m_Target))
                         {
-                            // ISSUE: reference to a compiler-generated method
                             ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches,
                                 ref cargoTransport, ref publicTransport, ref train, ref pathOwner, ref target);
                         }
                         else
                         {
-                            // ISSUE: reference to a compiler-generated method
                             if (!StartBoarding(jobIndex, vehicleEntity, currentRoute, prefabRef, ref cargoTransport,
                                     ref publicTransport, ref target, isCargoVehicle))
                             {
                                 if ((cargoTransport.m_State & CargoTransportFlags.EnRoute) == 0 &&
                                     (publicTransport.m_State & PublicTransportFlags.EnRoute) == 0)
-                                    // ISSUE: reference to a compiler-generated method
                                     ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches,
                                         ref cargoTransport, ref publicTransport, ref train, ref pathOwner, ref target);
                                 else
-                                    // ISSUE: reference to a compiler-generated method
                                     SetNextWaypointTarget(currentRoute, ref pathOwner, ref target);
                             }
                         }
@@ -701,7 +674,6 @@ namespace AllAboard.System.Patched
                     m_CurrentLaneData[entity1] = currentLane;
                     VehicleUtils.ReverseTrain(vehicleEntity, layout, ref m_TrainData, ref m_CurrentLaneData,
                         ref m_NavigationData);
-                    // ISSUE: reference to a compiler-generated method
                     UpdatePantograph(layout);
                     entity1 = vehicleEntity;
                     if (layout.Length != 0)
@@ -713,7 +685,6 @@ namespace AllAboard.System.Patched
                          (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                 {
                     flag = true;
-                    // ISSUE: reference to a compiler-generated method
                     StopBoarding(jobIndex, ref random, vehicleEntity, currentRoute, layout, ref cargoTransport,
                         ref publicTransport, ref target, ref odometer, isCargoVehicle, true);
                 }
@@ -727,16 +698,13 @@ namespace AllAboard.System.Patched
                     if (!flag)
                     {
                         var controllerTrain = m_TrainData[vehicleEntity];
-                        // ISSUE: reference to a compiler-generated method
                         UpdateStop(entity1, controllerTrain, true, ref train, ref publicTransport, ref target);
                     }
                 }
                 else if ((cargoTransport.m_State & CargoTransportFlags.Returning) != 0 ||
                          (publicTransport.m_State & PublicTransportFlags.Returning) != 0)
                 {
-                    // ISSUE: reference to a compiler-generated method
                     if (CountPassengers(vehicleEntity, layout) == 0)
-                        // ISSUE: reference to a compiler-generated method
                         SelectNextDispatch(jobIndex, vehicleEntity, currentRoute, layout, navigationLanes,
                             serviceDispatches, ref cargoTransport, ref publicTransport, ref train, ref currentLane,
                             ref pathOwner, ref target);
@@ -745,12 +713,10 @@ namespace AllAboard.System.Patched
                          (publicTransport.m_State & PublicTransportFlags.Arriving) != 0)
                 {
                     var controllerTrain = m_TrainData[vehicleEntity];
-                    // ISSUE: reference to a compiler-generated method
                     UpdateStop(entity1, controllerTrain, false, ref train, ref publicTransport, ref target);
                 }
                 else
                 {
-                    // ISSUE: reference to a compiler-generated method
                     CheckNavigationLanes(currentRoute, navigationLanes, ref cargoTransport, ref publicTransport,
                         ref currentLane, ref pathOwner, ref target, out skipWaypoint);
                 }
@@ -759,11 +725,9 @@ namespace AllAboard.System.Patched
                         (publicTransport.m_State & PublicTransportFlags.Boarding) == 0 ? 1 : 0) | (flag ? 1 : 0)) != 0)
                 {
                     if (VehicleUtils.RequireNewPath(pathOwner))
-                        // ISSUE: reference to a compiler-generated method
                         FindNewPath(vehicleEntity, prefabRef, skipWaypoint, ref currentLane, ref cargoTransport,
                             ref publicTransport, ref pathOwner, ref target);
                     else if ((pathOwner.m_State & (PathFlags.Pending | PathFlags.Failed | PathFlags.Stuck)) == 0)
-                        // ISSUE: reference to a compiler-generated method
                         CheckParkingSpace(navigationLanes, ref train, ref pathOwner);
                 }
 
@@ -989,7 +953,6 @@ namespace AllAboard.System.Patched
                     if ((pathOwner.m_State & (PathFlags.Pending | PathFlags.Failed | PathFlags.Obsolete)) != 0)
                         return;
                     skipWaypoint = target.m_Target;
-                    // ISSUE: reference to a compiler-generated method
                     SetNextWaypointTarget(currentRoute, ref pathOwner, ref target);
                     navigationLane.m_Flags &= ~TrainLaneFlags.EndOfPath;
                     navigationLanes[navigationLanes.Length - 1] = navigationLane;
@@ -1142,7 +1105,6 @@ namespace AllAboard.System.Patched
                                     if (m_RouteColorData.TryGetComponent(route, out componentData))
                                     {
                                         m_CommandBuffer.AddComponent(jobIndex, vehicleEntity, componentData);
-                                        // ISSUE: reference to a compiler-generated method
                                         UpdateBatches(jobIndex, vehicleEntity, layout);
                                     }
                                 }
@@ -1293,7 +1255,6 @@ namespace AllAboard.System.Patched
                     var connected = m_ConnectedData[target.m_Target];
                     if (m_BoardingVehicleData.HasComponent(connected.m_Connected))
                     {
-                        // ISSUE: reference to a compiler-generated method
                         var transportStationFromStop = GetTransportStationFromStop(connected.m_Connected);
                         var nextStorageCompany = Entity.Null;
                         var refuel = false;
@@ -1322,7 +1283,6 @@ namespace AllAboard.System.Patched
                             cargoTransport.m_State |= CargoTransportFlags.EnRoute;
                             publicTransport.m_State |= PublicTransportFlags.EnRoute;
                             if (isCargoVehicle)
-                                // ISSUE: reference to a compiler-generated method
                                 nextStorageCompany = GetNextStorageCompany(currentRoute.m_Route, target.m_Target);
                         }
 
@@ -1330,7 +1290,6 @@ namespace AllAboard.System.Patched
                         publicTransport.m_State |= PublicTransportFlags.RouteSource;
                         var storageCompanyFromStop = Entity.Null;
                         if (isCargoVehicle)
-                            // ISSUE: reference to a compiler-generated method
                             storageCompanyFromStop = GetStorageCompanyFromStop(connected.m_Connected);
                         m_BoardingData.BeginBoarding(vehicleEntity, currentRoute.m_Route, connected.m_Connected,
                             target.m_Target, storageCompanyFromStop, nextStorageCompany, refuel);
@@ -1409,11 +1368,9 @@ namespace AllAboard.System.Patched
                 {
                     if (layout.Length != 0)
                         for (var index = 0; index < layout.Length && loadingResources.Length != 0; ++index)
-                            // ISSUE: reference to a compiler-generated method
                             flag |= TryChangeCarriagePrefab(jobIndex, ref random, layout[index].m_Vehicle, dummyTraffic,
                                 loadingResources);
                     else
-                        // ISSUE: reference to a compiler-generated method
                         flag |= TryChangeCarriagePrefab(jobIndex, ref random, vehicleEntity, dummyTraffic,
                             loadingResources);
 
@@ -1448,7 +1405,6 @@ namespace AllAboard.System.Patched
                     {
                         var dummyTraffic = (cargoTransport.m_State & CargoTransportFlags.DummyTraffic) != 0 ||
                                            (publicTransport.m_State & PublicTransportFlags.DummyTraffic) > 0;
-                        // ISSUE: reference to a compiler-generated method
                         flag1 |= CheckLoadingResources(jobIndex, ref random, vehicleEntity, dummyTraffic, layout,
                             loadingResource);
                     }
@@ -1485,7 +1441,6 @@ namespace AllAboard.System.Patched
                     (publicTransport.m_State & PublicTransportFlags.Refueling) != 0)
                     odometer.m_Distance = 0.0f;
                 if (isCargoVehicle)
-                    // ISSUE: reference to a compiler-generated method
                     QuantityUpdated(jobIndex, vehicleEntity, layout);
                 if (flag2)
                 {
@@ -1493,10 +1448,8 @@ namespace AllAboard.System.Patched
                     var nextStorageCompany = Entity.Null;
                     if (isCargoVehicle && !forcedStop)
                     {
-                        // ISSUE: reference to a compiler-generated method
                         storageCompanyFromStop = GetStorageCompanyFromStop(componentData1.m_Connected);
                         if ((cargoTransport.m_State & CargoTransportFlags.EnRoute) != 0)
-                            // ISSUE: reference to a compiler-generated method
                             nextStorageCompany = GetNextStorageCompany(currentRoute.m_Route, target.m_Target);
                     }
 
@@ -1602,7 +1555,6 @@ namespace AllAboard.System.Patched
                     var waypoint = routeWaypoint[index2].m_Waypoint;
                     if (m_ConnectedData.HasComponent(waypoint))
                     {
-                        // ISSUE: reference to a compiler-generated method
                         var storageCompanyFromStop = GetStorageCompanyFromStop(m_ConnectedData[waypoint].m_Connected);
                         if (storageCompanyFromStop != Entity.Null)
                             return storageCompanyFromStop;
@@ -1620,7 +1572,6 @@ namespace AllAboard.System.Patched
                 bool useEnabledMask,
                 in v128 chunkEnabledMask)
             {
-                // ISSUE: reference to a compiler-generated method
                 Execute(in chunk, unfilteredChunkIndex, useEnabledMask, in chunkEnabledMask);
             }
         }
@@ -1646,8 +1597,7 @@ namespace AllAboard.System.Patched
             [ReadOnly] public ComponentLookup<Owner> __Game_Common_Owner_RO_ComponentLookup;
             [ReadOnly] public ComponentLookup<PathInformation> __Game_Pathfind_PathInformation_RO_ComponentLookup;
 
-            [ReadOnly]
-            public ComponentLookup<TransportVehicleRequest>
+            [ReadOnly] public ComponentLookup<TransportVehicleRequest>
                 __Game_Simulation_TransportVehicleRequest_RO_ComponentLookup;
 
             [ReadOnly] public ComponentLookup<ParkedTrain> __Game_Vehicles_ParkedTrain_RO_ComponentLookup;
@@ -1659,12 +1609,10 @@ namespace AllAboard.System.Patched
             [ReadOnly] public ComponentLookup<TrainData> __Game_Prefabs_TrainData_RO_ComponentLookup;
             [ReadOnly] public ComponentLookup<PrefabRef> __Game_Prefabs_PrefabRef_RO_ComponentLookup;
 
-            [ReadOnly]
-            public ComponentLookup<PublicTransportVehicleData>
+            [ReadOnly] public ComponentLookup<PublicTransportVehicleData>
                 __Game_Prefabs_PublicTransportVehicleData_RO_ComponentLookup;
 
-            [ReadOnly]
-            public ComponentLookup<CargoTransportVehicleData>
+            [ReadOnly] public ComponentLookup<CargoTransportVehicleData>
                 __Game_Prefabs_CargoTransportVehicleData_RO_ComponentLookup;
 
             [ReadOnly] public ComponentLookup<Waypoint> __Game_Routes_Waypoint_RO_ComponentLookup;

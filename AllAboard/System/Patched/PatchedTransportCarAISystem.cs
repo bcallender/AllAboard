@@ -1767,7 +1767,8 @@ namespace AllAboard.System.Patched
                                    m_SimulationFrameIndex < publicTransport.m_DepartureFrame ||
                                    publicTransport.m_MaxBoardingDistance != 3.4028234663852886E+38))
                         return false;
-                    if (passengers.IsCreated) {
+                    if (passengers.IsCreated)
+                    {
                         var boardingComplete = PublicTransportBoardingHelper.ArePassengersReady(passengers,
                             m_CurrentVehicleData,
                             publicTransport,
@@ -1890,12 +1891,10 @@ namespace AllAboard.System.Patched
             [ReadOnly] public ComponentLookup<CarData> __Game_Prefabs_CarData_RO_ComponentLookup;
             [ReadOnly] public ComponentLookup<PrefabRef> __Game_Prefabs_PrefabRef_RO_ComponentLookup;
 
-            [ReadOnly]
-            public ComponentLookup<PublicTransportVehicleData>
+            [ReadOnly] public ComponentLookup<PublicTransportVehicleData>
                 __Game_Prefabs_PublicTransportVehicleData_RO_ComponentLookup;
 
-            [ReadOnly]
-            public ComponentLookup<CargoTransportVehicleData>
+            [ReadOnly] public ComponentLookup<CargoTransportVehicleData>
                 __Game_Prefabs_CargoTransportVehicleData_RO_ComponentLookup;
 
             [ReadOnly] public ComponentLookup<ParkingLaneData> __Game_Prefabs_ParkingLaneData_RO_ComponentLookup;
@@ -1905,14 +1904,12 @@ namespace AllAboard.System.Patched
 
             [ReadOnly] public ComponentLookup<ServiceRequest> __Game_Simulation_ServiceRequest_RO_ComponentLookup;
 
-            [ReadOnly]
-            public ComponentLookup<TransportVehicleRequest>
+            [ReadOnly] public ComponentLookup<TransportVehicleRequest>
                 __Game_Simulation_TransportVehicleRequest_RO_ComponentLookup;
 
             [ReadOnly] public ComponentLookup<EvacuationRequest> __Game_Simulation_EvacuationRequest_RO_ComponentLookup;
 
-            [ReadOnly]
-            public ComponentLookup<PrisonerTransportRequest>
+            [ReadOnly] public ComponentLookup<PrisonerTransportRequest>
                 __Game_Simulation_PrisonerTransportRequest_RO_ComponentLookup;
 
             [ReadOnly] public ComponentLookup<Waypoint> __Game_Routes_Waypoint_RO_ComponentLookup;
