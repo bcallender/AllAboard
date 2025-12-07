@@ -1,7 +1,7 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: Game.Simulation.TransportTrainAISystem
 // Assembly: Game, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 56B6C274-2D52-4DAC-BD5B-A4AB43BF9875
+// MVID: 7F460502-8735-4AB5-92B4-3D83EE79E8D6
 
 using System.Runtime.CompilerServices;
 using AllAboard.System.Utility;
@@ -144,20 +144,21 @@ namespace AllAboard.System.Patched
         [Preserve]
         protected override void OnUpdate()
         {
-            var boardingData =
-                new TransportBoardingHelpers.BoardingData(Allocator.TempJob);
+            var boardingData = new TransportBoardingHelpers.BoardingData(Allocator.TempJob);
             JobHandle jobHandle1;
-            m_TransportTrainCarriageSelectData.PreUpdate(this, m_CityConfigurationSystem,
-                m_CarriagePrefabQuery, Allocator.TempJob, out jobHandle1);
+            m_TransportTrainCarriageSelectData.PreUpdate(this, m_CityConfigurationSystem, m_CarriagePrefabQuery,
+                Allocator.TempJob, out jobHandle1);
             m_BoardingLookupData.Update(this);
+            // ISSUE: reference to a compiler-generated method
+            // ISSUE: object of a compiler-generated type is created
             var jobHandle2 = new TransportTrainTickJob
             {
                 m_EntityType =
-                    InternalCompilerInterface.GetEntityTypeHandle(
-                        ref __TypeHandle.__Unity_Entities_Entity_TypeHandle,
+                    InternalCompilerInterface.GetEntityTypeHandle(ref __TypeHandle.__Unity_Entities_Entity_TypeHandle,
                         ref CheckedStateRef),
-                m_OwnerType = InternalCompilerInterface.GetComponentTypeHandle(
-                    ref __TypeHandle.__Game_Common_Owner_RO_ComponentTypeHandle, ref CheckedStateRef),
+                m_OwnerType =
+                    InternalCompilerInterface.GetComponentTypeHandle(
+                        ref __TypeHandle.__Game_Common_Owner_RO_ComponentTypeHandle, ref CheckedStateRef),
                 m_UnspawnedType = InternalCompilerInterface.GetComponentTypeHandle(
                     ref __TypeHandle.__Game_Objects_Unspawned_RO_ComponentTypeHandle, ref CheckedStateRef),
                 m_PrefabRefType = InternalCompilerInterface.GetComponentTypeHandle(
@@ -165,11 +166,9 @@ namespace AllAboard.System.Patched
                 m_CurrentRouteType = InternalCompilerInterface.GetComponentTypeHandle(
                     ref __TypeHandle.__Game_Routes_CurrentRoute_RO_ComponentTypeHandle, ref CheckedStateRef),
                 m_CargoTransportType = InternalCompilerInterface.GetComponentTypeHandle(
-                    ref __TypeHandle.__Game_Vehicles_CargoTransport_RW_ComponentTypeHandle,
-                    ref CheckedStateRef),
+                    ref __TypeHandle.__Game_Vehicles_CargoTransport_RW_ComponentTypeHandle, ref CheckedStateRef),
                 m_PublicTransportType = InternalCompilerInterface.GetComponentTypeHandle(
-                    ref __TypeHandle.__Game_Vehicles_PublicTransport_RW_ComponentTypeHandle,
-                    ref CheckedStateRef),
+                    ref __TypeHandle.__Game_Vehicles_PublicTransport_RW_ComponentTypeHandle, ref CheckedStateRef),
                 m_TargetType = InternalCompilerInterface.GetComponentTypeHandle(
                     ref __TypeHandle.__Game_Common_Target_RW_ComponentTypeHandle, ref CheckedStateRef),
                 m_PathOwnerType = InternalCompilerInterface.GetComponentTypeHandle(
@@ -179,92 +178,102 @@ namespace AllAboard.System.Patched
                 m_LayoutElementType = InternalCompilerInterface.GetBufferTypeHandle(
                     ref __TypeHandle.__Game_Vehicles_LayoutElement_RW_BufferTypeHandle, ref CheckedStateRef),
                 m_NavigationLaneType = InternalCompilerInterface.GetBufferTypeHandle(
-                    ref __TypeHandle.__Game_Vehicles_TrainNavigationLane_RW_BufferTypeHandle,
-                    ref CheckedStateRef),
+                    ref __TypeHandle.__Game_Vehicles_TrainNavigationLane_RW_BufferTypeHandle, ref CheckedStateRef),
                 m_ServiceDispatchType = InternalCompilerInterface.GetBufferTypeHandle(
-                    ref __TypeHandle.__Game_Simulation_ServiceDispatch_RW_BufferTypeHandle,
-                    ref CheckedStateRef),
+                    ref __TypeHandle.__Game_Simulation_ServiceDispatch_RW_BufferTypeHandle, ref CheckedStateRef),
                 m_EntityLookup =
-                    InternalCompilerInterface.GetEntityStorageInfoLookup(
-                        ref __TypeHandle.__EntityStorageInfoLookup,
+                    InternalCompilerInterface.GetEntityStorageInfoLookup(ref __TypeHandle.__EntityStorageInfoLookup,
                         ref CheckedStateRef),
-                m_TransformData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Objects_Transform_RO_ComponentLookup, ref CheckedStateRef),
+                m_TransformData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Objects_Transform_RO_ComponentLookup, ref CheckedStateRef),
                 m_SpawnLocationData = InternalCompilerInterface.GetComponentLookup(
                     ref __TypeHandle.__Game_Objects_SpawnLocation_RO_ComponentLookup, ref CheckedStateRef),
-                m_OwnerData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Common_Owner_RO_ComponentLookup, ref CheckedStateRef),
+                m_OwnerData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Common_Owner_RO_ComponentLookup, ref CheckedStateRef),
                 m_PathInformationData = InternalCompilerInterface.GetComponentLookup(
                     ref __TypeHandle.__Game_Pathfind_PathInformation_RO_ComponentLookup, ref CheckedStateRef),
                 m_TransportVehicleRequestData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Simulation_TransportVehicleRequest_RO_ComponentLookup,
-                    ref CheckedStateRef),
+                    ref __TypeHandle.__Game_Simulation_TransportVehicleRequest_RO_ComponentLookup, ref CheckedStateRef),
                 m_ParkedTrainData = InternalCompilerInterface.GetComponentLookup(
                     ref __TypeHandle.__Game_Vehicles_ParkedTrain_RO_ComponentLookup, ref CheckedStateRef),
                 m_ControllerData = InternalCompilerInterface.GetComponentLookup(
                     ref __TypeHandle.__Game_Vehicles_Controller_RO_ComponentLookup, ref CheckedStateRef),
                 m_CurveData =
-                    InternalCompilerInterface.GetComponentLookup(
-                        ref __TypeHandle.__Game_Net_Curve_RO_ComponentLookup, ref CheckedStateRef),
+                    InternalCompilerInterface.GetComponentLookup(ref __TypeHandle.__Game_Net_Curve_RO_ComponentLookup,
+                        ref CheckedStateRef),
                 m_LaneData =
+                    InternalCompilerInterface.GetComponentLookup(ref __TypeHandle.__Game_Net_Lane_RO_ComponentLookup,
+                        ref CheckedStateRef),
+                m_EdgeLaneData =
                     InternalCompilerInterface.GetComponentLookup(
-                        ref __TypeHandle.__Game_Net_Lane_RO_ComponentLookup, ref CheckedStateRef),
-                m_EdgeLaneData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Net_EdgeLane_RO_ComponentLookup, ref CheckedStateRef),
-                m_EdgeData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Net_Edge_RO_ComponentLookup, ref CheckedStateRef),
-                m_PrefabTrainData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Prefabs_TrainData_RO_ComponentLookup, ref CheckedStateRef),
-                m_PrefabRefData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Prefabs_PrefabRef_RO_ComponentLookup, ref CheckedStateRef),
+                        ref __TypeHandle.__Game_Net_EdgeLane_RO_ComponentLookup, ref CheckedStateRef),
+                m_EdgeData =
+                    InternalCompilerInterface.GetComponentLookup(ref __TypeHandle.__Game_Net_Edge_RO_ComponentLookup,
+                        ref CheckedStateRef),
+                m_PrefabTrainData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Prefabs_TrainData_RO_ComponentLookup, ref CheckedStateRef),
+                m_PrefabRefData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Prefabs_PrefabRef_RO_ComponentLookup, ref CheckedStateRef),
                 m_PublicTransportVehicleData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Prefabs_PublicTransportVehicleData_RO_ComponentLookup,
-                    ref CheckedStateRef),
+                    ref __TypeHandle.__Game_Prefabs_PublicTransportVehicleData_RO_ComponentLookup, ref CheckedStateRef),
                 m_CargoTransportVehicleData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Prefabs_CargoTransportVehicleData_RO_ComponentLookup,
-                    ref CheckedStateRef),
-                m_WaypointData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Routes_Waypoint_RO_ComponentLookup, ref CheckedStateRef),
-                m_ConnectedData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Routes_Connected_RO_ComponentLookup, ref CheckedStateRef),
+                    ref __TypeHandle.__Game_Prefabs_CargoTransportVehicleData_RO_ComponentLookup, ref CheckedStateRef),
+                m_WaypointData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Routes_Waypoint_RO_ComponentLookup, ref CheckedStateRef),
+                m_ConnectedData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Routes_Connected_RO_ComponentLookup, ref CheckedStateRef),
                 m_BoardingVehicleData = InternalCompilerInterface.GetComponentLookup(
                     ref __TypeHandle.__Game_Routes_BoardingVehicle_RO_ComponentLookup, ref CheckedStateRef),
-                m_RouteColorData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Routes_Color_RO_ComponentLookup, ref CheckedStateRef),
+                m_RouteColorData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Routes_Color_RO_ComponentLookup, ref CheckedStateRef),
                 m_StorageCompanyData = InternalCompilerInterface.GetComponentLookup(
                     ref __TypeHandle.__Game_Companies_StorageCompany_RO_ComponentLookup, ref CheckedStateRef),
                 m_TransportStationData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Buildings_TransportStation_RO_ComponentLookup,
-                    ref CheckedStateRef),
+                    ref __TypeHandle.__Game_Buildings_TransportStation_RO_ComponentLookup, ref CheckedStateRef),
                 m_TransportDepotData = InternalCompilerInterface.GetComponentLookup(
                     ref __TypeHandle.__Game_Buildings_TransportDepot_RO_ComponentLookup, ref CheckedStateRef),
                 m_CurrentVehicleData = InternalCompilerInterface.GetComponentLookup(
                     ref __TypeHandle.__Game_Creatures_CurrentVehicle_RO_ComponentLookup, ref CheckedStateRef),
-                m_Passengers = InternalCompilerInterface.GetBufferLookup(
-                    ref __TypeHandle.__Game_Vehicles_Passenger_RO_BufferLookup, ref CheckedStateRef),
-                m_EconomyResources = InternalCompilerInterface.GetBufferLookup(
-                    ref __TypeHandle.__Game_Economy_Resources_RO_BufferLookup, ref CheckedStateRef),
-                m_RouteWaypoints = InternalCompilerInterface.GetBufferLookup(
-                    ref __TypeHandle.__Game_Routes_RouteWaypoint_RO_BufferLookup, ref CheckedStateRef),
-                m_ConnectedEdges = InternalCompilerInterface.GetBufferLookup(
-                    ref __TypeHandle.__Game_Net_ConnectedEdge_RO_BufferLookup, ref CheckedStateRef),
-                m_SubLanes = InternalCompilerInterface.GetBufferLookup(
-                    ref __TypeHandle.__Game_Net_SubLane_RO_BufferLookup, ref CheckedStateRef),
-                m_TrainData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Vehicles_Train_RW_ComponentLookup, ref CheckedStateRef),
+                m_Passengers =
+                    InternalCompilerInterface.GetBufferLookup(
+                        ref __TypeHandle.__Game_Vehicles_Passenger_RO_BufferLookup, ref CheckedStateRef),
+                m_EconomyResources =
+                    InternalCompilerInterface.GetBufferLookup(ref __TypeHandle.__Game_Economy_Resources_RO_BufferLookup,
+                        ref CheckedStateRef),
+                m_RouteWaypoints =
+                    InternalCompilerInterface.GetBufferLookup(
+                        ref __TypeHandle.__Game_Routes_RouteWaypoint_RO_BufferLookup, ref CheckedStateRef),
+                m_ConnectedEdges =
+                    InternalCompilerInterface.GetBufferLookup(ref __TypeHandle.__Game_Net_ConnectedEdge_RO_BufferLookup,
+                        ref CheckedStateRef),
+                m_SubLanes =
+                    InternalCompilerInterface.GetBufferLookup(ref __TypeHandle.__Game_Net_SubLane_RO_BufferLookup,
+                        ref CheckedStateRef),
+                m_TrainData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Vehicles_Train_RW_ComponentLookup, ref CheckedStateRef),
                 m_CurrentLaneData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Vehicles_TrainCurrentLane_RW_ComponentLookup,
-                    ref CheckedStateRef),
+                    ref __TypeHandle.__Game_Vehicles_TrainCurrentLane_RW_ComponentLookup, ref CheckedStateRef),
                 m_NavigationData = InternalCompilerInterface.GetComponentLookup(
                     ref __TypeHandle.__Game_Vehicles_TrainNavigation_RW_ComponentLookup, ref CheckedStateRef),
-                m_BlockerData = InternalCompilerInterface.GetComponentLookup(
-                    ref __TypeHandle.__Game_Vehicles_Blocker_RW_ComponentLookup, ref CheckedStateRef),
-                m_PathElements = InternalCompilerInterface.GetBufferLookup(
-                    ref __TypeHandle.__Game_Pathfind_PathElement_RW_BufferLookup, ref CheckedStateRef),
+                m_BlockerData =
+                    InternalCompilerInterface.GetComponentLookup(
+                        ref __TypeHandle.__Game_Vehicles_Blocker_RW_ComponentLookup, ref CheckedStateRef),
+                m_PathElements =
+                    InternalCompilerInterface.GetBufferLookup(
+                        ref __TypeHandle.__Game_Pathfind_PathElement_RW_BufferLookup, ref CheckedStateRef),
                 m_LoadingResources = InternalCompilerInterface.GetBufferLookup(
                     ref __TypeHandle.__Game_Vehicles_LoadingResources_RW_BufferLookup, ref CheckedStateRef),
-                m_LayoutElements = InternalCompilerInterface.GetBufferLookup(
-                    ref __TypeHandle.__Game_Vehicles_LayoutElement_RW_BufferLookup, ref CheckedStateRef),
+                m_LayoutElements =
+                    InternalCompilerInterface.GetBufferLookup(
+                        ref __TypeHandle.__Game_Vehicles_LayoutElement_RW_BufferLookup, ref CheckedStateRef),
                 m_SimulationFrameIndex = m_SimulationSystem.frameIndex,
                 m_RandomSeed = RandomSeed.Next(),
                 m_TransportVehicleRequestArchetype = m_TransportVehicleRequestArchetype,
@@ -275,13 +284,12 @@ namespace AllAboard.System.Patched
                 m_CommandBuffer = m_EndFrameBarrier.CreateCommandBuffer().AsParallelWriter(),
                 m_PathfindQueue = m_PathfindSetupSystem.GetQueue(this, 64 /*0x40*/).AsParallelWriter(),
                 m_BoardingData = boardingData.ToConcurrent()
-            }.ScheduleParallel(m_VehicleQuery,
-                JobHandle.CombineDependencies(Dependency, jobHandle1));
-            var inputDeps = boardingData.ScheduleBoarding(this, m_CityStatisticsSystem,
-                m_TransportUsageTrackSystem, m_AchievementTriggerSystem, m_BoardingLookupData,
-                m_SimulationSystem.frameIndex, jobHandle2);
+            }.ScheduleParallel(m_VehicleQuery, JobHandle.CombineDependencies(Dependency, jobHandle1));
+            var inputDeps = boardingData.ScheduleBoarding(this, m_CityStatisticsSystem, m_TransportUsageTrackSystem,
+                m_AchievementTriggerSystem, m_BoardingLookupData, m_SimulationSystem.frameIndex, jobHandle2);
             m_TransportTrainCarriageSelectData.PostUpdate(jobHandle2);
             boardingData.Dispose(inputDeps);
+            // ISSUE: reference to a compiler-generated method
             m_PathfindSetupSystem.AddQueueWriter(jobHandle2);
             m_EndFrameBarrier.AddJobHandleForProducer(jobHandle2);
             Dependency = inputDeps;
@@ -296,7 +304,9 @@ namespace AllAboard.System.Patched
         protected override void OnCreateForCompiler()
         {
             base.OnCreateForCompiler();
+            // ISSUE: reference to a compiler-generated method
             __AssignQueries(ref CheckedStateRef);
+            // ISSUE: reference to a compiler-generated method
             __TypeHandle.__AssignHandles(ref CheckedStateRef);
         }
 
@@ -375,21 +385,15 @@ namespace AllAboard.System.Patched
                 var nativeArray1 = chunk.GetNativeArray(m_EntityType);
                 var nativeArray2 = chunk.GetNativeArray(ref m_OwnerType);
                 var nativeArray3 = chunk.GetNativeArray(ref m_PrefabRefType);
-                var nativeArray4 =
-                    chunk.GetNativeArray(ref m_CurrentRouteType);
-                var nativeArray5 =
-                    chunk.GetNativeArray(ref m_CargoTransportType);
-                var nativeArray6 =
-                    chunk.GetNativeArray(ref m_PublicTransportType);
+                var nativeArray4 = chunk.GetNativeArray(ref m_CurrentRouteType);
+                var nativeArray5 = chunk.GetNativeArray(ref m_CargoTransportType);
+                var nativeArray6 = chunk.GetNativeArray(ref m_PublicTransportType);
                 var nativeArray7 = chunk.GetNativeArray(ref m_TargetType);
                 var nativeArray8 = chunk.GetNativeArray(ref m_PathOwnerType);
                 var nativeArray9 = chunk.GetNativeArray(ref m_OdometerType);
-                var bufferAccessor1 =
-                    chunk.GetBufferAccessor(ref m_LayoutElementType);
-                var bufferAccessor2 =
-                    chunk.GetBufferAccessor(ref m_NavigationLaneType);
-                var bufferAccessor3 =
-                    chunk.GetBufferAccessor(ref m_ServiceDispatchType);
+                var bufferAccessor1 = chunk.GetBufferAccessor(ref m_LayoutElementType);
+                var bufferAccessor2 = chunk.GetBufferAccessor(ref m_NavigationLaneType);
+                var bufferAccessor3 = chunk.GetBufferAccessor(ref m_ServiceDispatchType);
                 var random = m_RandomSeed.GetRandom(unfilteredChunkIndex);
                 var isUnspawned = chunk.Has(ref m_UnspawnedType);
                 for (var index = 0; index < nativeArray1.Length; ++index)
@@ -412,6 +416,7 @@ namespace AllAboard.System.Patched
                     var publicTransport = new PublicTransport();
                     if (nativeArray6.Length != 0)
                         publicTransport = nativeArray6[index];
+                    // ISSUE: reference to a compiler-generated method
                     Tick(unfilteredChunkIndex, ref random, vehicleEntity, owner, prefabRef, currentRoute, layout,
                         navigationLanes, serviceDispatches, isUnspawned, ref cargoTransport, ref publicTransport,
                         ref pathOwner, ref target, ref odometer);
@@ -449,8 +454,10 @@ namespace AllAboard.System.Patched
                          (publicTransport.m_State & PublicTransportFlags.DummyTraffic) != 0) &&
                         m_LoadingResources.TryGetBuffer(vehicleEntity, out bufferData))
                     {
-                        if (bufferData.Length != 0) QuantityUpdated(jobIndex, vehicleEntity, layout);
-
+                        if (bufferData.Length != 0)
+                            // ISSUE: reference to a compiler-generated method
+                            QuantityUpdated(jobIndex, vehicleEntity, layout);
+                        // ISSUE: reference to a compiler-generated method
                         if (CheckLoadingResources(jobIndex, ref random, vehicleEntity, true, layout, bufferData))
                         {
                             pathOwner.m_State |= PathFlags.Updated;
@@ -476,23 +483,22 @@ namespace AllAboard.System.Patched
                     {
                         if (VehicleUtils.IsReversedPath(pathElement, pathOwner, vehicleEntity, layout, m_CurveData,
                                 m_CurrentLaneData, m_TrainData, m_TransformData))
-                            VehicleUtils.ReverseTrain(vehicleEntity, layout, ref m_TrainData,
-                                ref m_CurrentLaneData, ref m_NavigationData);
+                            VehicleUtils.ReverseTrain(vehicleEntity, layout, ref m_TrainData, ref m_CurrentLaneData,
+                                ref m_NavigationData);
                     }
 
                     PathUtils.ExtendReverseLocations(prevElement, pathElement, pathOwner, length, m_CurveData,
-                        m_LaneData, m_EdgeLaneData, m_OwnerData, m_EdgeData, m_ConnectedEdges,
-                        m_SubLanes);
+                        m_LaneData, m_EdgeLaneData, m_OwnerData, m_EdgeData, m_ConnectedEdges, m_SubLanes);
                     if (!m_WaypointData.HasComponent(target.m_Target) ||
                         (m_ConnectedData.HasComponent(target.m_Target) &&
                          m_BoardingVehicleData.HasComponent(m_ConnectedData[target.m_Target].m_Connected)))
                     {
                         var distance = length * 0.5f;
-                        PathUtils.ExtendPath(pathElement, pathOwner, ref distance, ref m_CurveData,
-                            ref m_LaneData, ref m_EdgeLaneData, ref m_OwnerData, ref m_EdgeData,
-                            ref m_ConnectedEdges, ref m_SubLanes);
+                        PathUtils.ExtendPath(pathElement, pathOwner, ref distance, ref m_CurveData, ref m_LaneData,
+                            ref m_EdgeLaneData, ref m_OwnerData, ref m_EdgeData, ref m_ConnectedEdges, ref m_SubLanes);
                     }
 
+                    // ISSUE: reference to a compiler-generated method
                     UpdatePantograph(layout);
                 }
 
@@ -502,15 +508,11 @@ namespace AllAboard.System.Patched
                 var train = m_TrainData[entity1];
                 var currentLane = m_CurrentLaneData[entity1];
                 VehicleUtils.CheckUnspawned(jobIndex, vehicleEntity, currentLane, isUnspawned, m_CommandBuffer);
-                var num1 = (cargoTransport.m_State & CargoTransportFlags.EnRoute) != 0
-                    ? 0
-                    : (publicTransport.m_State & PublicTransportFlags.EnRoute) == 0
-                        ? 1
-                        : 0;
+                var num1 = (cargoTransport.m_State & CargoTransportFlags.EnRoute) != 0 ? 0 :
+                    (publicTransport.m_State & PublicTransportFlags.EnRoute) == 0 ? 1 : 0;
                 if (m_PublicTransportVehicleData.HasComponent(prefabRef.m_Prefab))
                 {
-                    var transportVehicleData =
-                        m_PublicTransportVehicleData[prefabRef.m_Prefab];
+                    var transportVehicleData = m_PublicTransportVehicleData[prefabRef.m_Prefab];
                     if (odometer.m_Distance >= (double)transportVehicleData.m_MaintenanceRange &&
                         transportVehicleData.m_MaintenanceRange > 0.10000000149011612 &&
                         (publicTransport.m_State & PublicTransportFlags.Refueling) == 0)
@@ -520,8 +522,7 @@ namespace AllAboard.System.Patched
                 var isCargoVehicle = false;
                 if (m_CargoTransportVehicleData.HasComponent(prefabRef.m_Prefab))
                 {
-                    var transportVehicleData =
-                        m_CargoTransportVehicleData[prefabRef.m_Prefab];
+                    var transportVehicleData = m_CargoTransportVehicleData[prefabRef.m_Prefab];
                     if (odometer.m_Distance >= (double)transportVehicleData.m_MaintenanceRange &&
                         transportVehicleData.m_MaintenanceRange > 0.10000000149011612 &&
                         (cargoTransport.m_State & CargoTransportFlags.Refueling) == 0)
@@ -531,16 +532,15 @@ namespace AllAboard.System.Patched
 
                 if (num1 != 0)
                 {
-                    CheckServiceDispatches(vehicleEntity, serviceDispatches, ref cargoTransport,
-                        ref publicTransport);
+                    // ISSUE: reference to a compiler-generated method
+                    CheckServiceDispatches(vehicleEntity, serviceDispatches, ref cargoTransport, ref publicTransport);
                     if (serviceDispatches.Length == 0 &&
                         (cargoTransport.m_State & (CargoTransportFlags.RequiresMaintenance |
                                                    CargoTransportFlags.DummyTraffic | CargoTransportFlags.Disabled)) ==
-                        0 &&
-                        (publicTransport.m_State & (PublicTransportFlags.RequiresMaintenance |
-                                                    PublicTransportFlags.DummyTraffic |
-                                                    PublicTransportFlags.Disabled)) ==
-                        0)
+                        0 && (publicTransport.m_State & (PublicTransportFlags.RequiresMaintenance |
+                                                         PublicTransportFlags.DummyTraffic |
+                                                         PublicTransportFlags.Disabled)) == 0)
+                        // ISSUE: reference to a compiler-generated method
                         RequestTargetIfNeeded(jobIndex, vehicleEntity, ref publicTransport, ref cargoTransport);
                 }
                 else
@@ -579,16 +579,15 @@ namespace AllAboard.System.Patched
                         (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                     {
                         flag = true;
+                        // ISSUE: reference to a compiler-generated method
                         StopBoarding(jobIndex, ref random, vehicleEntity, currentRoute, layout, ref cargoTransport,
                             ref publicTransport, ref target, ref odometer, isCargoVehicle, true);
                     }
 
                     if (VehicleUtils.IsStuck(pathOwner) ||
                         (cargoTransport.m_State & (CargoTransportFlags.Returning | CargoTransportFlags.DummyTraffic)) !=
-                        0 ||
-                        (publicTransport.m_State &
-                         (PublicTransportFlags.Returning | PublicTransportFlags.DummyTraffic)) !=
-                        0)
+                        0 || (publicTransport.m_State &
+                              (PublicTransportFlags.Returning | PublicTransportFlags.DummyTraffic)) != 0)
                     {
                         VehicleUtils.DeleteVehicle(m_CommandBuffer, jobIndex, vehicleEntity, layout);
                         m_TrainData[entity1] = train;
@@ -596,36 +595,34 @@ namespace AllAboard.System.Patched
                         return;
                     }
 
-                    ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches,
-                        ref cargoTransport,
+                    // ISSUE: reference to a compiler-generated method
+                    ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches, ref cargoTransport,
                         ref publicTransport, ref train, ref pathOwner, ref target);
                 }
                 else if (VehicleUtils.PathEndReached(currentLane))
                 {
                     if ((cargoTransport.m_State & (CargoTransportFlags.Returning | CargoTransportFlags.DummyTraffic)) !=
-                        0 ||
-                        (publicTransport.m_State &
-                         (PublicTransportFlags.Returning | PublicTransportFlags.DummyTraffic)) !=
-                        0)
+                        0 || (publicTransport.m_State &
+                              (PublicTransportFlags.Returning | PublicTransportFlags.DummyTraffic)) != 0)
                     {
                         if ((cargoTransport.m_State & CargoTransportFlags.Boarding) != 0 ||
                             (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                         {
+                            // ISSUE: reference to a compiler-generated method
                             if (StopBoarding(jobIndex, ref random, vehicleEntity, currentRoute, layout,
                                     ref cargoTransport, ref publicTransport, ref target, ref odometer, isCargoVehicle,
                                     false))
                             {
                                 flag = true;
-                                if (!SelectNextDispatch(jobIndex, vehicleEntity, currentRoute, layout,
-                                        navigationLanes,
+                                // ISSUE: reference to a compiler-generated method
+                                if (!SelectNextDispatch(jobIndex, vehicleEntity, currentRoute, layout, navigationLanes,
                                         serviceDispatches, ref cargoTransport, ref publicTransport, ref train,
                                         ref currentLane, ref pathOwner, ref target))
                                 {
+                                    // ISSUE: reference to a compiler-generated method
                                     if (!TryParkTrain(jobIndex, vehicleEntity, owner, layout, navigationLanes,
                                             ref train, ref cargoTransport, ref publicTransport, ref currentLane))
-                                        VehicleUtils.DeleteVehicle(m_CommandBuffer, jobIndex, vehicleEntity,
-                                            layout);
-
+                                        VehicleUtils.DeleteVehicle(m_CommandBuffer, jobIndex, vehicleEntity, layout);
                                     m_TrainData[entity1] = train;
                                     m_CurrentLaneData[entity1] = currentLane;
                                     return;
@@ -634,17 +631,19 @@ namespace AllAboard.System.Patched
                         }
                         else
                         {
-                            if ((CountPassengers(vehicleEntity, layout) <= 0 || !StartBoarding(jobIndex,
-                                    vehicleEntity, currentRoute, prefabRef, ref cargoTransport, ref publicTransport,
-                                    ref target, isCargoVehicle)) && !SelectNextDispatch(jobIndex, vehicleEntity,
-                                    currentRoute, layout, navigationLanes, serviceDispatches, ref cargoTransport,
-                                    ref publicTransport, ref train, ref currentLane, ref pathOwner, ref target))
+                            // ISSUE: reference to a compiler-generated method
+                            // ISSUE: reference to a compiler-generated method
+                            // ISSUE: reference to a compiler-generated method
+                            if ((CountPassengers(vehicleEntity, layout) <= 0 || !StartBoarding(jobIndex, vehicleEntity,
+                                    currentRoute, prefabRef, ref cargoTransport, ref publicTransport, ref target,
+                                    isCargoVehicle)) && !SelectNextDispatch(jobIndex, vehicleEntity, currentRoute,
+                                    layout, navigationLanes, serviceDispatches, ref cargoTransport, ref publicTransport,
+                                    ref train, ref currentLane, ref pathOwner, ref target))
                             {
-                                if (!TryParkTrain(jobIndex, vehicleEntity, owner, layout, navigationLanes,
-                                        ref train,
+                                // ISSUE: reference to a compiler-generated method
+                                if (!TryParkTrain(jobIndex, vehicleEntity, owner, layout, navigationLanes, ref train,
                                         ref cargoTransport, ref publicTransport, ref currentLane))
                                     VehicleUtils.DeleteVehicle(m_CommandBuffer, jobIndex, vehicleEntity, layout);
-
                                 m_TrainData[entity1] = train;
                                 m_CurrentLaneData[entity1] = currentLane;
                                 return;
@@ -654,16 +653,18 @@ namespace AllAboard.System.Patched
                     else if ((cargoTransport.m_State & CargoTransportFlags.Boarding) != 0 ||
                              (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                     {
-                        if (StopBoarding(jobIndex, ref random, vehicleEntity, currentRoute, layout,
-                                ref cargoTransport,
+                        // ISSUE: reference to a compiler-generated method
+                        if (StopBoarding(jobIndex, ref random, vehicleEntity, currentRoute, layout, ref cargoTransport,
                                 ref publicTransport, ref target, ref odometer, isCargoVehicle, false))
                         {
                             flag = true;
                             if ((cargoTransport.m_State & CargoTransportFlags.EnRoute) == 0 &&
                                 (publicTransport.m_State & PublicTransportFlags.EnRoute) == 0)
+                                // ISSUE: reference to a compiler-generated method
                                 ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches,
                                     ref cargoTransport, ref publicTransport, ref train, ref pathOwner, ref target);
                             else
+                                // ISSUE: reference to a compiler-generated method
                                 SetNextWaypointTarget(currentRoute, ref pathOwner, ref target);
                         }
                     }
@@ -672,20 +673,23 @@ namespace AllAboard.System.Patched
                         if (!m_RouteWaypoints.HasBuffer(currentRoute.m_Route) ||
                             !m_WaypointData.HasComponent(target.m_Target))
                         {
+                            // ISSUE: reference to a compiler-generated method
                             ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches,
                                 ref cargoTransport, ref publicTransport, ref train, ref pathOwner, ref target);
                         }
                         else
                         {
-                            if (!StartBoarding(jobIndex, vehicleEntity, currentRoute, prefabRef,
-                                    ref cargoTransport,
+                            // ISSUE: reference to a compiler-generated method
+                            if (!StartBoarding(jobIndex, vehicleEntity, currentRoute, prefabRef, ref cargoTransport,
                                     ref publicTransport, ref target, isCargoVehicle))
                             {
                                 if ((cargoTransport.m_State & CargoTransportFlags.EnRoute) == 0 &&
                                     (publicTransport.m_State & PublicTransportFlags.EnRoute) == 0)
+                                    // ISSUE: reference to a compiler-generated method
                                     ReturnToDepot(jobIndex, vehicleEntity, currentRoute, owner, serviceDispatches,
                                         ref cargoTransport, ref publicTransport, ref train, ref pathOwner, ref target);
                                 else
+                                    // ISSUE: reference to a compiler-generated method
                                     SetNextWaypointTarget(currentRoute, ref pathOwner, ref target);
                             }
                         }
@@ -697,6 +701,7 @@ namespace AllAboard.System.Patched
                     m_CurrentLaneData[entity1] = currentLane;
                     VehicleUtils.ReverseTrain(vehicleEntity, layout, ref m_TrainData, ref m_CurrentLaneData,
                         ref m_NavigationData);
+                    // ISSUE: reference to a compiler-generated method
                     UpdatePantograph(layout);
                     entity1 = vehicleEntity;
                     if (layout.Length != 0)
@@ -708,6 +713,7 @@ namespace AllAboard.System.Patched
                          (publicTransport.m_State & PublicTransportFlags.Boarding) != 0)
                 {
                     flag = true;
+                    // ISSUE: reference to a compiler-generated method
                     StopBoarding(jobIndex, ref random, vehicleEntity, currentRoute, layout, ref cargoTransport,
                         ref publicTransport, ref target, ref odometer, isCargoVehicle, true);
                 }
@@ -721,13 +727,16 @@ namespace AllAboard.System.Patched
                     if (!flag)
                     {
                         var controllerTrain = m_TrainData[vehicleEntity];
+                        // ISSUE: reference to a compiler-generated method
                         UpdateStop(entity1, controllerTrain, true, ref train, ref publicTransport, ref target);
                     }
                 }
                 else if ((cargoTransport.m_State & CargoTransportFlags.Returning) != 0 ||
                          (publicTransport.m_State & PublicTransportFlags.Returning) != 0)
                 {
+                    // ISSUE: reference to a compiler-generated method
                     if (CountPassengers(vehicleEntity, layout) == 0)
+                        // ISSUE: reference to a compiler-generated method
                         SelectNextDispatch(jobIndex, vehicleEntity, currentRoute, layout, navigationLanes,
                             serviceDispatches, ref cargoTransport, ref publicTransport, ref train, ref currentLane,
                             ref pathOwner, ref target);
@@ -736,26 +745,25 @@ namespace AllAboard.System.Patched
                          (publicTransport.m_State & PublicTransportFlags.Arriving) != 0)
                 {
                     var controllerTrain = m_TrainData[vehicleEntity];
+                    // ISSUE: reference to a compiler-generated method
                     UpdateStop(entity1, controllerTrain, false, ref train, ref publicTransport, ref target);
                 }
                 else
                 {
+                    // ISSUE: reference to a compiler-generated method
                     CheckNavigationLanes(currentRoute, navigationLanes, ref cargoTransport, ref publicTransport,
                         ref currentLane, ref pathOwner, ref target, out skipWaypoint);
                 }
 
-                if ((((cargoTransport.m_State & CargoTransportFlags.Boarding) != 0
-                         ? 0
-                         : (publicTransport.m_State & PublicTransportFlags.Boarding) == 0
-                             ? 1
-                             : 0) |
-                     (flag ? 1 : 0)) != 0)
+                if ((((cargoTransport.m_State & CargoTransportFlags.Boarding) != 0 ? 0 :
+                        (publicTransport.m_State & PublicTransportFlags.Boarding) == 0 ? 1 : 0) | (flag ? 1 : 0)) != 0)
                 {
                     if (VehicleUtils.RequireNewPath(pathOwner))
+                        // ISSUE: reference to a compiler-generated method
                         FindNewPath(vehicleEntity, prefabRef, skipWaypoint, ref currentLane, ref cargoTransport,
                             ref publicTransport, ref pathOwner, ref target);
-                    else if ((pathOwner.m_State & (PathFlags.Pending | PathFlags.Failed | PathFlags.Stuck)) ==
-                             0)
+                    else if ((pathOwner.m_State & (PathFlags.Pending | PathFlags.Failed | PathFlags.Stuck)) == 0)
+                        // ISSUE: reference to a compiler-generated method
                         CheckParkingSpace(navigationLanes, ref train, ref pathOwner);
                 }
 
@@ -804,8 +812,8 @@ namespace AllAboard.System.Patched
                 var navigationLane = navigationLanes[navigationLanes.Length - 1];
                 if ((navigationLane.m_Flags & TrainLaneFlags.ParkingSpace) == 0)
                     return false;
-                train.m_Flags &= ~(TrainFlags.BoardingLeft | TrainFlags.BoardingRight |
-                                   TrainFlags.Pantograph | TrainFlags.IgnoreParkedVehicle);
+                train.m_Flags &= ~(TrainFlags.BoardingLeft | TrainFlags.BoardingRight | TrainFlags.Pantograph |
+                                   TrainFlags.IgnoreParkedVehicle);
                 cargoTransport.m_State &= CargoTransportFlags.RequiresMaintenance;
                 publicTransport.m_State &= PublicTransportFlags.RequiresMaintenance;
                 TransportDepot componentData;
@@ -837,9 +845,7 @@ namespace AllAboard.System.Patched
                 if (m_SpawnLocationData.HasComponent(navigationLane.m_Lane))
                     m_CommandBuffer.AddComponent<PathfindUpdated>(jobIndex, navigationLane.m_Lane);
                 else
-                    m_CommandBuffer.AddComponent(jobIndex, entity,
-                        new FixParkingLocation(Entity.Null, entity));
-
+                    m_CommandBuffer.AddComponent(jobIndex, entity, new FixParkingLocation(Entity.Null, entity));
                 return true;
             }
 
@@ -851,8 +857,7 @@ namespace AllAboard.System.Patched
                     var vehicle = layout[index].m_Vehicle;
                     var train = m_TrainData[vehicle];
                     var trainData = m_PrefabTrainData[m_PrefabRefData[vehicle].m_Prefab];
-                    if (flag || (trainData.m_TrainFlags & Game.Prefabs.TrainFlags.Pantograph) ==
-                        0)
+                    if (flag || (trainData.m_TrainFlags & Game.Prefabs.TrainFlags.Pantograph) == 0)
                     {
                         train.m_Flags &= ~TrainFlags.Pantograph;
                     }
@@ -890,8 +895,7 @@ namespace AllAboard.System.Patched
                         train.m_Flags |= TrainFlags.BoardingRight;
                 }
 
-                if (flag ^ (((controllerTrain.m_Flags ^ train.m_Flags) & TrainFlags.Reversed) >
-                            0))
+                if (flag ^ (((controllerTrain.m_Flags ^ train.m_Flags) & TrainFlags.Reversed) > 0))
                     publicTransport.m_State |= PublicTransportFlags.StopLeft;
                 else
                     publicTransport.m_State |= PublicTransportFlags.StopRight;
@@ -978,15 +982,14 @@ namespace AllAboard.System.Patched
                 var navigationLane = navigationLanes[navigationLanes.Length - 1];
                 if ((navigationLane.m_Flags & TrainLaneFlags.EndOfPath) == 0)
                     return;
-                if (m_WaypointData.HasComponent(target.m_Target) &&
-                    m_RouteWaypoints.HasBuffer(currentRoute.m_Route) &&
+                if (m_WaypointData.HasComponent(target.m_Target) && m_RouteWaypoints.HasBuffer(currentRoute.m_Route) &&
                     (!m_ConnectedData.HasComponent(target.m_Target) ||
                      !m_BoardingVehicleData.HasComponent(m_ConnectedData[target.m_Target].m_Connected)))
                 {
-                    if ((pathOwner.m_State & (PathFlags.Pending | PathFlags.Failed | PathFlags.Obsolete)) !=
-                        0)
+                    if ((pathOwner.m_State & (PathFlags.Pending | PathFlags.Failed | PathFlags.Obsolete)) != 0)
                         return;
                     skipWaypoint = target.m_Target;
+                    // ISSUE: reference to a compiler-generated method
                     SetNextWaypointTarget(currentRoute, ref pathOwner, ref target);
                     navigationLane.m_Flags &= ~TrainLaneFlags.EndOfPath;
                     navigationLanes[navigationLanes.Length - 1] = navigationLane;
@@ -1065,8 +1068,7 @@ namespace AllAboard.System.Patched
                     return;
                 var entity1 = m_CommandBuffer.CreateEntity(jobIndex, m_TransportVehicleRequestArchetype);
                 m_CommandBuffer.SetComponent(jobIndex, entity1, new ServiceRequest(true));
-                m_CommandBuffer.SetComponent(jobIndex, entity1,
-                    new TransportVehicleRequest(entity, 1f));
+                m_CommandBuffer.SetComponent(jobIndex, entity1, new TransportVehicleRequest(entity, 1f));
                 m_CommandBuffer.SetComponent(jobIndex, entity1, new RequestGroup(8U));
             }
 
@@ -1094,11 +1096,9 @@ namespace AllAboard.System.Patched
                 }
 
                 if ((cargoTransport.m_State &
-                     (CargoTransportFlags.RequiresMaintenance | CargoTransportFlags.Disabled)) !=
-                    0 ||
+                     (CargoTransportFlags.RequiresMaintenance | CargoTransportFlags.Disabled)) != 0 ||
                     (publicTransport.m_State &
-                     (PublicTransportFlags.RequiresMaintenance | PublicTransportFlags.Disabled)) !=
-                    0)
+                     (PublicTransportFlags.RequiresMaintenance | PublicTransportFlags.Disabled)) != 0)
                 {
                     cargoTransport.m_RequestCount = 0;
                     publicTransport.m_RequestCount = 0;
@@ -1136,15 +1136,13 @@ namespace AllAboard.System.Patched
                             {
                                 if (currentRoute.m_Route != route)
                                 {
-                                    m_CommandBuffer.AddComponent(jobIndex, vehicleEntity,
-                                        new CurrentRoute(route));
-                                    m_CommandBuffer.AppendToBuffer(jobIndex, route,
-                                        new RouteVehicle(vehicleEntity));
+                                    m_CommandBuffer.AddComponent(jobIndex, vehicleEntity, new CurrentRoute(route));
+                                    m_CommandBuffer.AppendToBuffer(jobIndex, route, new RouteVehicle(vehicleEntity));
                                     Color componentData;
                                     if (m_RouteColorData.TryGetComponent(route, out componentData))
                                     {
-                                        m_CommandBuffer.AddComponent(jobIndex, vehicleEntity,
-                                            componentData);
+                                        m_CommandBuffer.AddComponent(jobIndex, vehicleEntity, componentData);
+                                        // ISSUE: reference to a compiler-generated method
                                         UpdateBatches(jobIndex, vehicleEntity, layout);
                                     }
                                 }
@@ -1193,8 +1191,8 @@ namespace AllAboard.System.Patched
                             {
                                 var pathElement2 = m_PathElements[vehicleEntity];
                                 PathUtils.TrimPath(pathElement2, ref pathOwner);
-                                var num = math.max(cargoTransport.m_PathElementTime,
-                                        publicTransport.m_PathElementTime) *
+                                var num =
+                                    math.max(cargoTransport.m_PathElementTime, publicTransport.m_PathElementTime) *
                                     pathElement2.Length + m_PathInformationData[request].m_Duration;
                                 if (PathUtils.TryAppendPath(ref currentLane, navigationLanes, pathElement2,
                                         pathElement1))
@@ -1210,25 +1208,23 @@ namespace AllAboard.System.Patched
                                     var prevElement = new PathElement();
                                     if (navigationLanes.Length != 0)
                                     {
-                                        var navigationLane =
-                                            navigationLanes[navigationLanes.Length - 1];
+                                        var navigationLane = navigationLanes[navigationLanes.Length - 1];
                                         prevElement = new PathElement(navigationLane.m_Lane,
                                             navigationLane.m_CurvePosition);
                                     }
 
                                     PathUtils.ExtendReverseLocations(prevElement, pathElement2, pathOwner, length,
-                                        m_CurveData, m_LaneData, m_EdgeLaneData, m_OwnerData,
-                                        m_EdgeData, m_ConnectedEdges, m_SubLanes);
+                                        m_CurveData, m_LaneData, m_EdgeLaneData, m_OwnerData, m_EdgeData,
+                                        m_ConnectedEdges, m_SubLanes);
                                     if (!m_WaypointData.HasComponent(target.m_Target) ||
                                         (m_ConnectedData.HasComponent(target.m_Target) &&
-                                         m_BoardingVehicleData.HasComponent(m_ConnectedData[target.m_Target]
-                                             .m_Connected)))
+                                         m_BoardingVehicleData.HasComponent(
+                                             m_ConnectedData[target.m_Target].m_Connected)))
                                     {
                                         var distance = length * 0.5f;
-                                        PathUtils.ExtendPath(pathElement2, pathOwner, ref distance,
-                                            ref m_CurveData,
-                                            ref m_LaneData, ref m_EdgeLaneData, ref m_OwnerData,
-                                            ref m_EdgeData, ref m_ConnectedEdges, ref m_SubLanes);
+                                        PathUtils.ExtendPath(pathElement2, pathOwner, ref distance, ref m_CurveData,
+                                            ref m_LaneData, ref m_EdgeLaneData, ref m_OwnerData, ref m_EdgeData,
+                                            ref m_ConnectedEdges, ref m_SubLanes);
                                     }
 
                                     return true;
@@ -1297,6 +1293,7 @@ namespace AllAboard.System.Patched
                     var connected = m_ConnectedData[target.m_Target];
                     if (m_BoardingVehicleData.HasComponent(connected.m_Connected))
                     {
+                        // ISSUE: reference to a compiler-generated method
                         var transportStationFromStop = GetTransportStationFromStop(connected.m_Connected);
                         var nextStorageCompany = Entity.Null;
                         var refuel = false;
@@ -1307,11 +1304,8 @@ namespace AllAboard.System.Patched
                                       trainData.m_EnergyType) != 0;
                         }
 
-                        if ((!refuel &&
-                             ((cargoTransport.m_State & CargoTransportFlags.RequiresMaintenance) !=
-                              0 ||
-                              (publicTransport.m_State & PublicTransportFlags.RequiresMaintenance) !=
-                              0)) ||
+                        if ((!refuel && ((cargoTransport.m_State & CargoTransportFlags.RequiresMaintenance) != 0 ||
+                                         (publicTransport.m_State & PublicTransportFlags.RequiresMaintenance) != 0)) ||
                             (cargoTransport.m_State & CargoTransportFlags.AbandonRoute) != 0 ||
                             (publicTransport.m_State & PublicTransportFlags.AbandonRoute) != 0)
                         {
@@ -1328,14 +1322,16 @@ namespace AllAboard.System.Patched
                             cargoTransport.m_State |= CargoTransportFlags.EnRoute;
                             publicTransport.m_State |= PublicTransportFlags.EnRoute;
                             if (isCargoVehicle)
+                                // ISSUE: reference to a compiler-generated method
                                 nextStorageCompany = GetNextStorageCompany(currentRoute.m_Route, target.m_Target);
                         }
 
                         cargoTransport.m_State |= CargoTransportFlags.RouteSource;
                         publicTransport.m_State |= PublicTransportFlags.RouteSource;
                         var storageCompanyFromStop = Entity.Null;
-                        if (isCargoVehicle) storageCompanyFromStop = GetStorageCompanyFromStop(connected.m_Connected);
-
+                        if (isCargoVehicle)
+                            // ISSUE: reference to a compiler-generated method
+                            storageCompanyFromStop = GetStorageCompanyFromStop(connected.m_Connected);
                         m_BoardingData.BeginBoarding(vehicleEntity, currentRoute.m_Route, connected.m_Connected,
                             target.m_Target, storageCompanyFromStop, nextStorageCompany, refuel);
                         return true;
@@ -1353,7 +1349,6 @@ namespace AllAboard.System.Patched
                 publicTransport.m_State &= ~(PublicTransportFlags.EnRoute | PublicTransportFlags.AbandonRoute);
                 if (currentRoute.m_Route != Entity.Null)
                     m_CommandBuffer.RemoveComponent<CurrentRoute>(jobIndex, vehicleEntity);
-
                 return false;
             }
 
@@ -1368,8 +1363,7 @@ namespace AllAboard.System.Patched
                 {
                     var economyResource = m_EconomyResources[vehicleEntity];
                     var prefabRef = m_PrefabRefData[vehicleEntity];
-                    if (economyResource.Length == 0 &&
-                        m_CargoTransportVehicleData.HasComponent(prefabRef.m_Prefab))
+                    if (economyResource.Length == 0 && m_CargoTransportVehicleData.HasComponent(prefabRef.m_Prefab))
                         while (loadingResources.Length > 0)
                         {
                             var loadingResource = loadingResources[0];
@@ -1377,8 +1371,7 @@ namespace AllAboard.System.Patched
                                 loadingResource.m_Resource, loadingResource.m_Amount);
                             if (entity != Entity.Null)
                             {
-                                var transportVehicleData =
-                                    m_CargoTransportVehicleData[entity];
+                                var transportVehicleData = m_CargoTransportVehicleData[entity];
                                 var num = math.min(loadingResource.m_Amount, transportVehicleData.m_CargoCapacity);
                                 loadingResource.m_Amount -= transportVehicleData.m_CargoCapacity;
                                 if (loadingResource.m_Amount <= 0)
@@ -1386,15 +1379,12 @@ namespace AllAboard.System.Patched
                                 else
                                     loadingResources[0] = loadingResource;
                                 if (dummyTraffic)
-                                    m_CommandBuffer.SetBuffer<Resources>(jobIndex, vehicleEntity).Add(
-                                        new Resources
-                                        {
-                                            m_Resource = loadingResource.m_Resource,
-                                            m_Amount = num
-                                        });
-
-                                m_CommandBuffer.SetComponent(jobIndex, vehicleEntity,
-                                    new PrefabRef(entity));
+                                    m_CommandBuffer.SetBuffer<Resources>(jobIndex, vehicleEntity).Add(new Resources
+                                    {
+                                        m_Resource = loadingResource.m_Resource,
+                                        m_Amount = num
+                                    });
+                                m_CommandBuffer.SetComponent(jobIndex, vehicleEntity, new PrefabRef(entity));
                                 m_CommandBuffer.AddComponent(jobIndex, vehicleEntity, new Updated());
                                 return true;
                             }
@@ -1419,9 +1409,11 @@ namespace AllAboard.System.Patched
                 {
                     if (layout.Length != 0)
                         for (var index = 0; index < layout.Length && loadingResources.Length != 0; ++index)
-                            flag |= TryChangeCarriagePrefab(jobIndex, ref random, layout[index].m_Vehicle,
-                                dummyTraffic, loadingResources);
+                            // ISSUE: reference to a compiler-generated method
+                            flag |= TryChangeCarriagePrefab(jobIndex, ref random, layout[index].m_Vehicle, dummyTraffic,
+                                loadingResources);
                     else
+                        // ISSUE: reference to a compiler-generated method
                         flag |= TryChangeCarriagePrefab(jobIndex, ref random, vehicleEntity, dummyTraffic,
                             loadingResources);
 
@@ -1454,9 +1446,9 @@ namespace AllAboard.System.Patched
                     }
                     else
                     {
-                        var dummyTraffic =
-                            (cargoTransport.m_State & CargoTransportFlags.DummyTraffic) != 0 ||
-                            (publicTransport.m_State & PublicTransportFlags.DummyTraffic) > 0;
+                        var dummyTraffic = (cargoTransport.m_State & CargoTransportFlags.DummyTraffic) != 0 ||
+                                           (publicTransport.m_State & PublicTransportFlags.DummyTraffic) > 0;
+                        // ISSUE: reference to a compiler-generated method
                         flag1 |= CheckLoadingResources(jobIndex, ref random, vehicleEntity, dummyTraffic, layout,
                             loadingResource);
                     }
@@ -1492,16 +1484,19 @@ namespace AllAboard.System.Patched
                 if ((cargoTransport.m_State & CargoTransportFlags.Refueling) != 0 ||
                     (publicTransport.m_State & PublicTransportFlags.Refueling) != 0)
                     odometer.m_Distance = 0.0f;
-                if (isCargoVehicle) QuantityUpdated(jobIndex, vehicleEntity, layout);
-
+                if (isCargoVehicle)
+                    // ISSUE: reference to a compiler-generated method
+                    QuantityUpdated(jobIndex, vehicleEntity, layout);
                 if (flag2)
                 {
                     var storageCompanyFromStop = Entity.Null;
                     var nextStorageCompany = Entity.Null;
                     if (isCargoVehicle && !forcedStop)
                     {
+                        // ISSUE: reference to a compiler-generated method
                         storageCompanyFromStop = GetStorageCompanyFromStop(componentData1.m_Connected);
                         if ((cargoTransport.m_State & CargoTransportFlags.EnRoute) != 0)
+                            // ISSUE: reference to a compiler-generated method
                             nextStorageCompany = GetNextStorageCompany(currentRoute.m_Route, target.m_Target);
                     }
 
@@ -1579,7 +1574,6 @@ namespace AllAboard.System.Patched
                 for (; !m_TransportStationData.HasComponent(stop); stop = m_OwnerData[stop].m_Owner)
                     if (!m_OwnerData.HasComponent(stop))
                         return Entity.Null;
-
                 if (m_OwnerData.HasComponent(stop))
                 {
                     var owner = m_OwnerData[stop].m_Owner;
@@ -1595,7 +1589,6 @@ namespace AllAboard.System.Patched
                 for (; !m_StorageCompanyData.HasComponent(stop); stop = m_OwnerData[stop].m_Owner)
                     if (!m_OwnerData.HasComponent(stop))
                         return Entity.Null;
-
                 return stop;
             }
 
@@ -1609,8 +1602,8 @@ namespace AllAboard.System.Patched
                     var waypoint = routeWaypoint[index2].m_Waypoint;
                     if (m_ConnectedData.HasComponent(waypoint))
                     {
-                        var storageCompanyFromStop =
-                            GetStorageCompanyFromStop(m_ConnectedData[waypoint].m_Connected);
+                        // ISSUE: reference to a compiler-generated method
+                        var storageCompanyFromStop = GetStorageCompanyFromStop(m_ConnectedData[waypoint].m_Connected);
                         if (storageCompanyFromStop != Entity.Null)
                             return storageCompanyFromStop;
                     }
@@ -1627,6 +1620,7 @@ namespace AllAboard.System.Patched
                 bool useEnabledMask,
                 in v128 chunkEnabledMask)
             {
+                // ISSUE: reference to a compiler-generated method
                 Execute(in chunk, unfilteredChunkIndex, useEnabledMask, in chunkEnabledMask);
             }
         }
@@ -1638,13 +1632,8 @@ namespace AllAboard.System.Patched
             [ReadOnly] public ComponentTypeHandle<Unspawned> __Game_Objects_Unspawned_RO_ComponentTypeHandle;
             [ReadOnly] public ComponentTypeHandle<PrefabRef> __Game_Prefabs_PrefabRef_RO_ComponentTypeHandle;
             [ReadOnly] public ComponentTypeHandle<CurrentRoute> __Game_Routes_CurrentRoute_RO_ComponentTypeHandle;
-
-            public ComponentTypeHandle<CargoTransport>
-                __Game_Vehicles_CargoTransport_RW_ComponentTypeHandle;
-
-            public ComponentTypeHandle<PublicTransport>
-                __Game_Vehicles_PublicTransport_RW_ComponentTypeHandle;
-
+            public ComponentTypeHandle<CargoTransport> __Game_Vehicles_CargoTransport_RW_ComponentTypeHandle;
+            public ComponentTypeHandle<PublicTransport> __Game_Vehicles_PublicTransport_RW_ComponentTypeHandle;
             public ComponentTypeHandle<Target> __Game_Common_Target_RW_ComponentTypeHandle;
             public ComponentTypeHandle<PathOwner> __Game_Pathfind_PathOwner_RW_ComponentTypeHandle;
             public ComponentTypeHandle<Odometer> __Game_Vehicles_Odometer_RW_ComponentTypeHandle;
@@ -1653,13 +1642,12 @@ namespace AllAboard.System.Patched
             public BufferTypeHandle<ServiceDispatch> __Game_Simulation_ServiceDispatch_RW_BufferTypeHandle;
             [ReadOnly] public EntityStorageInfoLookup __EntityStorageInfoLookup;
             [ReadOnly] public ComponentLookup<Transform> __Game_Objects_Transform_RO_ComponentLookup;
-
             [ReadOnly] public ComponentLookup<SpawnLocation> __Game_Objects_SpawnLocation_RO_ComponentLookup;
-
             [ReadOnly] public ComponentLookup<Owner> __Game_Common_Owner_RO_ComponentLookup;
             [ReadOnly] public ComponentLookup<PathInformation> __Game_Pathfind_PathInformation_RO_ComponentLookup;
 
-            [ReadOnly] public ComponentLookup<TransportVehicleRequest>
+            [ReadOnly]
+            public ComponentLookup<TransportVehicleRequest>
                 __Game_Simulation_TransportVehicleRequest_RO_ComponentLookup;
 
             [ReadOnly] public ComponentLookup<ParkedTrain> __Game_Vehicles_ParkedTrain_RO_ComponentLookup;
@@ -1671,24 +1659,21 @@ namespace AllAboard.System.Patched
             [ReadOnly] public ComponentLookup<TrainData> __Game_Prefabs_TrainData_RO_ComponentLookup;
             [ReadOnly] public ComponentLookup<PrefabRef> __Game_Prefabs_PrefabRef_RO_ComponentLookup;
 
-            [ReadOnly] public ComponentLookup<PublicTransportVehicleData>
+            [ReadOnly]
+            public ComponentLookup<PublicTransportVehicleData>
                 __Game_Prefabs_PublicTransportVehicleData_RO_ComponentLookup;
 
-            [ReadOnly] public ComponentLookup<CargoTransportVehicleData>
+            [ReadOnly]
+            public ComponentLookup<CargoTransportVehicleData>
                 __Game_Prefabs_CargoTransportVehicleData_RO_ComponentLookup;
 
             [ReadOnly] public ComponentLookup<Waypoint> __Game_Routes_Waypoint_RO_ComponentLookup;
             [ReadOnly] public ComponentLookup<Connected> __Game_Routes_Connected_RO_ComponentLookup;
             [ReadOnly] public ComponentLookup<BoardingVehicle> __Game_Routes_BoardingVehicle_RO_ComponentLookup;
             [ReadOnly] public ComponentLookup<Color> __Game_Routes_Color_RO_ComponentLookup;
-
             [ReadOnly] public ComponentLookup<StorageCompany> __Game_Companies_StorageCompany_RO_ComponentLookup;
-
-            [ReadOnly] public ComponentLookup<TransportStation>
-                __Game_Buildings_TransportStation_RO_ComponentLookup;
-
+            [ReadOnly] public ComponentLookup<TransportStation> __Game_Buildings_TransportStation_RO_ComponentLookup;
             [ReadOnly] public ComponentLookup<TransportDepot> __Game_Buildings_TransportDepot_RO_ComponentLookup;
-
             [ReadOnly] public ComponentLookup<CurrentVehicle> __Game_Creatures_CurrentVehicle_RO_ComponentLookup;
             [ReadOnly] public BufferLookup<Passenger> __Game_Vehicles_Passenger_RO_BufferLookup;
             [ReadOnly] public BufferLookup<Resources> __Game_Economy_Resources_RO_BufferLookup;
@@ -1710,10 +1695,8 @@ namespace AllAboard.System.Patched
                 __Game_Common_Owner_RO_ComponentTypeHandle = state.GetComponentTypeHandle<Owner>(true);
                 __Game_Objects_Unspawned_RO_ComponentTypeHandle = state.GetComponentTypeHandle<Unspawned>(true);
                 __Game_Prefabs_PrefabRef_RO_ComponentTypeHandle = state.GetComponentTypeHandle<PrefabRef>(true);
-                __Game_Routes_CurrentRoute_RO_ComponentTypeHandle =
-                    state.GetComponentTypeHandle<CurrentRoute>(true);
-                __Game_Vehicles_CargoTransport_RW_ComponentTypeHandle =
-                    state.GetComponentTypeHandle<CargoTransport>();
+                __Game_Routes_CurrentRoute_RO_ComponentTypeHandle = state.GetComponentTypeHandle<CurrentRoute>(true);
+                __Game_Vehicles_CargoTransport_RW_ComponentTypeHandle = state.GetComponentTypeHandle<CargoTransport>();
                 __Game_Vehicles_PublicTransport_RW_ComponentTypeHandle =
                     state.GetComponentTypeHandle<PublicTransport>();
                 __Game_Common_Target_RW_ComponentTypeHandle = state.GetComponentTypeHandle<Target>();
@@ -1722,15 +1705,12 @@ namespace AllAboard.System.Patched
                 __Game_Vehicles_LayoutElement_RW_BufferTypeHandle = state.GetBufferTypeHandle<LayoutElement>();
                 __Game_Vehicles_TrainNavigationLane_RW_BufferTypeHandle =
                     state.GetBufferTypeHandle<TrainNavigationLane>();
-                __Game_Simulation_ServiceDispatch_RW_BufferTypeHandle =
-                    state.GetBufferTypeHandle<ServiceDispatch>();
+                __Game_Simulation_ServiceDispatch_RW_BufferTypeHandle = state.GetBufferTypeHandle<ServiceDispatch>();
                 __EntityStorageInfoLookup = state.GetEntityStorageInfoLookup();
                 __Game_Objects_Transform_RO_ComponentLookup = state.GetComponentLookup<Transform>(true);
-                __Game_Objects_SpawnLocation_RO_ComponentLookup =
-                    state.GetComponentLookup<SpawnLocation>(true);
+                __Game_Objects_SpawnLocation_RO_ComponentLookup = state.GetComponentLookup<SpawnLocation>(true);
                 __Game_Common_Owner_RO_ComponentLookup = state.GetComponentLookup<Owner>(true);
-                __Game_Pathfind_PathInformation_RO_ComponentLookup =
-                    state.GetComponentLookup<PathInformation>(true);
+                __Game_Pathfind_PathInformation_RO_ComponentLookup = state.GetComponentLookup<PathInformation>(true);
                 __Game_Simulation_TransportVehicleRequest_RO_ComponentLookup =
                     state.GetComponentLookup<TransportVehicleRequest>(true);
                 __Game_Vehicles_ParkedTrain_RO_ComponentLookup = state.GetComponentLookup<ParkedTrain>(true);
@@ -1749,14 +1729,10 @@ namespace AllAboard.System.Patched
                 __Game_Routes_Connected_RO_ComponentLookup = state.GetComponentLookup<Connected>(true);
                 __Game_Routes_BoardingVehicle_RO_ComponentLookup = state.GetComponentLookup<BoardingVehicle>(true);
                 __Game_Routes_Color_RO_ComponentLookup = state.GetComponentLookup<Color>(true);
-                __Game_Companies_StorageCompany_RO_ComponentLookup =
-                    state.GetComponentLookup<StorageCompany>(true);
-                __Game_Buildings_TransportStation_RO_ComponentLookup =
-                    state.GetComponentLookup<TransportStation>(true);
-                __Game_Buildings_TransportDepot_RO_ComponentLookup =
-                    state.GetComponentLookup<TransportDepot>(true);
-                __Game_Creatures_CurrentVehicle_RO_ComponentLookup =
-                    state.GetComponentLookup<CurrentVehicle>(true);
+                __Game_Companies_StorageCompany_RO_ComponentLookup = state.GetComponentLookup<StorageCompany>(true);
+                __Game_Buildings_TransportStation_RO_ComponentLookup = state.GetComponentLookup<TransportStation>(true);
+                __Game_Buildings_TransportDepot_RO_ComponentLookup = state.GetComponentLookup<TransportDepot>(true);
+                __Game_Creatures_CurrentVehicle_RO_ComponentLookup = state.GetComponentLookup<CurrentVehicle>(true);
                 __Game_Vehicles_Passenger_RO_BufferLookup = state.GetBufferLookup<Passenger>(true);
                 __Game_Economy_Resources_RO_BufferLookup = state.GetBufferLookup<Resources>(true);
                 __Game_Routes_RouteWaypoint_RO_BufferLookup = state.GetBufferLookup<RouteWaypoint>(true);
