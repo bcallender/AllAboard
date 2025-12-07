@@ -160,7 +160,7 @@ number of vehicles on a line.
     <Dependency Id=""/>
     <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
     <ChangeLog>
-        - Update systems for 1.4.2f1
+        - Update systems for 1.5.2f1
     </ChangeLog>
     <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon, buymeacoffee, kofi, crowdin, gitlab-->
     <ExternalLink Type="github" Url="https://github.com/bcallender/AllAboard"/>
