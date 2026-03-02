@@ -8,8 +8,8 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 "All Aboard!" when the train is scheduled to leave and closing the doors.
 
 ### Release Changelog
-#### 0.1.10
-- Update systems for 1.5.2f1
+#### 0.1.11
+- Update systems for 1.5.5f1 (Iceflake pls fix)
 
 ### Technical Details
 
@@ -92,6 +92,9 @@ stay unbunched!
   vehicle to reject the boarding cims!
 
 ### Previous Releases
+#### 0.1.10
+- Update systems for 1.5.2f1
+
 #### 0.1.9
 - Update systems for 1.4.2f1, ensuring compatibility with bikes!
 
