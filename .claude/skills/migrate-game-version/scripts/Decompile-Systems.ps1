@@ -43,11 +43,11 @@
 
 .EXAMPLE
     # Dry run: stage artifacts, change nothing tracked
-    pwsh ./Decompile-Systems.ps1
+    powershell -File ./Decompile-Systems.ps1
 
 .EXAMPLE
     # Real migration: write skeletons + diff references into the repo
-    pwsh ./Decompile-Systems.ps1 -Apply -WriteUnpatched
+    powershell -File ./Decompile-Systems.ps1 -Apply -WriteUnpatched
 #>
 [CmdletBinding()]
 param(
@@ -79,11 +79,13 @@ if ($Apply -and -not (Test-Path $patchedDir)) {
 
 # --- Resolve Game.dll --------------------------------------------------------
 if (-not $GameDll) {
-    $candidates = @(
-        (Join-Path $env:CSII_MANAGEDPATH 'Game.dll'),
-        (Join-Path $env:CSII_INSTALLATIONPATH 'Cities2_Data\Managed\Game.dll')
-    ) | Where-Object { $_ -and (Test-Path $_) }
-    $GameDll = $candidates | Select-Object -First 1
+    # Guard each var: $env:VAR is $null when unset, and Join-Path $null throws a
+    # terminating ParameterBindingValidationException under -ErrorActionPreference Stop,
+    # which would skip the friendly Fail below. The if () skips null/empty vars.
+    $candidates = @()
+    if ($env:CSII_MANAGEDPATH)      { $candidates += (Join-Path $env:CSII_MANAGEDPATH 'Game.dll') }
+    if ($env:CSII_INSTALLATIONPATH) { $candidates += (Join-Path $env:CSII_INSTALLATIONPATH 'Cities2_Data\Managed\Game.dll') }
+    $GameDll = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
 }
 if (-not $GameDll -or -not (Test-Path $GameDll)) {
     Fail "Could not locate Game.dll. Set CSII_MANAGEDPATH/CSII_INSTALLATIONPATH or pass -GameDll. Looked at: $GameDll"

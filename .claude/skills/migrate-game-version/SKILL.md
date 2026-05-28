@@ -44,11 +44,11 @@ Run the helper from the repo root. Dry-run first to eyeball the output, then app
 
 ```powershell
 # stage only — nothing tracked changes
-pwsh .claude/skills/migrate-game-version/scripts/Decompile-Systems.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File .claude/skills/migrate-game-version/scripts/Decompile-Systems.ps1
 
 # write into the repo: Patched skeletons -> System/Patched,
 # verbatim decomps -> System/Experimental as diff references
-pwsh .claude/skills/migrate-game-version/scripts/Decompile-Systems.ps1 -Apply -WriteUnpatched
+powershell -NoProfile -ExecutionPolicy Bypass -File .claude/skills/migrate-game-version/scripts/Decompile-Systems.ps1 -Apply -WriteUnpatched
 ```
 
 This decompiles both systems at `-lv CSharp7_3`, then applies the stable header
