@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(gh api repos/River-Mochi/FastBoarding)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(command -v ilspycmd dotpeek ilspycmd.exe)",
+      "Bash(dotnet tool *)",
+      "Read(//c/Program Files \\(x86\\)/Steam/steamapps/common/Cities Skylines II/Cities2_Data/Managed/**)",
+      "Bash(export PATH=\"$PATH:$HOME/.dotnet/tools:/c/Users/$USER/.dotnet/tools\")",
+      "Bash(ilspycmd --help)",
+      "Bash(dotnet build *)"
+    ]
+  }
+}

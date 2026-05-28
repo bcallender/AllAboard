@@ -37,10 +37,16 @@ namespace AllAboard
             }
         }
 
+        // When true, the dwell-cap AI replacement is disabled and BoardingDiagnosticsSystem
+        // observes vanilla behavior, writing JSONL rows for stuck boarding events.
+        // Toggle requires a save reload.
+        public bool EnableDiagnostics { get; set; }
+
         public override void SetDefaults()
         {
             TrainMaxDwellDelaySlider = 8;
             BusMaxDwellDelaySlider = 8;
+            EnableDiagnostics = true;
         }
     }
 
@@ -85,7 +91,15 @@ namespace AllAboard
                     "Maximum amount of (in-game) time to allow a Bus to 'dwell' beyond its scheduled departure frame. "
                 },
                 { m_AllAboardSettings.GetOptionLabelLocaleID(nameof(AllAboardSettings.ApplyButton)), "Apply" },
-                { m_AllAboardSettings.GetOptionDescLocaleID(nameof(AllAboardSettings.ApplyButton)), "Apply Settings" }
+                { m_AllAboardSettings.GetOptionDescLocaleID(nameof(AllAboardSettings.ApplyButton)), "Apply Settings" },
+                {
+                    m_AllAboardSettings.GetOptionLabelLocaleID(nameof(AllAboardSettings.EnableDiagnostics)),
+                    "Enable Boarding Diagnostics (Restart Required)"
+                },
+                {
+                    m_AllAboardSettings.GetOptionDescLocaleID(nameof(AllAboardSettings.EnableDiagnostics)),
+                    "Disables the dwell-cap AI replacement and writes vanilla stuck-boarding events to AllAboard.diagnostics.jsonl in the game's Logs folder. Used to investigate why specific boarding deadlocks happen. Restart the save after toggling."
+                }
             };
         }
 
