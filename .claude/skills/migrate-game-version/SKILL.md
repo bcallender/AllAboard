@@ -56,8 +56,11 @@ constructor rename to `Patched*`; inject `using AllAboard.System.Utility;` plus
 `using Game;` and `using Game.Simulation;` (which restore implicit same-namespace
 resolution); drop the class-level `[CompilerGenerated]` and add `partial` (so the
 Unity SystemGenerator's shell merges cleanly); and normalize leading tabs to 4
-spaces to match repo style. The resulting `Patched*.cs` are pure vanilla logic
-otherwise — **the hook is not yet spliced.**
+spaces. On `-Apply` it also runs `dotnet format whitespace` against the just-
+copied files so they match the repo's `.editorconfig` exactly — the migration
+diff stays focused on real code changes rather than formatting churn. The
+resulting `Patched*.cs` are pure vanilla logic otherwise — **the hook is not yet
+spliced.**
 
 Both `Unpatched*.cs` (verbatim, `namespace Game.Simulation`) and `Patched*.cs`
 (rewritten skeleton) land in the staging `-OutDir` for side-by-side diffing.

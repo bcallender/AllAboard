@@ -19,8 +19,11 @@
            - drop the class-level [CompilerGenerated] attribute and declare the class
              `partial`, so the Unity SystemGenerator's generated shell merges instead
              of colliding (CS0101 + CS0579)
-           - normalize leading tabs to 4 spaces to match the repo's existing C# style
-             and minimize the churn a follow-up reformat would introduce
+           - normalize leading tabs to 4 spaces (cheap fallback so staging output is
+             readable even without -Apply)
+      4. On -Apply only: run `dotnet format whitespace` against the just-copied files
+         so they exactly match the repo's `.editorconfig`. This is what makes the
+         migration diff focus on real changes instead of formatting churn.
 
     It deliberately does NOT touch the StopBoarding hook. That splice is the fragile,
     judgement-dependent part that changes shape every time CO refactors the system, so
@@ -200,11 +203,38 @@ foreach ($sys in $systems) {
 
 # --- Apply into the repo -----------------------------------------------------
 if ($Apply) {
+    $appliedRelPaths = @()
     foreach ($g in $generated) {
         $dest = Join-Path $patchedDir "Patched$($g.Name).cs"
         Copy-Item -LiteralPath $g.Patched -Destination $dest -Force
         Write-Host "applied: $dest"
+        $appliedRelPaths += "AllAboard\System\Patched\Patched$($g.Name).cs"
     }
+
+    # Run `dotnet format` so the output matches the repo's .editorconfig exactly --
+    # the in-script tabs->spaces normalization handles the bulk, this catches the
+    # rest (spacing, blank lines, etc.) and keeps the migration diff to real changes.
+    # `whitespace` mode is fast and side-effect-free; full `dotnet format` would also
+    # run analyzer fix-ups which can be noisy on decompiler output.
+    $solution = Join-Path $RepoRoot 'AllAboard.sln'
+    if (Test-Path $solution) {
+        Write-Host ""
+        Write-Host "Running dotnet format whitespace..."
+        Push-Location $RepoRoot
+        try {
+            & dotnet format whitespace $solution --include $appliedRelPaths | Out-Null
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "dotnet format: applied .editorconfig rules"
+            } else {
+                Write-Warning "dotnet format exited $LASTEXITCODE -- inspect the applied files or reformat manually."
+            }
+        } finally {
+            Pop-Location
+        }
+    } else {
+        Write-Warning "AllAboard.sln not found at $solution -- skipping dotnet format step."
+    }
+
     Write-Host "`nNEXT: splice the StopBoarding hook into each Patched*.cs (see hook-splices.md), then build to verify."
     Write-Host "      The Unpatched*.cs references stay in $OutDir for any side-by-side diffing."
 } else {
