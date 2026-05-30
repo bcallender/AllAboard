@@ -46,19 +46,24 @@ Run the helper from the repo root. Dry-run first to eyeball the output, then app
 # stage only — nothing tracked changes
 powershell -NoProfile -ExecutionPolicy Bypass -File .claude/skills/migrate-game-version/scripts/Decompile-Systems.ps1
 
-# write into the repo: Patched skeletons -> System/Patched,
-# verbatim decomps -> System/Experimental as diff references
-powershell -NoProfile -ExecutionPolicy Bypass -File .claude/skills/migrate-game-version/scripts/Decompile-Systems.ps1 -Apply -WriteUnpatched
+# write the Patched skeletons into the repo (overwrites System/Patched/*.cs)
+powershell -NoProfile -ExecutionPolicy Bypass -File .claude/skills/migrate-game-version/scripts/Decompile-Systems.ps1 -Apply
 ```
 
-This decompiles both systems at `-lv CSharp7_3`, then applies the stable header
-rewrite: `namespace Game.Simulation` → `AllAboard.System.Patched`, class +
-constructor rename to `Patched*`, and injects `using AllAboard.System.Utility;`. The
-resulting `Patched*.cs` are still pure vanilla logic — **the hook is not yet spliced.**
+This decompiles both systems at `-lv CSharp7_3` and applies every rewrite the
+relocated decomp needs to drop into the project AND compile: namespace + class +
+constructor rename to `Patched*`; inject `using AllAboard.System.Utility;` plus
+`using Game;` and `using Game.Simulation;` (which restore implicit same-namespace
+resolution); drop the class-level `[CompilerGenerated]` and add `partial` (so the
+Unity SystemGenerator's shell merges cleanly); and normalize leading tabs to 4
+spaces to match repo style. The resulting `Patched*.cs` are pure vanilla logic
+otherwise — **the hook is not yet spliced.**
 
-The `Unpatched*.cs` copies in `System/Experimental/` are the diff anchors: they let
-you see exactly what CO changed this version, and (after you splice) they make the
-hook diff trivially reviewable.
+Both `Unpatched*.cs` (verbatim, `namespace Game.Simulation`) and `Patched*.cs`
+(rewritten skeleton) land in the staging `-OutDir` for side-by-side diffing.
+Only `Patched*.cs` is copied into the repo: the Unpatched files keep the game's
+namespace + class names and would collide with `Game.dll` types (CS0433) if
+dropped into a compiled folder.
 
 **Commit this as the "decomp migration"** before splicing — matching the repo's
 convention (`chore: migrate decomp to <version>`). That keeps the next commit (the

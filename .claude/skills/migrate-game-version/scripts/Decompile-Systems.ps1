@@ -8,32 +8,40 @@
     updates:
       1. Locate Game.dll via the CSII_* environment variables.
       2. Run ilspycmd (-lv CSharp7_3) to extract each transport system as a single type.
-      3. Rewrite the header so the decomp drops into the mod project:
-           - namespace Game.Simulation        -> namespace AllAboard.System.Patched
-           - class  TransportCarAISystem       -> class PatchedTransportCarAISystem
+      3. Rewrite the file so the decomp drops into the mod project AND compiles:
+           - namespace Game.Simulation         -> namespace AllAboard.System.Patched
+           - class TransportCarAISystem        -> class PatchedTransportCarAISystem
              (word-boundary rename also catches the [Preserve] constructor)
-           - inject  using AllAboard.System.Utility;  (the helper's namespace)
+           - inject `using AllAboard.System.Utility;` (the helper's namespace) plus
+             `using Game;` and `using Game.Simulation;` (which restore the implicit
+             same-namespace resolution -- CityStatisticsSystem, ServiceDispatch,
+             SystemUpdatePhase, etc. -- that the namespace move loses)
+           - drop the class-level [CompilerGenerated] attribute and declare the class
+             `partial`, so the Unity SystemGenerator's generated shell merges instead
+             of colliding (CS0101 + CS0579)
+           - normalize leading tabs to 4 spaces to match the repo's existing C# style
+             and minimize the churn a follow-up reformat would introduce
 
     It deliberately does NOT touch the StopBoarding hook. That splice is the fragile,
     judgement-dependent part that changes shape every time CO refactors the system, so
     it is left to the agent following SKILL.md + references/hook-splices.md.
 
     Two artifacts are written per system into -OutDir:
-      Unpatched<Name>.cs  - verbatim decomp (namespace/class untouched). Diff anchor.
-      Patched<Name>.cs    - header-rewritten skeleton. Splice the hook into THIS file.
+      Unpatched<Name>.cs  - verbatim decomp (namespace/class untouched). Useful for
+                            side-by-side diffing during migration. NOT copied into the
+                            repo: it lives in `namespace Game.Simulation` with the
+                            original class name, which would collide with Game.dll's
+                            type if it landed in a compiled folder (CS0433).
+      Patched<Name>.cs    - rewritten skeleton ready for the hook splice.
 
 .PARAMETER OutDir
-    Where to write the artifacts. Defaults to a staging folder under the system temp
-    dir so a bare run never disturbs tracked source.
+    Where to write the staged artifacts. Defaults to a folder under the system temp dir
+    so a bare run never disturbs tracked source.
 
 .PARAMETER Apply
-    Copy the results into the repo: Patched*.cs -> AllAboard/System/Patched/ and (when
-    -WriteUnpatched) Unpatched*.cs -> AllAboard/System/Experimental/. Without this switch
-    nothing in the repo changes.
-
-.PARAMETER WriteUnpatched
-    When applying, also drop the verbatim decomps into System/Experimental as diff
-    references (matches the "commit the decomp migration first" workflow in CLAUDE.md).
+    Copy the Patched*.cs skeletons into AllAboard/System/Patched/, overwriting the
+    existing files. The Unpatched*.cs references stay in -OutDir (see above for why
+    they are deliberately not copied into the repo).
 
 .PARAMETER GameDll
     Override the auto-detected Game.dll path.
@@ -46,14 +54,13 @@
     powershell -File ./Decompile-Systems.ps1
 
 .EXAMPLE
-    # Real migration: write skeletons + diff references into the repo
-    powershell -File ./Decompile-Systems.ps1 -Apply -WriteUnpatched
+    # Real migration: write skeletons into the repo
+    powershell -File ./Decompile-Systems.ps1 -Apply
 #>
 [CmdletBinding()]
 param(
     [string]$OutDir,
     [switch]$Apply,
-    [switch]$WriteUnpatched,
     [string]$GameDll,
     [string]$RepoRoot
 )
@@ -71,8 +78,7 @@ if (-not $RepoRoot -or -not (Test-Path $RepoRoot)) {
     $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..\..')).Path
 }
 $RepoRoot = $RepoRoot.TrimEnd('\','/')
-$patchedDir      = Join-Path $RepoRoot 'AllAboard\System\Patched'
-$experimentalDir = Join-Path $RepoRoot 'AllAboard\System\Experimental'
+$patchedDir = Join-Path $RepoRoot 'AllAboard\System\Patched'
 if ($Apply -and -not (Test-Path $patchedDir)) {
     Fail "Expected $patchedDir to exist. Is -RepoRoot correct? ($RepoRoot)"
 }
@@ -141,9 +147,36 @@ foreach ($sys in $systems) {
     $patched = $text
     $patched = $patched -replace '(?m)^namespace Game\.Simulation\b', 'namespace AllAboard.System.Patched'
     $patched = $patched -replace "\b$name\b", "Patched$name"          # class decl + [Preserve] ctor
-    # Inject the helper's namespace just before the namespace declaration.
+
+    # Inject the usings the relocated decomp needs:
+    #   - AllAboard.System.Utility is the helper's namespace.
+    #   - Game + Game.Simulation restore the implicit same-namespace resolution lost
+    #     by moving out of Game.Simulation (CityStatisticsSystem, ServiceDispatch,
+    #     SystemUpdatePhase, the *Request types, etc. -- ILSpy leaves them unqualified
+    #     because it decompiled in the Game.Simulation context).
     $patched = $patched -replace '(?m)^namespace AllAboard\.System\.Patched',
-                                 "using AllAboard.System.Utility;`r`n`r`nnamespace AllAboard.System.Patched"
+                                 "using AllAboard.System.Utility;`r`nusing Game;`r`nusing Game.Simulation;`r`n`r`nnamespace AllAboard.System.Patched"
+
+    # Drop the class-level [CompilerGenerated] and make the class partial. The Unity
+    # SystemGenerator emits its own [CompilerGenerated] partial shell for every
+    # system; if our class is non-partial it conflicts (CS0101), and if it carries
+    # the same attribute the partials' attributes duplicate (CS0579). Removing the
+    # attribute and adding `partial` lets the shells merge cleanly.
+    $patched = $patched -replace "(?m)^[ \t]*\[CompilerGenerated\]\r?\n([ \t]*public )class (Patched$name\b)",
+                                 "`${1}partial class `${2}"
+
+    # Normalize ILSpy's leading tabs to 4 spaces. The decomp uses tabs; the repo's
+    # existing C# uses 4 spaces, and a follow-up Rider reformat would rewrite every
+    # line otherwise. This keeps the migration diff focused on real changes. (For
+    # fully deterministic formatting, layer .editorconfig + `dotnet format` on top.)
+    $patched = (($patched -split "`n") | ForEach-Object {
+        $line = $_.TrimEnd("`r")
+        if ($line -match '^(\t+)(.*)$') {
+            (' ' * (4 * $matches[1].Length)) + $matches[2]
+        } else {
+            $line
+        }
+    }) -join "`r`n"
     $header = @"
 // Auto-generated by the migrate-game-version skill from Game.dll (ILSpy, -lv CSharp7_3).
 // Source type: $type
@@ -171,14 +204,9 @@ if ($Apply) {
         $dest = Join-Path $patchedDir "Patched$($g.Name).cs"
         Copy-Item -LiteralPath $g.Patched -Destination $dest -Force
         Write-Host "applied: $dest"
-        if ($WriteUnpatched) {
-            New-Item -ItemType Directory -Force -Path $experimentalDir | Out-Null
-            $udest = Join-Path $experimentalDir "Unpatched$($g.Name).cs"
-            Copy-Item -LiteralPath $g.Unpatched -Destination $udest -Force
-            Write-Host "applied: $udest"
-        }
     }
     Write-Host "`nNEXT: splice the StopBoarding hook into each Patched*.cs (see hook-splices.md), then build to verify."
+    Write-Host "      The Unpatched*.cs references stay in $OutDir for any side-by-side diffing."
 } else {
     Write-Host "Dry run (no repo changes). Re-run with -Apply to write into the repo."
     Write-Host "NEXT: review the staged files, splice the hook, then build to verify."
