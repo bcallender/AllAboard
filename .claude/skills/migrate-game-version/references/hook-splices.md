@@ -130,7 +130,7 @@ if (!boardingComplete)
 Replace vanilla's `private bool ArePassengersReady(Entity vehicleEntity)` with this overload.
 It mirrors vanilla's layout iteration but defers each car's decision to the helper:
 ```csharp
-private bool ArePassengersReady(Entity vehicleEntity, ref DynamicBuffer<LayoutElement> layout, PublicTransport publicTransport)
+private bool ArePassengersReady(Entity vehicleEntity, ref DynamicBuffer<LayoutElement> layout, Game.Vehicles.PublicTransport publicTransport)
 {
     bool boardingComplete = true;
     if (layout.Length != 0)
@@ -157,6 +157,10 @@ private bool ArePassengersReady(Entity vehicleEntity, ref DynamicBuffer<LayoutEl
     return boardingComplete;
 }
 ```
+
+The signature must use the fully qualified `Game.Vehicles.PublicTransport` — the file has
+`using Game.Prefabs;` and `using Game.Vehicles;` (and the script also adds `using Game.Simulation;`),
+all of which define a `PublicTransport` type, so the bare name is ambiguous (CS0104).
 
 The field names this leans on (`m_Passengers`, `m_CurrentVehicleData`, `m_SimulationFrameIndex`,
 and the `layout` / `LayoutElement` types) are job-struct fields that have been stable. Verify
