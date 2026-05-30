@@ -9,12 +9,13 @@ namespace AllAboard
 {
     [FileLocation(nameof(AllAboard))]
     public class AllAboardSettings : ModSetting
-    {   
+    {
         public AllAboardSettings(IMod mod) : base(mod)
         {
             SetDefaults();
         }
-        public string ModVersion => "0.1.10";
+
+        public string ModVersion => "0.1.12";
 
         [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes")]
         public int TrainMaxDwellDelaySlider { get; set; }
