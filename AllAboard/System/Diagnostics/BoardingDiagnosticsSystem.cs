@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using Game;
@@ -49,15 +49,20 @@ namespace AllAboard.System.Diagnostics
                 }
             });
             RequireForUpdate(m_VehicleQuery);
-            OpenWriter();
+            // The log file is opened lazily on the first update where diagnostics is actually
+            // enabled (see OnUpdate), so a disabled session never creates the file or writes a header.
         }
 
         protected override void OnDestroy()
         {
             try
             {
-                m_Writer?.Flush();
-                m_Writer?.Dispose();
+                if (m_Writer != null)
+                {
+                    AllAboard.log.InfoFormat("Boarding diagnostics captured {0} event(s) this session.", m_TotalEvents);
+                    m_Writer.Flush();
+                    m_Writer.Dispose();
+                }
             }
             catch
             {
@@ -70,7 +75,12 @@ namespace AllAboard.System.Diagnostics
         {
             if (AllAboard.m_AllAboardSettings == null || !AllAboard.m_AllAboardSettings.EnableDiagnostics)
                 return;
-            if (m_FailedToOpen || m_Writer == null) return;
+            if (m_FailedToOpen) return;
+            if (m_Writer == null)
+            {
+                OpenWriter();
+                if (m_FailedToOpen || m_Writer == null) return;
+            }
 
             var simFrame = m_SimulationSystem.frameIndex;
             m_VehicleQuery.CompleteDependency();

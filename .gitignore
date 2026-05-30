@@ -19,3 +19,6 @@ Desktop.ini
 
 ##Manually added
 AllAboard.sln.DotSettings.user
+
+## Claude Code per-developer local settings (machine-specific paths + permissions)
+**/.claude/settings.local.json

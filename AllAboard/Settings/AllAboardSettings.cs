@@ -46,7 +46,7 @@ namespace AllAboard
         {
             TrainMaxDwellDelaySlider = 8;
             BusMaxDwellDelaySlider = 8;
-            EnableDiagnostics = true;
+            EnableDiagnostics = false;
         }
     }
 
