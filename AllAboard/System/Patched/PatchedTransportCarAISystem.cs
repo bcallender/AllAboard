@@ -1262,23 +1262,20 @@ namespace AllAboard.System.Patched
                 }
                 if (!forcedStop)
                 {
-                    uint num = math.max(cargoTransport.m_DepartureFrame, publicTransport.m_DepartureFrame);
-                    bool flag2 = num != 0 && m_SimulationFrameIndex >= num + 1800;
-                    publicTransport.m_MaxBoardingDistance = math.select(publicTransport.m_MinWaitingDistance + 1f, float.MaxValue, publicTransport.m_MinWaitingDistance == float.MaxValue || publicTransport.m_MinWaitingDistance == 0f || flag2);
+                    publicTransport.m_MaxBoardingDistance = math.select(publicTransport.m_MinWaitingDistance + 1f, float.MaxValue, publicTransport.m_MinWaitingDistance == float.MaxValue || publicTransport.m_MinWaitingDistance == 0f);
                     publicTransport.m_MinWaitingDistance = float.MaxValue;
                     if ((flag || (publicTransport.m_State & (PublicTransportFlags.Evacuating | PublicTransportFlags.PrisonerTransport)) != 0) && (m_SimulationFrameIndex < cargoTransport.m_DepartureFrame || m_SimulationFrameIndex < publicTransport.m_DepartureFrame || publicTransport.m_MaxBoardingDistance != float.MaxValue))
                     {
                         return false;
                     }
-                    if (!flag2 && passengers.IsCreated)
+                    // All Aboard!: vanilla's hardcoded 1800-frame dwell cap (num/flag2) is excised so the
+                    // configurable per-mode slider is the sole authority on when boarding ends.
+                    if (passengers.IsCreated)
                     {
-                        for (int i = 0; i < passengers.Length; i++)
+                        bool boardingComplete = PublicTransportBoardingHelper.ArePassengersReady(passengers, m_CurrentVehicleData, publicTransport, PublicTransportBoardingHelper.TransportFamily.Bus, m_SimulationFrameIndex);
+                        if (!boardingComplete)
                         {
-                            Entity passenger = passengers[i].m_Passenger;
-                            if (m_CurrentVehicleData.TryGetComponent(passenger, out var componentData3) && (componentData3.m_Flags & CreatureVehicleFlags.Ready) == 0)
-                            {
-                                return false;
-                            }
+                            return false;
                         }
                     }
                 }

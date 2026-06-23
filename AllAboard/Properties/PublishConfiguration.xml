@@ -18,6 +18,8 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 "All Aboard!" when the train is scheduled to leave and closing the doors.
 
 ### Release Changelog
+#### 0.1.13
+- Update systems for 1.6.0f1
 #### 0.1.12
 - Update systems for 1.5.9f1
 #### 0.1.11
@@ -114,14 +116,14 @@ vehicle to reject the boarding cims!
     <!--Link to the forum post where the mod can be discussed-->
     <ForumLink Value=""/>
     <!--Version of the mod-->
-    <ModVersion Value="0.1.12"/>
+    <ModVersion Value="0.1.13"/>
     <!--Recommended version of the base game to use the mod-->
-    <GameVersion Value="1.5.*"/>
+    <GameVersion Value="1.6.*"/>
     <!--Dependency for the mod, can be set multiple times-->
     <Dependency Id=""/>
     <!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
     <ChangeLog>
-        - Update systems for 1.5.9f1
+        - Update systems for 1.6.0f1
     </ChangeLog>
     <!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon, buymeacoffee, kofi, crowdin, gitlab-->
     <ExternalLink Type="github" Url="https://github.com/bcallender/AllAboard"/>

@@ -1068,30 +1068,19 @@ namespace AllAboard.System.Patched
                 }
                 if (!forcedStop)
                 {
-                    uint num = math.max(cargoTransport.m_DepartureFrame, publicTransport.m_DepartureFrame);
-                    bool flag3 = num != 0 && m_SimulationFrameIndex >= num + 1800;
-                    publicTransport.m_MaxBoardingDistance = math.select(publicTransport.m_MinWaitingDistance + 1f, float.MaxValue, publicTransport.m_MinWaitingDistance == float.MaxValue || publicTransport.m_MinWaitingDistance == 0f || flag3);
+                    publicTransport.m_MaxBoardingDistance = math.select(publicTransport.m_MinWaitingDistance + 1f, float.MaxValue, publicTransport.m_MinWaitingDistance == float.MaxValue || publicTransport.m_MinWaitingDistance == 0f);
                     publicTransport.m_MinWaitingDistance = float.MaxValue;
                     if (flag2 && (m_SimulationFrameIndex < cargoTransport.m_DepartureFrame || m_SimulationFrameIndex < publicTransport.m_DepartureFrame || publicTransport.m_MaxBoardingDistance != float.MaxValue))
                     {
                         return false;
                     }
-                    if (!flag3)
+                    // All Aboard!: vanilla's hardcoded 1800-frame dwell cap (num/flag3) is excised so the
+                    // configurable per-mode slider is the sole authority. The layout-aware overload below
+                    // applies the helper to every car in the train (or the single vehicle if no layout).
+                    bool boardingComplete = ArePassengersReady(vehicleEntity, ref layout, publicTransport);
+                    if (!boardingComplete)
                     {
-                        if (layout.Length != 0)
-                        {
-                            for (int i = 0; i < layout.Length; i++)
-                            {
-                                if (!ArePassengersReady(layout[i].m_Vehicle))
-                                {
-                                    return false;
-                                }
-                            }
-                        }
-                        else if (!ArePassengersReady(vehicleEntity))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
                 if ((cargoTransport.m_State & CargoTransportFlags.Refueling) != 0 || (publicTransport.m_State & PublicTransportFlags.Refueling) != 0)
@@ -1158,22 +1147,33 @@ namespace AllAboard.System.Patched
                 return num;
             }
 
-            private bool ArePassengersReady(Entity vehicleEntity)
+            // All Aboard!: replaces vanilla's per-vehicle ready loop. Trains are multi-car, so apply
+            // the helper to every car in the layout; fall back to the single vehicle if no layout.
+            private bool ArePassengersReady(Entity vehicleEntity, ref DynamicBuffer<LayoutElement> layout, Game.Vehicles.PublicTransport publicTransport)
             {
-                if (!m_Passengers.HasBuffer(vehicleEntity))
+                bool boardingComplete = true;
+                if (layout.Length != 0)
                 {
-                    return true;
-                }
-                DynamicBuffer<Passenger> dynamicBuffer = m_Passengers[vehicleEntity];
-                for (int i = 0; i < dynamicBuffer.Length; i++)
-                {
-                    Entity passenger = dynamicBuffer[i].m_Passenger;
-                    if (m_CurrentVehicleData.HasComponent(passenger) && (m_CurrentVehicleData[passenger].m_Flags & CreatureVehicleFlags.Ready) == 0)
+                    for (int i = 0; i < layout.Length; i++)
                     {
-                        return false;
+                        Entity layoutVehicle = layout[i].m_Vehicle;
+                        if (!m_Passengers.HasBuffer(layoutVehicle))
+                        {
+                            continue;
+                        }
+                        DynamicBuffer<Passenger> layoutVehiclePassengers = m_Passengers[layoutVehicle];
+                        if (!PublicTransportBoardingHelper.ArePassengersReady(layoutVehiclePassengers, m_CurrentVehicleData, publicTransport, PublicTransportBoardingHelper.TransportFamily.Train, m_SimulationFrameIndex))
+                        {
+                            boardingComplete = false;
+                            break;
+                        }
                     }
                 }
-                return true;
+                else
+                {
+                    boardingComplete = PublicTransportBoardingHelper.ArePassengersReady(m_Passengers[vehicleEntity], m_CurrentVehicleData, publicTransport, PublicTransportBoardingHelper.TransportFamily.Train, m_SimulationFrameIndex);
+                }
+                return boardingComplete;
             }
 
             private Entity GetTransportStationFromStop(Entity stop)
