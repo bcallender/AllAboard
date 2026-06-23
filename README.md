@@ -10,10 +10,6 @@ tl;dr: This mod adds a hard cap on the Dwell Time of public transport vehicles, 
 ### Release Changelog
 #### 0.1.13
 - Update systems for 1.6.0f1
-#### 0.1.12
-- Update systems for 1.5.9f1
-#### 0.1.11
-- Update systems for 1.5.5f1 (Iceflake pls fix)
 
 ### Technical Details
 
@@ -96,6 +92,12 @@ stay unbunched!
   vehicle to reject the boarding cims!
 
 ### Previous Releases
+#### 0.1.12
+- Update systems for 1.5.9f1
+
+#### 0.1.11
+- Update systems for 1.5.5f1 (Iceflake pls fix)
+
 #### 0.1.10
 - Update systems for 1.5.2f1
 
