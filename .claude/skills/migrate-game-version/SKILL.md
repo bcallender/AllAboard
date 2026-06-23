@@ -104,13 +104,33 @@ drop or mistype something, and that any field the hook references (`m_CurrentVeh
 
 ### 4. Bump version + changelog
 
-- `AllAboard/Settings/AllAboardSettings.cs` — bump `ModVersion`.
-- `README.md` — add a changelog entry at the top.
-- `AllAboard/Properties/PublishConfiguration.xml` — add the matching changelog entry.
-  Leave `ModId` untouched (it's the live Paradox Mods id).
+First **confirm with the user** the exact game-version string (e.g. `1.6.0f1` — the
+`f` suffix isn't derivable from `Game.dll`, which reports `0.0.0.0`) and the mod
+version bump (normally a patch increment). Both are user-facing published copy —
+don't invent them.
 
-Ask the user for the changelog wording if it's not obvious from the diff — it's
-user-facing copy, not something to invent.
+**Version fields** (there are two `ModVersion`s — don't miss the second):
+- `AllAboard/Settings/AllAboardSettings.cs` — `ModVersion` string.
+- `AllAboard/Properties/PublishConfiguration.xml` — `<ModVersion Value="…"/>`, and
+  **`<GameVersion Value="…"/>` if the major.minor changed** (e.g. `1.5.*` → `1.6.*`;
+  the old wildcard would no longer match the new game and the listing would read as
+  incompatible). Leave `<ModId>` untouched — it's the live Paradox Mods id.
+
+**Changelog — two files, two different conventions:**
+
+- `README.md` keeps the *full* history. `### Release Changelog` holds **only the new
+  release**; move the entry that was there down to the top of `### Previous Releases`
+  (newest-first). Don't stack multiple versions under Release Changelog.
+- `AllAboard/Properties/PublishConfiguration.xml` (inside `<LongDescription>`) keeps a
+  **rolling window of the last 3 releases only** — it renders better in Skyve short.
+  So: new release alone under `### Release Changelog`, previous two under
+  `### Previous Releases`, and drop anything older than those three. Keep every line
+  **flush-left (no indentation)** — Paradox's markdown renderer breaks on indented
+  content. Also update the separate `<ChangeLog>…</ChangeLog>` element near the bottom
+  (it holds just the current release's bullet).
+
+The changelog bullet itself is typically `- Update systems for <version>`; match the
+phrasing of the existing entries unless the user wants something more specific.
 
 ### 5. Hand off
 
