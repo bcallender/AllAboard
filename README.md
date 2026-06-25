@@ -52,6 +52,11 @@ Eventually, all Cims _will_ be picked up, they just might have to wait for the n
 rest of us. This also helps trains/buses
 stay unbunched!
 
+**Note (game 1.5.5+):** Since the Iceflake update, Colossal Order ships their own fixed dwell cap of roughly 9.9
+in-game minutes (1800 frames), so vanilla no longer waits indefinitely for stuck boarders. What this mod adds on top
+is **control over that limit** — separate train/bus sliders from 0 to 30 minutes, defaulting to a tighter 8 minutes —
+so you can tune how aggressively your transit closes its doors instead of living with CO's single hardcoded value.
+
 ### Caveats:
 
 - This does not yet work with Taxis, as they use a separate AI system
