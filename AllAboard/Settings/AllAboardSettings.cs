@@ -15,7 +15,7 @@ namespace AllAboard
             SetDefaults();
         }
 
-        public string ModVersion => "0.1.12";
+        public string ModVersion => "0.1.13";
 
         [SettingsUISlider(min = 0, max = 30, step = 1, unit = "Minutes")]
         public int TrainMaxDwellDelaySlider { get; set; }
