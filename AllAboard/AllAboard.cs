@@ -36,13 +36,23 @@ namespace AllAboard
                 (uint)m_AllAboardSettings.TrainMaxDwellDelaySlider;
             PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data =
                 (uint)m_AllAboardSettings.BusMaxDwellDelaySlider;
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>().Enabled = false;
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportCarAISystem>().Enabled = false;
-            updateSystem.UpdateAt<PatchedTransportCarAISystem>(SystemUpdatePhase.GameSimulation);
-            updateSystem.UpdateAt<PatchedTransportTrainAISystem>(SystemUpdatePhase.GameSimulation);
-            log.Info("Completed Replacement of Base Train/CarAI Systems.");
-            log.InfoFormat("Bus Max Dwell Time: {0}", PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data);
-            log.InfoFormat("Train Max Dwell Time: {0}", PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data);
+
+            if (m_AllAboardSettings.EnableDiagnostics)
+            {
+                log.Info("Diagnostics mode active: vanilla AI systems retained, dwell-cap replacement skipped.");
+            }
+            else
+            {
+                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportTrainAISystem>().Enabled = false;
+                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<TransportCarAISystem>().Enabled = false;
+                updateSystem.UpdateAt<PatchedTransportCarAISystem>(SystemUpdatePhase.GameSimulation);
+                updateSystem.UpdateAt<PatchedTransportTrainAISystem>(SystemUpdatePhase.GameSimulation);
+                log.Info("Completed Replacement of Base Train/CarAI Systems.");
+                log.InfoFormat("Bus Max Dwell Time: {0}", PublicTransportBoardingHelper.BusMaxAllowedMinutesLate.Data);
+                log.InfoFormat("Train Max Dwell Time: {0}", PublicTransportBoardingHelper.TrainMaxAllowedMinutesLate.Data);
+            }
+
+            updateSystem.UpdateAt<System.Diagnostics.BoardingDiagnosticsSystem>(SystemUpdatePhase.GameSimulation);
             //updateSystem.UpdateBefore<InstantBoardingSystem>(SystemUpdatePhase.GameSimulation);
         }
 
